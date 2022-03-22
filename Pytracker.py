@@ -52,37 +52,9 @@ if trace_switch == 1:
         # use regular expression to match
         line_number = int(re.search("(\()(\d)(\):)(.*)", line.strip().replace(filename, "")).group(2))
         line_content = re.search("(\()(\d)(\):)(.*)", line.strip().replace(filename, "")).group(4)
-        # print("line {} == {}".format(line_number, line_content))
+        print("line {} == {}".format(line_number, line_content))
 
         if debug_mode : print(type(line_number), type(line_content))
-
-        space = False
-        tab = False
-        space_sep = re.match(r"^[ ]{4}", line_content)
-        if not space_sep:
-            tab_sep = re.match(r"^[\t]{1}", line_content)
-        else:
-            res = re.sub(r"^[ ]{4}", "", line_content)
-            space = True
-            print(res)
-
-        if tab_sep: 
-            res = re.sub(r"^[\t]{1}", "", line_content)
-            tab = True
-
-        is_while = re.search("^(while).*[:]$", res)
-        whitespace_match = None
-        if tab:
-            whitespace_match = re.search(r"^[\t]{1}", res)
-        elif space:
-            whitespace_match = re.search(r"^[ ]{4}", res)
-
-        if is_while and line_number not in visited_line:
-            if debug_mode: print("Warning: while loop detected.")
-            dict_cont = line_content.strip()
-        
-        visited_line[line_number] = line_content
-
 
     exec_result.close()
 
