@@ -545,13 +545,13 @@ class Trace:
                     if not ignore_it:
                         if self.trace:
                             # TODO: 2022-03-25 globaltrace_lt
-                            if self.outfile:
-                                try:
-                                    with open(self.outfile, 'wb') as f:
-                                        pickle.dump((" --- modulename: %s, funcname: %s" % (modulename, code.co_name)))
-                                except OSError as err:
-                                    print("Can't save globaltrace_lt output because %s" % err, file=sys.stderr)
-                            else:
+                            # if self.outfile:
+                            #     try:
+                            #         with open(self.outfile, 'a') as f:
+                            #             print((" --- modulename: %s, funcname: %s" % (modulename, code.co_name)),file=f)
+                            #     except OSError as err:
+                            #         print("Can't save globaltrace_lt output because %s" % err, file=sys.stderr)
+                            # else:
                                 print((" --- modulename: %s, funcname: %s" % (modulename, code.co_name)))
                         return self.localtrace
             else:
@@ -569,8 +569,8 @@ class Trace:
                 # TODO: 2022-03-25 localtrace_trace_and_count
                 if self.outfile:
                     try:
-                        with open(self.outfile, "wb") as f:
-                            pickle.dump('%.2f' % (_time() - self.start_time), end=' ')
+                        with open(self.outfile, "a") as f:
+                            print('%.2f' % (_time() - self.start_time), end=' ', file=f)
                     except OSError as err:
                         print("Can't save localtrace_trace_and_count output because %s" % err, file=sys.stderr)
                 else:
@@ -580,8 +580,8 @@ class Trace:
             # TODO: 2022-03-25 localtrace_trace_and_count
             if self.outfile:
                 try:
-                    with open(self.outfile, "wb") as f:
-                        pickle.dump('%.2f' % (_time() - self.start_time), end=' ')
+                    with open(self.outfile, "a") as f:
+                        print("%s(%d): %s" % (bname, lineno, linecache.getline(filename, lineno)), end='', file=f)
                 except OSError as err:
                     print("Can't save localtrace_trace_and_count output because %s" % err, file=sys.stderr)
             else:
@@ -598,8 +598,8 @@ class Trace:
                 # TODO: 2022-03-25 localtrace_trace
                 if self.outfile:
                     try:
-                        with open(self.outfile, "wb") as f:
-                            pickle.dump('%.2f' % (_time() - self.start_time), end=' ')
+                        with open(self.outfile, "a") as f:
+                            print('%.2f' % (_time() - self.start_time), end=' ', file=f)
                     except OSError as err:
                         print("Can't save localtrace_trace output because %s" % err, file=sys.stderr)
                 else:
@@ -609,8 +609,8 @@ class Trace:
             # TODO: 2022-03-25 localtrace_trace
             if self.outfile:
                 try:
-                    with open(self.outfile, "wb") as f:
-                        pickle.dump('%.2f' % (_time() - self.start_time), end=' ')
+                    with open(self.outfile, "a") as f:
+                        print("%s(%d): %s" % (bname, lineno, linecache.getline(filename, lineno)), end='', file=f)
                 except OSError as err:
                     print("Can't save localtrace_trace output because %s" % err, file=sys.stderr)
             else:

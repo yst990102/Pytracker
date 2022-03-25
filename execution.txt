@@ -1,7 +1,4 @@
-sample1.py(1): def main():
-sample1.py(7): if __name__ == "__main__":
-sample1.py(8):     main()
-sample1.py(2):     i = 5
+<string>(1): sample1.py(2):     i = 5
 sample1.py(3):     while (i > 0):
 sample1.py(4):         print("i == " ,i)
 sample1.py(5):         i -= 1

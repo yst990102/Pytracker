@@ -1,5 +1,7 @@
+from random import sample
 import sys
 import my_trace
+import trace
 import os
 import re
 import traceback
@@ -40,10 +42,9 @@ if trace_switch == 1:
     filename = "sample1.py"
     exec_result_file = "execution.txt"
 
-    # call linux cmd to trace customer's execution
-    os.system("python3 -m my_trace --trace ./{} | grep {} > ./{}".format(filename, filename, exec_result_file))
-    
-    tracer = my_trace.Trace()
+    # call trace customer's execution
+    tracer = my_trace.Trace(ignoredirs=[sys.prefix, sys.exec_prefix],trace=1,count=1,outfile=exec_result_file)
+    tracer.run("sample1.main()")
 
     # open the result file of trace
     exec_result = open(exec_result_file)
@@ -52,6 +53,7 @@ if trace_switch == 1:
     # parsing
     for line in exec_content:
         # use regular expression to match
+        print(re.search("(\()(\d)(\):)(.*)", line.strip().replace(filename, "")))
         line_number = int(re.search("(\()(\d)(\):)(.*)", line.strip().replace(filename, "")).group(2))
         line_content = re.search("(\()(\d)(\):)(.*)", line.strip().replace(filename, "")).group(4)
         print("line {} == {}".format(line_number, line_content))
