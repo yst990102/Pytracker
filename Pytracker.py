@@ -1,5 +1,5 @@
 import sys
-import trace
+import my_trace
 import os
 import re
 import traceback
@@ -41,7 +41,9 @@ if trace_switch == 1:
     exec_result_file = "execution.txt"
 
     # call linux cmd to trace customer's execution
-    os.system("python3 -m trace --trace ./{} | grep {} > ./{}".format(filename, filename, exec_result_file))
+    os.system("python3 -m my_trace --trace ./{} | grep {} > ./{}".format(filename, filename, exec_result_file))
+    
+    tracer = my_trace.Trace()
 
     # open the result file of trace
     exec_result = open(exec_result_file)
