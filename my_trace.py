@@ -452,7 +452,6 @@ class Trace:
         if not self.donothing:
             threading.settrace(self.globaltrace)
             sys.settrace(self.globaltrace)
-        print(f"runctx.run globals == {globals}, locals == {locals}")
         try:
             exec(cmd, globals, locals)
         finally:
@@ -550,13 +549,13 @@ class Trace:
                     if not ignore_it:
                         if self.trace:
                             # TODO: 2022-03-25 globaltrace_lt
-                            # if self.outfile:
-                            #     try:
-                            #         with open(self.outfile, 'a') as f:
-                            #             print((" --- modulename: %s, funcname: %s" % (modulename, code.co_name)),file=f)
-                            #     except OSError as err:
-                            #         print("Can't save globaltrace_lt output because %s" % err, file=sys.stderr)
-                            # else:
+                            if self.outfile:
+                                try:
+                                    with open(self.outfile, 'a') as f:
+                                        print((" --- modulename: %s, funcname: %s" % (modulename, code.co_name)),file=f)
+                                except OSError as err:
+                                    print("Can't save globaltrace_lt output because %s" % err, file=sys.stderr)
+                            else:
                                 print((" --- modulename: %s, funcname: %s" % (modulename, code.co_name)))
                         return self.localtrace
             else:
@@ -572,7 +571,6 @@ class Trace:
             
             local_variables = frame.f_locals
             global_variables = frame.f_globals
-            print(f"localtrace_trace_and_count.locals == {local_variables}")
 
             if self.start_time:
                 # TODO: 2022-03-25 localtrace_trace_and_count
@@ -591,7 +589,7 @@ class Trace:
                 try:
                     with open(self.outfile, "a") as f:
                         print("%s(%d): %s" % (bname, lineno, linecache.getline(filename, lineno)), end='', file=f)
-                        print(f"current locals == {local_variables}",file=f)
+                        print(f"localtrace_trace_and_count.locals == {local_variables}", file=f)
                 except OSError as err:
                     print("Can't save localtrace_trace_and_count output because %s" % err, file=sys.stderr)
             else:

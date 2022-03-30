@@ -18,7 +18,11 @@ debug_mode = False
 trace_switch = 1
 traceback_switch = 1
 
-
+print(
+    "************************************************************\n" +
+    "*************            traceback             *************\n" +
+    "************************************************************"
+)
 
 if traceback_switch == 1:
     try:
@@ -33,6 +37,11 @@ if traceback_switch == 1:
             print("filename = {}, line = {}, method = {}".format(trackback_line.filename, trackback_line.lineno, trackback_line.name))
         
 
+print(
+    "************************************************************\n" +
+    "*************              trace               *************\n" +
+    "************************************************************"
+)
 
 steps = []
 visited_line = {}
@@ -57,7 +66,7 @@ if trace_switch == 1:
         print(re.search("(\()(\d)(\):)(.*)", line.strip().replace(filename, "")))
         line_number = int(re.search("(\()(\d)(\):)(.*)", line.strip().replace(filename, "")).group(2))
         line_content = re.search("(\()(\d)(\):)(.*)", line.strip().replace(filename, "")).group(4)
-        print("line {} == {}".format(line_number, line_content))
+        print(f"line {line_number} == {line_content}")
 
         if debug_mode : print(type(line_number), type(line_content))
 
