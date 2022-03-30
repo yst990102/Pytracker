@@ -1,17 +1,35 @@
-<string>(1): sample1.py(2):     i = 5
+<string>(1): current locals == {'__name__': '__main__', '__doc__': None, '__package__': None, '__loader__': <_frozen_importlib_external.SourceFileLoader object at 0x7f3dac681c10>, '__spec__': None, '__annotations__': {}, '__builtins__': <module 'builtins' (built-in)>, '__file__': '/home/yst990102/Pytracker/Pytracker.py', '__cached__': None, 'sample': <bound method Random.sample of <random.Random object at 0x55b7c9ff28f0>>, 'sys': <module 'sys' (built-in)>, 'result': <module 'unittest.result' from '/opt/miniconda3/lib/python3.9/unittest/result.py'>, 'my_trace': <module 'my_trace' from '/home/yst990102/Pytracker/my_trace.py'>, 'trace': <module 'trace' from '/opt/miniconda3/lib/python3.9/trace.py'>, 'os': <module 'os' from '/opt/miniconda3/lib/python3.9/os.py'>, 're': <module 're' from '/opt/miniconda3/lib/python3.9/re.py'>, 'traceback': <module 'traceback' from '/opt/miniconda3/lib/python3.9/traceback.py'>, 'sample1': <module 'sample1' from '/home/yst990102/Pytracker/sample1.py'>, 'sample2': <module 'sample2' from '/home/yst990102/Pytracker/sample2.py'>, 'debug_mode': False, 'trace_switch': 1, 'traceback_switch': 1, 'exc_type': <class 'ZeroDivisionError'>, 'exc_value': ZeroDivisionError('division by zero'), 'exc_traceback': <traceback object at 0x7f3dac367100>, 'traceback_summary': [<FrameSummary file /home/yst990102/Pytracker/Pytracker.py, line 25 in <module>>, <FrameSummary file /home/yst990102/Pytracker/sample2.py, line 6 in main>], 'trackback_line': <FrameSummary file /home/yst990102/Pytracker/sample2.py, line 6 in main>, 'steps': [], 'visited_line': {}, 'filename': 'sample1.py', 'exec_result_file': 'execution.txt', 'tracer': <my_trace.Trace object at 0x7f3dac54cf40>}
+sample1.py(2):     i = 5
+current locals == {}
 sample1.py(3):     while (i > 0):
+current locals == {'i': 5}
 sample1.py(4):         print("i == " ,i)
+current locals == {'i': 5}
 sample1.py(5):         i -= 1
+current locals == {'i': 5}
 sample1.py(3):     while (i > 0):
+current locals == {'i': 4}
 sample1.py(4):         print("i == " ,i)
+current locals == {'i': 4}
 sample1.py(5):         i -= 1
+current locals == {'i': 4}
 sample1.py(3):     while (i > 0):
+current locals == {'i': 3}
 sample1.py(4):         print("i == " ,i)
+current locals == {'i': 3}
 sample1.py(5):         i -= 1
+current locals == {'i': 3}
 sample1.py(3):     while (i > 0):
+current locals == {'i': 2}
 sample1.py(4):         print("i == " ,i)
+current locals == {'i': 2}
 sample1.py(5):         i -= 1
+current locals == {'i': 2}
 sample1.py(3):     while (i > 0):
+current locals == {'i': 1}
 sample1.py(4):         print("i == " ,i)
+current locals == {'i': 1}
 sample1.py(5):         i -= 1
+current locals == {'i': 1}
 sample1.py(3):     while (i > 0):
+current locals == {'i': 0}

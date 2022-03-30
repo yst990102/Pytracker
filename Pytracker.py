@@ -1,5 +1,6 @@
 from random import sample
 import sys
+from unittest import result
 import my_trace
 import trace
 import os
@@ -61,6 +62,3 @@ if trace_switch == 1:
         if debug_mode : print(type(line_number), type(line_content))
 
     exec_result.close()
-
-# print(visited_line)
-# print(steps)

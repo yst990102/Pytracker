@@ -288,6 +288,10 @@ class CoverageResults:
             # try and store counts and module info into self.outfile
             try:
                 with open(self.outfile, 'wb') as f:
+                    # TODO: 2022-03-30 figured out the output of pickle.dump
+                    print("self.counts == " , self.counts)
+                    print("self.calledfuncs == " , self.calledfuncs)
+                    print("self.callers == ", self.callers)
                     pickle.dump((self.counts, self.calledfuncs, self.callers),
                                 f, 1)
             except OSError as err:
@@ -448,6 +452,7 @@ class Trace:
         if not self.donothing:
             threading.settrace(self.globaltrace)
             sys.settrace(self.globaltrace)
+        print(f"runctx.run globals == {globals}, locals == {locals}")
         try:
             exec(cmd, globals, locals)
         finally:
@@ -564,6 +569,10 @@ class Trace:
             lineno = frame.f_lineno
             key = filename, lineno
             self.counts[key] = self.counts.get(key, 0) + 1
+            
+            local_variables = frame.f_locals
+            global_variables = frame.f_globals
+            print(f"localtrace_trace_and_count.locals == {local_variables}")
 
             if self.start_time:
                 # TODO: 2022-03-25 localtrace_trace_and_count
@@ -582,6 +591,7 @@ class Trace:
                 try:
                     with open(self.outfile, "a") as f:
                         print("%s(%d): %s" % (bname, lineno, linecache.getline(filename, lineno)), end='', file=f)
+                        print(f"current locals == {local_variables}",file=f)
                 except OSError as err:
                     print("Can't save localtrace_trace_and_count output because %s" % err, file=sys.stderr)
             else:
