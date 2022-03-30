@@ -1,5 +1,6 @@
 from random import sample
 import sys
+from typing import Dict
 from unittest import result
 import my_trace
 import trace
@@ -10,9 +11,6 @@ import traceback
 # import user file
 import sample1
 import sample2
-
-# switch of debug
-debug_mode = False
 
 # global switch
 trace_switch = 1
@@ -28,7 +26,6 @@ if traceback_switch == 1:
     try:
         sample2.main()
     except Exception as e:
-        if debug_mode: print("bug detected")
         exc_type, exc_value, exc_traceback = sys.exc_info()
         
         # trackback summary
@@ -62,12 +59,17 @@ if trace_switch == 1:
 
     # parsing
     for line in exec_content:
-        # use regular expression to match
-        print(re.search("(\()(\d)(\):)(.*)", line.strip().replace(filename, "")))
-        line_number = int(re.search("(\()(\d)(\):)(.*)", line.strip().replace(filename, "")).group(2))
-        line_content = re.search("(\()(\d)(\):)(.*)", line.strip().replace(filename, "")).group(4)
-        print(f"line {line_number} == {line_content}")
-
-        if debug_mode : print(type(line_number), type(line_content))
-
+        
+        #  if the line_content is (a line of code)
+        if filename in line:
+            # use regular expression to match
+            line_number = int(re.search("(\()(\d)(\):)(.*)", line.strip().replace(filename, "")).group(2))
+            line_content = re.search("(\()(\d)(\):)(.*)", line.strip().replace(filename, "")).group(4)
+            print(f"line {line_number} == {line_content}")
+            
+        # if the line_content is (a line of local_variables)
+        elif "local_variables" in line:
+            local_variables = eval(re.match("{.*}", line.strip().replace("local_variables == ","")).group(0))
+            assert(type(local_variables) == dict)
+            
     exec_result.close()
