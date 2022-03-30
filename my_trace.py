@@ -589,7 +589,7 @@ class Trace:
                 try:
                     with open(self.outfile, "a") as f:
                         print("%s(%d): %s" % (bname, lineno, linecache.getline(filename, lineno)), end='', file=f)
-                        print(f"localtrace_trace_and_count.locals == {local_variables}", file=f)
+                        print(f"local_variables == {local_variables}", file=f)
                 except OSError as err:
                     print("Can't save localtrace_trace_and_count output because %s" % err, file=sys.stderr)
             else:
