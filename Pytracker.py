@@ -3,19 +3,25 @@ import my_trace
 import re
 import traceback
 
+# import user file
+import sample1
+import sample2
+
+# global switch
+trace_switch = 1
+traceback_switch = 1
+
+
 def insert_line_into_steps(line, step):
     return
 
+def modify_text(filename):
+    with open(filename, "r+") as f:
+        f.seek(0)
+        f.truncate()   #清空文件
+        return
 
 if __name__ == "__main__":
-    # import user file
-    import sample1
-    import sample2
-
-    # global switch
-    trace_switch = 1
-    traceback_switch = 1
-
     print(
         "************************************************************\n" +
         "*************            traceback             *************\n" +
@@ -32,7 +38,6 @@ if __name__ == "__main__":
             traceback_summary = traceback.extract_tb(exc_traceback)
             for trackback_line in traceback_summary:
                 print("filename = {}, line = {}, method = {}".format(trackback_line.filename, trackback_line.lineno, trackback_line.name))
-            
 
     print(
         "************************************************************\n" +
