@@ -63,13 +63,24 @@ if trace_switch == 1:
         #  if the line_content is (a line of code)
         if filename in line:
             # use regular expression to match
-            line_number = int(re.search("(\()(\d)(\):)(.*)", line.strip().replace(filename, "")).group(2))
-            line_content = re.search("(\()(\d)(\):)(.*)", line.strip().replace(filename, "")).group(4)
-            print(f"line {line_number} == {line_content}")
+            line_number = int(re.search(r"(\()(\d)(\):)(.*)", line.strip().replace(filename, "")).group(2))
+            line_content = re.search(r"(\()(\d)(\):)(.*)", line.strip().replace(filename, "")).group(4)
+            assert(type(line_number) == int)
+            assert(type(line_content) == str)
+            print(f"line {line_number}=={line_content}")
+            
+            # if it is a while loop
+            if (re.search(r"while\s*\((.*)\)\s*:", line_content)):
+                while_statement = re.search(r"while\s*\((.*)\)\s*:", line_content).group(0)
+                while_judgement = re.search(r"while\s*\((.*)\)\s*:", line_content).group(1)
+                if (while_statement is not None):
+                    print(f"while_statement == {while_statement}")
+                    print(f"while_judgement == {while_judgement}")
             
         # if the line_content is (a line of local_variables)
         elif "local_variables" in line:
             local_variables = eval(re.match("{.*}", line.strip().replace("local_variables == ","")).group(0))
             assert(type(local_variables) == dict)
-            
+            print(f"variable == {local_variables}")
+        
     exec_result.close()
