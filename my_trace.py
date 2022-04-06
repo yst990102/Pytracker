@@ -589,6 +589,16 @@ class Trace:
                 try:
                     with open(self.outfile, "a") as f:
                         print("%s(%d): %s" % (bname, lineno, linecache.getline(filename, lineno)), end='', file=f)
+                        
+                        # TODO: 2022-04-06 while iteration checking
+                        if "while" in linecache.getline(filename, lineno):
+                            print("while在这边！！",file=f)
+                        
+                        while_loop_search = re.search(r"while\s*\((.*)\)\s*:", line_content)
+                        if (while_loop_search):
+                            while_statement = while_loop_search.group(0)
+                            while_judgement = while_loop_search.group(1)    
+                        
                         print(f"local_variables == {local_variables}", file=f)
                 except OSError as err:
                     print("Can't save localtrace_trace_and_count output because %s" % err, file=sys.stderr)
