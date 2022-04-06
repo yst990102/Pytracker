@@ -2,6 +2,8 @@ import sys
 import my_trace
 import re
 import traceback
+import parse
+
 
 # import user file
 import sample1
@@ -15,19 +17,18 @@ traceback_switch = 1
 def insert_line_into_steps(line, step):
     return
 
-def modify_text(filename):
+def clean_txt_file(filename):
     with open(filename, "r+") as f:
         f.seek(0)
         f.truncate()   #清空文件
         return
 
-if __name__ == "__main__":
+def traceback_bug_catch():
     print(
         "************************************************************\n" +
         "*************            traceback             *************\n" +
         "************************************************************"
     )
-
     if traceback_switch == 1:
         try:
             sample2.main()
@@ -38,7 +39,10 @@ if __name__ == "__main__":
             traceback_summary = traceback.extract_tb(exc_traceback)
             for trackback_line in traceback_summary:
                 print("filename = {}, line = {}, method = {}".format(trackback_line.filename, trackback_line.lineno, trackback_line.name))
+    return
 
+
+def trace_execution_tracking(filename, result_file):
     print(
         "************************************************************\n" +
         "*************              trace               *************\n" +
@@ -49,20 +53,17 @@ if __name__ == "__main__":
 
     if trace_switch == 1:
 
-        # define the filename and output file of trace
-        filename = "sample1.py"
-        exec_result_file = "execution.txt"
-
         # call trace customer's execution
-        tracer = my_trace.Trace(ignoredirs=[sys.prefix, sys.exec_prefix],trace=1,count=1,outfile=exec_result_file)
+        tracer = my_trace.Trace(ignoredirs=[sys.prefix, sys.exec_prefix],trace=1,count=1,outfile=result_file)
         tracer.run("sample1.main()")
 
         # open the result file of trace
-        exec_result = open(exec_result_file)
+        exec_result = open(result_file)
         exec_content = exec_result.readlines()
 
         # parsing
         for line in exec_content:
+            code_parse = list(parse.parse("{0}({1}): {2}", line))
             
             #  if the line_content is (a line of code)
             if filename in line:
@@ -75,6 +76,7 @@ if __name__ == "__main__":
                 
                 # if it is a while loop
                 if (re.search(r"while\s*\((.*)\)\s*:", line_content)):
+                    print("有多少缩进： ", {line_content.count('\t')})
                     while_statement = re.search(r"while\s*\((.*)\)\s*:", line_content).group(0)
                     while_judgement = re.search(r"while\s*\((.*)\)\s*:", line_content).group(1)
                     if (while_statement is not None):
@@ -88,3 +90,20 @@ if __name__ == "__main__":
                 print(f"variable == {local_variables}")
             
         exec_result.close()
+
+
+
+if __name__ == "__main__":
+    
+    traceback_bug_catch()
+    
+    # define the filename and output file of trace
+    filename = "sample1.py"
+    exec_result_file = "execution.txt"
+    
+    # clean the execution txt
+    clean_txt_file(exec_result_file)
+    
+    trace_execution_tracking(filename, exec_result_file)
+
+    
