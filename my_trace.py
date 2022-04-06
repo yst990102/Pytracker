@@ -548,14 +548,14 @@ class Trace:
                     ignore_it = self.ignore.names(filename, modulename)
                     if not ignore_it:
                         if self.trace:
-                            # TODO: 2022-03-25 globaltrace_lt
-                            if self.outfile:
-                                try:
-                                    with open(self.outfile, 'a') as f:
-                                        print((" --- modulename: %s, funcname: %s" % (modulename, code.co_name)),file=f)
-                                except OSError as err:
-                                    print("Can't save globaltrace_lt output because %s" % err, file=sys.stderr)
-                            else:
+                            # # TODO: 2022-03-25 globaltrace_lt
+                            # if self.outfile:
+                            #     try:
+                            #         with open(self.outfile, 'a') as f:
+                            #             print((" --- modulename: %s, funcname: %s" % (modulename, code.co_name)),file=f)
+                            #     except OSError as err:
+                            #         print("Can't save globaltrace_lt output because %s" % err, file=sys.stderr)
+                            # else:
                                 print((" --- modulename: %s, funcname: %s" % (modulename, code.co_name)))
                         return self.localtrace
             else:
