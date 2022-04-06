@@ -1,37 +1,47 @@
  --- modulename: Pytracker, funcname: <module>
+<<<<<<< HEAD
 <string>(1): local_variables == {'__name__': '__main__', '__doc__': None, '__package__': None, '__loader__': <_frozen_importlib_external.SourceFileLoader object at 0x7f3cb2d4c940>, '__spec__': None, '__annotations__': {}, '__builtins__': <module 'builtins' (built-in)>, '__file__': '/home/yst990102/Pytracker/Pytracker.py', '__cached__': None, 'sys': <module 'sys' (built-in)>, 'my_trace': <module 'my_trace' from '/home/yst990102/Pytracker/my_trace.py'>, 're': <module 're' from '/home/yst990102/.conda/envs/pytracker/lib/python3.10/re.py'>, 'traceback': <module 'traceback' from '/home/yst990102/.conda/envs/pytracker/lib/python3.10/traceback.py'>, 'parse': <module 'parse' from '/home/yst990102/.conda/envs/pytracker/lib/python3.10/site-packages/parse.py'>, 'sample1': <module 'sample1' from '/home/yst990102/Pytracker/sample1.py'>, 'trace_switch': 1, 'traceback_switch': 1, 'insert_line_into_steps': <function insert_line_into_steps at 0x7f3cb2dae5f0>, 'clean_txt_file': <function clean_txt_file at 0x7f3cb2b7e200>, 'traceback_bug_catch': <function traceback_bug_catch at 0x7f3cb2b7e290>, 'trace_execution_tracking': <function trace_execution_tracking at 0x7f3cb2b7e320>, 'filename': 'sample1.py', 'exec_result_file': 'execution.txt'}
+=======
+<string>(1): local_variables == {'__name__': '__main__', '__doc__': None, '__package__': None, '__loader__': <_frozen_importlib_external.SourceFileLoader object at 0x7f33f311dc10>, '__spec__': None, '__annotations__': {}, '__builtins__': <module 'builtins' (built-in)>, '__file__': '/home/yst990102/cs4951/Pytracker/Pytracker.py', '__cached__': None, 'sys': <module 'sys' (built-in)>, 'my_trace': <module 'my_trace' from '/home/yst990102/cs4951/Pytracker/my_trace.py'>, 're': <module 're' from '/home/yst990102/.conda/envs/pytracker/lib/python3.9/re.py'>, 'traceback': <module 'traceback' from '/home/yst990102/.conda/envs/pytracker/lib/python3.9/traceback.py'>, 'parse': <module 'parse' from '/home/yst990102/.conda/envs/pytracker/lib/python3.9/site-packages/parse.py'>, 'sample1': <module 'sample1' from '/home/yst990102/cs4951/Pytracker/sample1.py'>, 'trace_switch': 1, 'traceback_switch': 1, 'insert_line_into_steps': <function insert_line_into_steps at 0x7f33f2fdadc0>, 'clean_txt_file': <function clean_txt_file at 0x7f33f2cc0040>, 'traceback_bug_catch': <function traceback_bug_catch at 0x7f33f2cc00d0>, 'trace_execution_tracking': <function trace_execution_tracking at 0x7f33f2cc0160>, 'filename': 'sample1.py', 'exec_result_file': 'execution.txt'}
+>>>>>>> d5914b76fa806d887f3e4ae5ca82b2ef663f4621
  --- modulename: sample1, funcname: main
 sample1.py(2): 	i = 5
 local_variables == {}
 sample1.py(3): 	while (i > 0):
+while在这边！！
 local_variables == {'i': 5}
 sample1.py(4): 		print("i == " ,i)
 local_variables == {'i': 5}
 sample1.py(5): 		i -= 1
 local_variables == {'i': 5}
 sample1.py(3): 	while (i > 0):
+while在这边！！
 local_variables == {'i': 4}
 sample1.py(4): 		print("i == " ,i)
 local_variables == {'i': 4}
 sample1.py(5): 		i -= 1
 local_variables == {'i': 4}
 sample1.py(3): 	while (i > 0):
+while在这边！！
 local_variables == {'i': 3}
 sample1.py(4): 		print("i == " ,i)
 local_variables == {'i': 3}
 sample1.py(5): 		i -= 1
 local_variables == {'i': 3}
 sample1.py(3): 	while (i > 0):
+while在这边！！
 local_variables == {'i': 2}
 sample1.py(4): 		print("i == " ,i)
 local_variables == {'i': 2}
 sample1.py(5): 		i -= 1
 local_variables == {'i': 2}
 sample1.py(3): 	while (i > 0):
+while在这边！！
 local_variables == {'i': 1}
 sample1.py(4): 		print("i == " ,i)
 local_variables == {'i': 1}
 sample1.py(5): 		i -= 1
 local_variables == {'i': 1}
 sample1.py(3): 	while (i > 0):
+while在这边！！
 local_variables == {'i': 0}
