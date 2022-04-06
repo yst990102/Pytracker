@@ -7,7 +7,6 @@ import parse
 
 # import user file
 import sample1
-import sample2
 
 # global switch
 trace_switch = 1
@@ -31,7 +30,7 @@ def traceback_bug_catch():
 	)
 	if traceback_switch == 1:
 		try:
-			sample2.main()
+			sample1.main()
 		except Exception as e:
 			exc_type, exc_value, exc_traceback = sys.exc_info()
 			
@@ -106,7 +105,7 @@ if __name__ == "__main__":
 	traceback_bug_catch()
 	
 	# define the filename and output file of trace
-	filename = "sample1.py"
+	filename = sample1.__name__ + ".py"
 	exec_result_file = "execution.txt"
 	
 	# clean the execution txt
