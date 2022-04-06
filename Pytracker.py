@@ -63,29 +63,40 @@ def trace_execution_tracking(filename, result_file):
 
         # parsing
         for line in exec_content:
-            code_parse = list(parse.parse("{0}({1}): {2}", line))
+            code_parse = parse.parse("{0}({1}): {2}", line)
+            vari_parse = parse.parse("local_variables == {0}", line)
             
             #  if the line_content is (a line of code)
-            if filename in line:
-                # use regular expression to match
-                line_number = int(re.search(r"(\()(\d)(\):)(.*)", line.strip().replace(filename, "")).group(2))
-                line_content = re.search(r"(\()(\d)(\):)(.*)", line.strip().replace(filename, "")).group(4)
-                assert(type(line_number) == int)
-                assert(type(line_content) == str)
-                print(f"line {line_number}=={line_content}")
-                
-                # if it is a while loop
-                if (re.search(r"while\s*\((.*)\)\s*:", line_content)):
-                    print("有多少缩进： ", {line_content.count('\t')})
-                    while_statement = re.search(r"while\s*\((.*)\)\s*:", line_content).group(0)
-                    while_judgement = re.search(r"while\s*\((.*)\)\s*:", line_content).group(1)
-                    if (while_statement is not None):
-                        print(f"while_statement == {while_statement}")
-                        print(f"while_judgement == {while_judgement}")
+            if code_parse is not None:
+                code_parse = list(code_parse)
+                if filename == code_parse[0]:
+                    # use regular expression to match
+                    # line_number = int(re.search(r"(\()(\d)(\):)(.*)", line.strip().replace(filename, "")).group(2))
+                    line_number = int(code_parse[1])
+                    
+                    # line_content = re.search(r"(\()(\d)(\):)(.*)", line.strip().replace(filename, "")).group(4)
+                    line_content = code_parse[2]
+                    
+                    assert(type(line_number) == int)
+                    assert(type(line_content) == str)
+                    print(f"line {line_number}=={line_content}")
+                    
+                    # if it is a while loop
+                    if (re.search(r"while\s*\((.*)\)\s*:", line_content)):
+                        print("有多少缩进： ", line_content.count('\t'))
+                        while_statement = re.search(r"while\s*\((.*)\)\s*:", line_content).group(0)
+                        while_judgement = re.search(r"while\s*\((.*)\)\s*:", line_content).group(1)
+                        if (while_statement is not None):
+                            print(f"while_statement == {while_statement}")
+                            print(f"while_judgement == {while_judgement}")
                 
             # if the line_content is (a line of local_variables)
-            elif "local_variables" in line:
-                local_variables = eval(re.match("{.*}", line.strip().replace("local_variables == ","")).group(0))
+            elif vari_parse is not None:
+                vari_parse = list(vari_parse)
+                
+                # local_variables = eval(re.match("{.*}", line.strip().replace("local_variables == ","")).group(0))
+                local_variables = eval(vari_parse[0])
+                
                 assert(type(local_variables) == dict)
                 print(f"variable == {local_variables}")
             
