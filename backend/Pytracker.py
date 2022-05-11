@@ -38,6 +38,7 @@ def clean_txt_file(filename):
         return
 
 
+
 def traceback_bug_catch():
     print(
         "************************************************************\n" +
@@ -119,7 +120,6 @@ def trace_execution_tracking(filename, result_file):
                 # print(f"variable == {local_variables}")
                     print(while_lines)
         exec_result.close()
-
 
 if __name__ == "__main__":
 
