@@ -78,12 +78,13 @@ def trace_execution_tracking(filename, result_file):
 
 		# delete the initial <string>(1) line in the execution output
 		del_line_in_file(exec_result_file, "<string>")
-
+		while_flag = 0
 		from itertools import islice
 		with open(result_file, 'r') as exec_result:
 			while True:
 				exec_lines_gen = islice(exec_result, 2)
 				exec_content = list(exec_lines_gen)
+				print(exec_content)
 				if not exec_content:
 					break
 				else:
@@ -95,6 +96,10 @@ def trace_execution_tracking(filename, result_file):
 						line_number = int(code_parse[1])
 						line_content = code_parse[2]
 
+						if line_content.count('\t') == 1:
+							while_flag = 0
+						if while_flag and line_content.count('\t') == 2:
+							while_lines.append(line_number)
 						# if it is a while loop
 						# use regular expression to match
 						while_loop_search = re.search(r"while\s*\((.*)\)\s*:", line_content)
@@ -105,6 +110,7 @@ def trace_execution_tracking(filename, result_file):
 							# if (while_statement is not None):
 							# 	print(f"while_statement == {while_statement}")
 							# 	print(f"while_judgement == {while_judgement}")
+							while_flag = 1
 							while_lines.append(line_number)
 
 						# DONE: 2022-05-11 tabs parsing correctly
