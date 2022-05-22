@@ -84,6 +84,8 @@ def trace_execution_tracking(filename, result_file):
 			while True:
 				exec_lines_gen = islice(exec_result, 2)
 				exec_content = list(exec_lines_gen)
+    
+				cur_while_info = []
 				if not exec_content:
 					break
 				else:
@@ -105,10 +107,10 @@ def trace_execution_tracking(filename, result_file):
 							# if (while_statement is not None):
 							# 	print(f"while_statement == {while_statement}")
 							# 	print(f"while_judgement == {while_judgement}")
-							while_lines.append(line_number)
+							if line_number not in while_lines : while_lines.append(line_number)
 
 						# DONE: 2022-05-11 tabs parsing correctly
-						# print("Tabs Count ==", line_content.count('\t'))
+						print("Tabs Count ==", line_content.count('\t'))
 						
 
 					# grab information for the local_variable line
