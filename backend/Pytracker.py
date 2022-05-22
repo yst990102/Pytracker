@@ -67,9 +67,9 @@ def trace_execution_tracking(filename, result_file):
 
 	# steps -- all the execution steps
 	# formate -- [(lineno, local_variables), (..), ...]
-	steps = []
+	steps_info = []
 	while_lines = []
-
+	tab_dict = {}
 	if trace_switch == 1:
 
 		# call trace customer's execution
@@ -84,17 +84,17 @@ def trace_execution_tracking(filename, result_file):
 			while True:
 				exec_lines_gen = islice(exec_result, 2)
 				exec_content = list(exec_lines_gen)
-    
+	
 				cur_while_info = []
 				if not exec_content:
 					break
 				else:
 					# grab information for the code line
-					# 0 for userfile_name, 1 for line_number, 2 for line_content
+					# 0 for userfile_name, 1 for line_no, 2 for line_content
 					code_parse = list(parse.parse("{0}({1}): {2}", exec_content[0]))
 					if filename == code_parse[0]:
 
-						line_number = int(code_parse[1])
+						line_no = int(code_parse[1])
 						line_content = code_parse[2]
 
 						# if it is a while loop
@@ -107,22 +107,33 @@ def trace_execution_tracking(filename, result_file):
 							# if (while_statement is not None):
 							# 	print(f"while_statement == {while_statement}")
 							# 	print(f"while_judgement == {while_judgement}")
-							if line_number not in while_lines : while_lines.append(line_number)
+							if line_no not in while_lines : while_lines.append(line_no)
 
 						# DONE: 2022-05-11 tabs parsing correctly
-						print("Tabs Count ==", line_content.count('\t'))
-						
+						# print("Tabs Count ==", line_content.count('\t'))
+						tab_dict[line_no] = line_content.count('\t')
 
 					# grab information for the local_variable line
 					vari_parse = list(parse.parse("local_variables == {0}", exec_content[1]))
 					local_variables = eval(vari_parse[0])
-					steps.append((line_number, local_variables))
+					steps_info.append((line_no, local_variables))
 					# DONE: 2022-05-11 variable parsing correctly
 					# print(f"variable == {local_variables}")
-					print(while_lines)
-					print(steps)
+					# print(f"while_lines == {while_lines}, steps == {steps_info}, tab_dict == {tab_dict}")
 		exec_result.close()
 
+
+	# 2022-05-23 待做，建立一个stack，从左往右，遇到while_line放入 每次遇到indentation符合的时候pop出。
+	all_line_nos = [line_no for (line_no, _) in steps_info]
+	line_nos_with_tabs = [(line_no, tab_dict[line_no]) for line_no in all_line_nos]
+	
+	print(all_line_nos)
+	print(line_nos_with_tabs)
+ 
+	all_line_nos = str(all_line_nos)
+	for while_line in while_lines:
+		all_line_nos = all_line_nos.replace(str(while_line), "[" + str(while_line))
+	print(all_line_nos)
 
 if __name__ == "__main__":
 
