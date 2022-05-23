@@ -8,6 +8,11 @@ import parse
 # import user file
 import sample1
 
+
+# global variables
+SUCCESS = 1
+FAILURE = 0
+
 # global switch
 trace_switch = 1
 traceback_switch = 1
@@ -44,6 +49,7 @@ def traceback_bug_catch():
 		"*************            traceback             *************\n" +
 		"************************************************************"
 	)
+
 	if traceback_switch == 1:
 		try:
 			sample1.main()
@@ -52,10 +58,9 @@ def traceback_bug_catch():
 
 			# trackback summary
 			traceback_summary = traceback.extract_tb(exc_traceback)
-			for trackback_line in traceback_summary:
-				print("filename = {}, line = {}, method = {}".format(
-					trackback_line.filename, trackback_line.lineno, trackback_line.name))
-	return
+			traceback.print_tb(exc_traceback)
+			return FAILURE
+	return SUCCESS
 
 
 def trace_execution_tracking(filename, result_file):
@@ -66,7 +71,7 @@ def trace_execution_tracking(filename, result_file):
 	)
 
 	# steps -- all the execution steps
-	# formate -- [(lineno, local_variables), (..), ...]
+	# formate -- [(line_no, local_variables), (..), ...]
 	steps_info = []
 	while_lines = []
 	tab_dict = {}
@@ -122,45 +127,56 @@ def trace_execution_tracking(filename, result_file):
 					# print(f"while_lines == {while_lines}, steps == {steps_info}, tab_dict == {tab_dict}")
 		exec_result.close()
 
-
-	print("========================================================")
-	# 2022-05-23 待做，建立一个stack，从左往右，遇到while_line放入 每次遇到indentation符合的时候pop出。
 	all_line_nos = [line_no for (line_no, _) in steps_info]
-	line_nos_with_tabs = [(line_no, tab_dict[line_no]) for line_no in all_line_nos]
-	
-	print(all_line_nos)
-	print(line_nos_with_tabs)
-	print(while_lines)
 
-	print("========================================================")
+	# Create a stack, put it in from left to right, and pop one out every time the indentation is greater than or equal to.
 	stack = []
-	for line_no in all_line_nos:
+	result = ""
+	for count, line_no in enumerate(all_line_nos):
 		if while_lines == []:
-			print(f"all loops break, {stack} {while_lines}")
-			stack.clear()
-			continue
+			if tab_dict[line_no] > tab_dict[stack[-1]]:
+				# print(f"{line_no}\t in loop {stack} {while_lines}")
+				result = result + str(line_no)
+			else:
+				# print(f"{line_no}\t outer break, {stack} {while_lines}")
+				result = result + "]" + str(line_no)
+				stack.pop()
 		elif line_no == while_lines[0]:
 			if line_no in stack:
-				print(f"next round loop, loop statement, {stack} {while_lines}")
+				# print(f"{line_no}\t next round loop, loop statement, {stack} {while_lines}")
+				result = result + "]" + "[" + str(line_no)
 			else:
-				print(f"new loop statement, {stack} {while_lines}")
+				# print(f"{line_no}\t new loop statement, {stack} {while_lines}")
 				stack.append(while_lines[0])
+				result = result + "[" + str(line_no)
 			del while_lines[0]
 		else:
 			if stack == []:
-				print(f"out of loop, {stack} {while_lines}")
-				continue
+				# print(f"{line_no}\t out of loop, {stack} {while_lines}")
+				result = result + str(line_no)
 			elif tab_dict[line_no] > tab_dict[stack[-1]]:
-				print(f"in loop, {stack} {while_lines}")
+				# print(f"{line_no}\t in loop, {stack} {while_lines}")
+				result = result + str(line_no)
 			else:
-				print(f"break, {stack} {while_lines}")
+				# print(f"{line_no}\t inner break, {stack} {while_lines}")
+				result = result + str(line_no) + "]"
 				stack.pop()
+		if count < len(all_line_nos) - 1:
+			result = result + ","
+	
+	result = "[" + result + "]"
+	result = result.replace(",]", "],")
 
-
+	parse_result = eval(result)
+	print(parse_result)
+ 
+ 
+ 
 if __name__ == "__main__":
 
 	# 【non-necessary】pre-step: call traceback to check if any bug
-	traceback_bug_catch()
+	if not traceback_bug_catch():
+		sys.exit("======== error occured ========")
 
 	# define the UserFile and output file of execution process
 	UserFile = sample1.__name__ + ".py"
