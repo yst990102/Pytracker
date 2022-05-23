@@ -107,7 +107,7 @@ def trace_execution_tracking(filename, result_file):
 							# if (while_statement is not None):
 							# 	print(f"while_statement == {while_statement}")
 							# 	print(f"while_judgement == {while_judgement}")
-							if line_no not in while_lines : while_lines.append(line_no)
+							while_lines.append(line_no)
 
 						# DONE: 2022-05-11 tabs parsing correctly
 						# print("Tabs Count ==", line_content.count('\t'))
@@ -123,17 +123,39 @@ def trace_execution_tracking(filename, result_file):
 		exec_result.close()
 
 
+	print("========================================================")
 	# 2022-05-23 待做，建立一个stack，从左往右，遇到while_line放入 每次遇到indentation符合的时候pop出。
 	all_line_nos = [line_no for (line_no, _) in steps_info]
 	line_nos_with_tabs = [(line_no, tab_dict[line_no]) for line_no in all_line_nos]
 	
 	print(all_line_nos)
 	print(line_nos_with_tabs)
- 
-	all_line_nos = str(all_line_nos)
-	for while_line in while_lines:
-		all_line_nos = all_line_nos.replace(str(while_line), "[" + str(while_line))
-	print(all_line_nos)
+	print(while_lines)
+
+	print("========================================================")
+	stack = []
+	for line_no in all_line_nos:
+		if while_lines == []:
+			print(f"all loops break, {stack} {while_lines}")
+			stack.clear()
+			continue
+		elif line_no == while_lines[0]:
+			if line_no in stack:
+				print(f"next round loop, loop statement, {stack} {while_lines}")
+			else:
+				print(f"new loop statement, {stack} {while_lines}")
+				stack.append(while_lines[0])
+			del while_lines[0]
+		else:
+			if stack == []:
+				print(f"out of loop, {stack} {while_lines}")
+				continue
+			elif tab_dict[line_no] > tab_dict[stack[-1]]:
+				print(f"in loop, {stack} {while_lines}")
+			else:
+				print(f"break, {stack} {while_lines}")
+				stack.pop()
+
 
 if __name__ == "__main__":
 
