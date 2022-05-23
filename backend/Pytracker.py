@@ -17,6 +17,20 @@ FAILURE = 0
 trace_switch = 1
 traceback_switch = 1
 
+def isBracket_match(s:str) -> bool:
+	finding = []
+	for ch in s:
+		if ch == '(':
+			finding.append(')')
+		elif ch == '[':
+			finding.append(']')
+		elif ch == '{':
+			finding.append('}')
+		elif ch.isdigit() or ch == ",":
+			continue
+		elif not finding or not ch == finding.pop(-1) :
+			return False
+	return len(finding) == 0
 
 def del_line_in_file(filename, content):
 	with open(filename, "r") as f:
@@ -167,6 +181,7 @@ def trace_execution_tracking(filename, result_file):
 	result = "[" + result + "]"
 	result = result.replace(",]", "],")
 
+	assert(isBracket_match(result) == True)
 	parse_result = eval(result)
 	print(parse_result)
  
