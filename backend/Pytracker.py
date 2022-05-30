@@ -1,3 +1,4 @@
+import os
 import sys
 import my_trace
 import re
@@ -8,6 +9,11 @@ import parse
 # import user file
 import sample1
 
+# import helper_functions
+# file_op helpers
+from helper_functions import del_line_in_file, delete_file, clean_txt_file
+# checkers
+from helper_functions import isBracket_match
 
 # global variables
 SUCCESS = 1
@@ -16,46 +22,6 @@ FAILURE = 0
 # global switch
 trace_switch = 1
 traceback_switch = 1
-
-def isBracket_match(s:str) -> bool:
-	finding = []
-	for ch in s:
-		if ch == '(':
-			finding.append(')')
-		elif ch == '[':
-			finding.append(']')
-		elif ch == '{':
-			finding.append('}')
-		elif ch.isdigit() or ch == ",":
-			continue
-		elif not finding or not ch == finding.pop(-1) :
-			return False
-	return len(finding) == 0
-
-def del_line_in_file(filename, content):
-	with open(filename, "r") as f:
-		lines = f.readlines()
-	with open(filename, "w") as f_w:
-		for line in lines:
-			if content in line:
-				continue
-			f_w.write(line)
-	f.close()
-	f_w.close()
-
-
-def clean_txt_file(filename):
-	try:
-		with open(filename, "r+") as f:
-			f.seek(0)
-			f.truncate()  # 清空文件
-			f.close()
-			return
-	except FileNotFoundError:
-		# file does not exist, create a blank file
-		open(filename, 'w').close()
-		return
-
 
 def traceback_bug_catch():
 	print(
@@ -104,19 +70,25 @@ def trace_execution_tracking(filename, result_file):
 				exec_lines_gen = islice(exec_result, 2)
 				exec_content = list(exec_lines_gen)
 	
-				cur_while_info = []
 				if not exec_content:
 					break
-				else:
-					# grab information for the code line
+				else:				
+        			# ===================================================================================
+					# STEP 1: grab information for the code line
 					# 0 for userfile_name, 1 for line_no, 2 for line_content
 					code_parse = list(parse.parse("{0}({1}): {2}", exec_content[0]))
+					a,b,c = list(parse.parse("{0}({1}): {2}", exec_content[0]))
+					# print(code_parse)
 					if filename == code_parse[0]:
 
 						line_no = int(code_parse[1])
 						line_content = code_parse[2]
+						# CASE 1: IF_STATEMENT
+						if_search = re.search(r"if\s*\((.*)\)\s*:", line_content)
+						if if_search:
+							continue
 
-						# if it is a while loop
+						# CASE 2: WHILE_LOOP
 						# use regular expression to match
 						while_loop_search = re.search(r"while\s*\((.*)\)\s*:", line_content)
 						if (while_loop_search):
@@ -132,7 +104,8 @@ def trace_execution_tracking(filename, result_file):
 						# print("Tabs Count ==", line_content.count('\t'))
 						tab_dict[line_no] = line_content.count('\t')
 
-					# grab information for the local_variable line
+					# ===================================================================================
+					# STEP 2: grab information for the local_variable line
 					vari_parse = list(parse.parse("local_variables == {0}", exec_content[1]))
 					local_variables = eval(vari_parse[0])
 					steps_info.append((line_no, local_variables))
@@ -140,9 +113,18 @@ def trace_execution_tracking(filename, result_file):
 					# print(f"variable == {local_variables}")
 					# print(f"while_lines == {while_lines}, steps == {steps_info}, tab_dict == {tab_dict}")
 		exec_result.close()
+		# delete result_file after tracer_using
+		delete_file(result_file)
+		all_line_nos = [line_no for (line_no, _) in steps_info]
 
-	all_line_nos = [line_no for (line_no, _) in steps_info]
+		# parse str_ListOfList into ListOfList
+		parse_result = parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict)
+		print(parse_result)
+	else:
+		return
+	
 
+def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):  
 	# Create a stack, put it in from left to right, and pop one out every time the indentation is greater than or equal to.
 	stack = []
 	result = ""
@@ -183,7 +165,7 @@ def trace_execution_tracking(filename, result_file):
 
 	assert(isBracket_match(result) == True)
 	parse_result = eval(result)
-	print(parse_result)
+	return parse_result
  
  
  
@@ -195,7 +177,7 @@ if __name__ == "__main__":
 
 	# define the UserFile and output file of execution process
 	UserFile = sample1.__name__ + ".py"
-	exec_result_file = "execution.txt"
+	exec_result_file = "execution"
 
 	# clean the execution txt before start a new tracer
 	clean_txt_file(exec_result_file)
