@@ -40,19 +40,35 @@ class Statement():
     
     # set the previous statement
     def set_previous(self, previous):
-        self.previous = previous
+        if isinstance(self, Assignment):
+            self.previous = previous
+        elif isinstance(self, While_Loop):
+            pointer = self.get_first_inner_step()
+            pointer.previous = previous
     
     # set the next statement
     def set_next(self, next):
-        self.next = next
+        if isinstance(self, Assignment):
+            self.next = next
+        elif isinstance(self, While_Loop):
+            pointer = self.get_last_inner_step()
+            pointer.next = next
     
     # get the previous statement
     def get_previous(self):
-        return self.previous
+        pointer = self.previous
+        if isinstance(pointer, Assignment):
+            return pointer
+        elif isinstance(pointer, While_Loop):
+            return pointer.get_last_inner_step()
     
     # get the next statement
     def get_next(self):
-        return self.next
+        pointer = self.next
+        if isinstance(pointer, Assignment):
+            return pointer
+        elif isinstance(pointer, While_Loop):
+            return pointer.get_first_inner_step()
 
 class While_Loop(Statement):
     general_steps = []
@@ -76,6 +92,20 @@ class While_Loop(Statement):
             if i != len(self.steps) - 1:
                 self.steps[i].set_next(self.steps[i+1])
         return
+
+    def get_first_inner_step(self):
+        pointer = self.steps[0]
+        if isinstance(pointer, Assignment):
+            return pointer
+        elif isinstance(pointer, While_Loop):
+            return pointer.get_first_inner_step()
+            
+    def get_last_inner_step(self):
+        pointer = self.steps[-1]
+        if isinstance(pointer, Assignment):
+            return pointer
+        elif isinstance(pointer, While_Loop):
+            return pointer.get_last_inner_step()
 
     def print_info(self):
         print(f"==== While_Loop {hex(id(self))} =====")
