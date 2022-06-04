@@ -1,7 +1,24 @@
+Print_Forward  = 0
+Print_Backward = 1
+
 class Program():
     statements = []
     def __init__(self):
         return
+    
+    def get_first_process(self):
+        pointer = self.statements[0]
+        if isinstance(pointer, Assignment):
+            return pointer
+        elif isinstance(pointer, While_Loop):
+            return pointer.get_first_inner_step()
+            
+    def get_last_process(self):
+        pointer = self.statements[-1]
+        if isinstance(pointer, Assignment):
+            return pointer
+        elif isinstance(pointer, While_Loop):
+            return pointer.get_last_inner_step()
     
     def add_statement(self, statement):
         # first statement in program, no need to set_previous or set_next
@@ -25,12 +42,20 @@ class Program():
         for statement in self.statements:
             statement.print_info()
             
-    def print_linklist(self):
-        pointer_statement = self.statements[0]
-        while pointer_statement:
-            pointer_statement.print_val()
-            print(" -> ")
-            pointer_statement = pointer_statement.get_next()
+    def print_linklist(self, direction):
+        if direction == Print_Forward:
+            pointer_statement = self.statements[0]
+            while pointer_statement:
+                pointer_statement.print_val()
+                print(" -> ", end="")
+                pointer_statement = pointer_statement.get_next()
+        elif direction == Print_Backward:
+            pointer_statement = self.statements[-1]
+            while pointer_statement:
+                pointer_statement.print_val()
+                print(" -> ", end="")
+                pointer_statement = pointer_statement.get_previous()
+        
 
 class Statement():
     def __init__(self):
@@ -114,7 +139,7 @@ class While_Loop(Statement):
         print(f"previous = {self.previous}, next = {self.next}")
     
     def print_val(self):
-        print(self.general_steps)
+        print(self.general_steps, end=" ")
         
 class Assignment(Statement):
     def __init__(self, line_no):
@@ -128,4 +153,4 @@ class Assignment(Statement):
         print(f"previous = {self.previous}, next = {self.next}")
         
     def print_val(self):
-        print(self.line_no)
+        print(self.line_no, end=" ")
