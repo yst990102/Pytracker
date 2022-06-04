@@ -1,3 +1,5 @@
+from Pytracker_exceptions import Direction_ERROR
+
 Print_Forward  = 0
 Print_Backward = 1
 
@@ -43,6 +45,12 @@ class Program():
             statement.print_info()
             
     def print_linklist(self, direction):
+        try:
+            if (direction != Print_Forward or direction != Print_Backward):
+                raise Direction_ERROR(direction)
+        except Direction_ERROR as de:
+            print(de)
+    
         if direction == Print_Forward:
             pointer_statement = self.statements[0]
             while pointer_statement:
@@ -55,7 +63,6 @@ class Program():
                 pointer_statement.print_val()
                 print(" -> ", end="")
                 pointer_statement = pointer_statement.get_previous()
-        
 
 class Statement():
     def __init__(self):

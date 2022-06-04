@@ -1,4 +1,5 @@
-from parse_classes import Print_Backward, Print_Forward, Program, While_Loop, Assignment
+from parse_classes import Print_Backward, Print_Forward
+from parse_classes import Program, While_Loop, Assignment
 
 case_1 = [3, 4, 5, [6, 7, 8, 9]]
 case_2 = [2, [3, 4, 5, [6, 7, 8, 9]]]
@@ -39,4 +40,11 @@ print("""
 =================================================
 """)
 classes_steps.print_linklist(Print_Backward)
+
+print("""
+=================================================
+================ Error Direction ================
+=================================================
+""")
+classes_steps.print_linklist(3)
 
