@@ -5,7 +5,7 @@ case_2 = [2, [3, 4, 5, [6, 7, 8, 9]]]
 case_3 = [2, [3, 4, 5, [6, 7, 8, 9]], [3, 4, 5, [6, 7, 8, 9]]]
 case_4  = [2, [3, 4, 5, [6, 7, 8, 9]], [3, 4, 5, [6, 7, 8, 9]], [3, 4, 5, [6, 9]], [3, 4, 5, [6], 9, 10, 11], 12]
 
-case = case_3
+case = case_4
 
 classes_steps = Program()
 
@@ -23,4 +23,5 @@ print("""
 =================================================
 """)
 
-classes_steps.print()
+classes_steps.print_statements()
+classes_steps.print_linklist()

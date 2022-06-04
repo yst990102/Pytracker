@@ -21,9 +21,16 @@ class Program():
             
             self.statements.append(statement)
     
-    def print(self):
+    def print_statements(self):
         for statement in self.statements:
-            statement.print()
+            statement.print_info()
+            
+    def print_linklist(self):
+        pointer_statement = self.statements[0]
+        while pointer_statement:
+            pointer_statement.print_val()
+            print(" -> ")
+            pointer_statement = pointer_statement.get_next()
 
 class Statement():
     def __init__(self):
@@ -70,11 +77,14 @@ class While_Loop(Statement):
                 self.steps[i].set_next(self.steps[i+1])
         return
 
-    def print(self):
+    def print_info(self):
         print(f"==== While_Loop {hex(id(self))} =====")
         for  step in self.steps:
-            step.print()
+            step.print_info()
         print(f"previous = {self.previous}, next = {self.next}")
+    
+    def print_val(self):
+        print(self.general_steps)
         
 class Assignment(Statement):
     def __init__(self, line_no):
@@ -82,7 +92,10 @@ class Assignment(Statement):
         print(f"---- create Assignment {line_no}")
         self.line_no = line_no
 
-    def print(self):
+    def print_info(self):
         print(f"==== Assignment {hex(id(self))} =====")
         print(f"line_no == {self.line_no}")
         print(f"previous = {self.previous}, next = {self.next}")
+        
+    def print_val(self):
+        print(self.line_no)
