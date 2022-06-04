@@ -5,7 +5,7 @@ case_2 = [2, [3, 4, 5, [6, 7, 8, 9]]]
 case_3 = [2, [3, 4, 5, [6, 7, 8, 9]], [3, 4, 5, [6, 7, 8, 9]]]
 case_4  = [2, [3, 4, 5, [6, 7, 8, 9]], [3, 4, 5, [6, 7, 8, 9]], [3, 4, 5, [6, 9]], [3, 4, 5, [6], 9, 10, 11], 12]
 
-case = case_4
+case = case_3
 
 classes_steps = Program()
 
@@ -16,5 +16,11 @@ for step_no_index in range(len(case)):
         new_statement = While_Loop(case[step_no_index])
         
     classes_steps.add_statement(new_statement)
+
+print("""
+=================================================
+============== Statements Printing ==============
+=================================================
+""")
 
 classes_steps.print()
