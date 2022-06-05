@@ -1,0 +1,19 @@
+.container {
+    position: absolute;
+    bottom: 0;
+    top: 25px;
+    width:100%;
+}
+
+.editor {
+    width: 50%;
+    height: 24rem;
+    display: flex;
+    padding: 5px 0 5px 10px;
+    margin-bottom: 10px;
+    border: 2px solid;
+}
+
+.btn {
+    display: flex;
+}
