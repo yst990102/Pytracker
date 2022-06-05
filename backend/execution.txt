@@ -1,0 +1,36 @@
+sample1.py(2): 	i = 5
+local_variables == {}
+sample1.py(3): 	while (i > 0):
+local_variables == {'i': 5}
+sample1.py(4): 		print("i == " ,i)
+local_variables == {'i': 5}
+sample1.py(5): 		i -= 1
+local_variables == {'i': 5}
+sample1.py(3): 	while (i > 0):
+local_variables == {'i': 4}
+sample1.py(4): 		print("i == " ,i)
+local_variables == {'i': 4}
+sample1.py(5): 		i -= 1
+local_variables == {'i': 4}
+sample1.py(3): 	while (i > 0):
+local_variables == {'i': 3}
+sample1.py(4): 		print("i == " ,i)
+local_variables == {'i': 3}
+sample1.py(5): 		i -= 1
+local_variables == {'i': 3}
+sample1.py(3): 	while (i > 0):
+local_variables == {'i': 2}
+sample1.py(4): 		print("i == " ,i)
+local_variables == {'i': 2}
+sample1.py(5): 		i -= 1
+local_variables == {'i': 2}
+sample1.py(3): 	while (i > 0):
+local_variables == {'i': 1}
+sample1.py(4): 		print("i == " ,i)
+local_variables == {'i': 1}
+sample1.py(5): 		i -= 1
+local_variables == {'i': 1}
+sample1.py(3): 	while (i > 0):
+local_variables == {'i': 0}
+sample1.py(6): 	print(i)
+local_variables == {'i': 0}
