@@ -14,6 +14,10 @@ import sample1
 from helper_functions import del_line_in_file, delete_file, clean_txt_file
 # checkers
 from helper_functions import isBracket_match
+# classes and objects definition
+from parse_classes import Assignment, Print_Backward, Print_Forward, Program, While_Loop
+
+
 
 # global variables
 SUCCESS = 1
@@ -41,7 +45,6 @@ def traceback_bug_catch():
 			traceback.print_tb(exc_traceback)
 			return FAILURE
 	return SUCCESS
-
 
 def trace_execution_tracking(filename, result_file):
 	print(
@@ -119,10 +122,14 @@ def trace_execution_tracking(filename, result_file):
 
 		# parse str_ListOfList into ListOfList
 		parse_result = parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict)
-		print(parse_result)
+		print("list of list == ", parse_result)
+		
+		program = parse_convert_ListOfList_into_Program(parse_result)
+		program.print_linklist(Print_Forward)
+		program.print_linklist(Print_Backward)
+		
 	else:
-		return
-	
+		return	
 
 def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):  
 	# Create a stack, put it in from left to right, and pop one out every time the indentation is greater than or equal to.
@@ -167,7 +174,17 @@ def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
 	parse_result = eval(result)
 	return parse_result
  
- 
+def parse_convert_ListOfList_into_Program(listoflist):
+	program = Program()
+	for statement_index in range(len(listoflist)):
+		if isinstance(listoflist[statement_index], int):
+			new_statement = Assignment(listoflist[statement_index])
+		elif isinstance(listoflist[statement_index], list):
+			new_statement = While_Loop(listoflist[statement_index])
+			
+		program.add_statement(new_statement)
+	return program
+	
  
 if __name__ == "__main__":
 

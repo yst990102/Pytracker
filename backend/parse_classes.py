@@ -44,9 +44,9 @@ class Program():
         for statement in self.statements:
             statement.print_info()
             
-    def print_linklist(self, direction):
+    def print_linklist(self, direction, end=""):
         try:
-            if (direction != Print_Forward or direction != Print_Backward):
+            if (direction != Print_Forward and direction != Print_Backward):
                 raise Direction_ERROR(direction)
         except Direction_ERROR as de:
             print(de)
@@ -55,14 +55,15 @@ class Program():
             pointer_statement = self.statements[0]
             while pointer_statement:
                 pointer_statement.print_val()
-                print(" -> ", end="")
+                print(" -> ", end=end)
                 pointer_statement = pointer_statement.get_next()
         elif direction == Print_Backward:
             pointer_statement = self.statements[-1]
             while pointer_statement:
                 pointer_statement.print_val()
-                print(" -> ", end="")
+                print(" -> ", end=end)
                 pointer_statement = pointer_statement.get_previous()
+        print()
 
 class Statement():
     def __init__(self):
