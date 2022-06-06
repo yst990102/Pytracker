@@ -4,9 +4,8 @@ Print_Forward  = 0
 Print_Backward = 1
 
 class Program():
-    statements = []
     def __init__(self):
-        return
+        self.statements = []
     
     def get_first_process(self):
         pointer = self.statements[0]
@@ -67,7 +66,6 @@ class Program():
 
 class Statement():
     def __init__(self):
-        self.steps = []
         self.previous = None
         self.next     = None
     
@@ -104,20 +102,25 @@ class Statement():
             return pointer.get_first_inner_step()
 
 class While_Loop(Statement):
-    general_steps = []
     def __init__(self, steps):
         super().__init__()
         print(f"---- create While_Loop {steps}")
-        
-        # add statements for self.steps
         self.general_steps = steps
+        self.steps = []
+        
+        self.add_sub_statements(steps)
+        self.inner_bi_linklist_set()
+    
+    def add_sub_statements(self, steps):
+        # add statements for self.steps
         for step in steps:
             if isinstance(step, int):
                 new_statement = Assignment(step)
             elif isinstance(step, list):
                 new_statement = While_Loop(step)
             self.steps.append(new_statement)
-
+            
+    def inner_bi_linklist_set(self):
         # set the inner bi-linklist in self.steps
         for i in range(len(self.steps)):
             if i != 0:
