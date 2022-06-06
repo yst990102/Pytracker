@@ -3,6 +3,8 @@ from Pytracker_exceptions import Direction_ERROR
 Print_Forward  = 0
 Print_Backward = 1
 
+yst_personal_debug = True
+
 class Program():
     def __init__(self):
         self.statements = []
@@ -48,21 +50,21 @@ class Program():
             if (direction != Print_Forward and direction != Print_Backward):
                 raise Direction_ERROR(direction)
         except Direction_ERROR as de:
-            print(de)
+            if yst_personal_debug: print(de)
     
         if direction == Print_Forward:
             pointer_statement = self.statements[0]
             while pointer_statement:
                 pointer_statement.print_val()
-                print(" -> ", end=end)
+                if yst_personal_debug: print(" -> ", end=end)
                 pointer_statement = pointer_statement.get_next()
         elif direction == Print_Backward:
             pointer_statement = self.statements[-1]
             while pointer_statement:
                 pointer_statement.print_val()
-                print(" -> ", end=end)
+                if yst_personal_debug: print(" -> ", end=end)
                 pointer_statement = pointer_statement.get_previous()
-        print()
+        if yst_personal_debug: print()
 
 class Statement():
     def __init__(self):
@@ -104,21 +106,10 @@ class Statement():
 class While_Loop(Statement):
     def __init__(self, steps):
         super().__init__()
-        print(f"---- create While_Loop {steps}")
+        
+        if yst_personal_debug: print(f"---- create {self.__class__.__name__} {steps}")
         self.general_steps = steps
         self.steps = []
-        
-        self.add_sub_statements(steps)
-        self.inner_bi_linklist_set()
-    
-    def add_sub_statements(self, steps):
-        # add statements for self.steps
-        for step in steps:
-            if isinstance(step, int):
-                new_statement = Assignment(step)
-            elif isinstance(step, list):
-                new_statement = While_Loop(step)
-            self.steps.append(new_statement)
             
     def inner_bi_linklist_set(self):
         # set the inner bi-linklist in self.steps
@@ -144,24 +135,65 @@ class While_Loop(Statement):
             return pointer.get_last_inner_step()
 
     def print_info(self):
-        print(f"==== While_Loop {hex(id(self))} =====")
+        if yst_personal_debug: print(f"==== {self.__class__.__name__} {hex(id(self))} =====")
         for  step in self.steps:
             step.print_info()
-        print(f"previous = {self.previous}, next = {self.next}")
+        if yst_personal_debug: print(f"previous = {self.previous}, next = {self.next}")
     
     def print_val(self):
-        print(self.general_steps, end=" ")
+        if yst_personal_debug: print(self.general_steps, end=" ")
+
+class Basic_While_Loop(While_Loop):
+    def __init__(self, steps):
+        super().__init__(steps)
         
+        self.add_sub_statements(steps)
+        self.inner_bi_linklist_set()
+        
+    def add_sub_statements(self, steps):
+        # add statements for self.steps
+        for step in steps:
+            new_statement = Assignment(step)
+            self.steps.append(new_statement)
+
+class Nested_While_Loop(While_Loop):    
+    def __init__(self, steps):
+        super().__init__(steps)
+        self.sub_while_loops = []
+        
+        self.add_sub_statements(steps)
+        self.inner_bi_linklist_set()
+    
+    def add_sub_statements(self, steps):
+        # add statements for self.steps
+        for step in steps:
+            if isinstance(step, int):
+                new_statement = Assignment(step)
+            elif isinstance(step, list):
+                if all(isinstance(i, int) for i in step):
+                    new_statement = Basic_While_Loop(step)
+                else:
+                    new_statement = Nested_While_Loop(step)
+                self.sub_while_loops.append(new_statement)
+                if yst_personal_debug: print(f"before append {self.sub_while_loops}")
+                if yst_personal_debug: print(f"append {new_statement.__class__.__name__} {hex(id(new_statement))} to {self.__class__.__name__} {hex(id(self))}")
+                if yst_personal_debug: print(f"after append {self.sub_while_loops}")
+            self.steps.append(new_statement)
+    
+    def print_info(self):
+        super().print_info()
+        if yst_personal_debug: print(f"{self.__class__.__name__} {hex(id(self))} sub_while_loop = {self.sub_while_loops}")
+    
 class Assignment(Statement):
     def __init__(self, line_no):
         super().__init__()
-        print(f"---- create Assignment {line_no}")
+        if yst_personal_debug: print(f"---- create {self.__class__.__name__} {line_no}")
         self.line_no = line_no
 
     def print_info(self):
-        print(f"==== Assignment {hex(id(self))} =====")
-        print(f"line_no == {self.line_no}")
-        print(f"previous = {self.previous}, next = {self.next}")
+        if yst_personal_debug: print(f"==== {self.__class__.__name__} {hex(id(self))} =====")
+        if yst_personal_debug: print(f"line_no == {self.line_no}")
+        if yst_personal_debug: print(f"previous = {self.previous}, next = {self.next}")
         
     def print_val(self):
-        print(self.line_no, end=" ")
+        if yst_personal_debug: print(self.line_no, end=" ")
