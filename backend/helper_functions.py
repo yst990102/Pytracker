@@ -1,4 +1,6 @@
 import os
+import re
+
 
 # helper functions
 def export_test_case_to_file(output_file:str, test_case:str) -> None:
@@ -54,3 +56,15 @@ def clean_txt_file(filename):
 		# file does not exist, create a blank file
 		open(filename, 'w').close()
 		return
+
+def NameEqMain_check(file_name):
+	with open(file_name, 'r') as f:
+		f_content = f.read()
+		if re.search(f_content, "if[ ]*__name__[ ]*==[ ]*\"__main__\"[ ]*:"):
+			# user input contains __name__ == __main__ structure
+			return True
+		else:
+			return False
+			
+def add_main_to_file(file_name):
+	return
