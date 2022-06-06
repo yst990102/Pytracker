@@ -10,7 +10,7 @@ case_5 = [2, [3, 4, 5, [6, [7, 8], 9], [6, [7], 9]], [3, 4, 5, [6, 7, 8, 9]]]
 
 case = case_5
 
-classes_steps = Program()
+program = Program()
 
 for step_no_index in range(len(case)):
     if isinstance(case[step_no_index], int):
@@ -20,7 +20,7 @@ for step_no_index in range(len(case)):
             new_statement = Basic_While_Loop(case[step_no_index])
         else:
             new_statement = Nested_While_Loop(case[step_no_index])
-    classes_steps.add_statement(new_statement)
+    program.add_statement(new_statement)
 
 print("""
 =================================================
@@ -28,14 +28,14 @@ print("""
 =================================================
 """)
 
-classes_steps.print_statements()
+program.print_statements()
 
 print("""
 =================================================
 =============== Forward Printing ================
 =================================================
 """)
-classes_steps.print_linklist(Print_Forward)
+program.print_linklist(Print_Forward)
 
 
 print("""
@@ -43,12 +43,6 @@ print("""
 =============== Backward Printing ===============
 =================================================
 """)
-classes_steps.print_linklist(Print_Backward)
+program.print_linklist(Print_Backward)
 
-print("""
-=================================================
-================ Error Direction ================
-=================================================
-""")
-classes_steps.print_linklist(3)
 
