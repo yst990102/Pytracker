@@ -51,70 +51,6 @@ def trace_execution_tracking(UserFileName, result_file):
 	while_lines = []
 	tab_dict = {}
 
-<<<<<<< HEAD
-		# delete the initial <string>(1) line in the execution output
-		del_line_in_file(exec_result_file, "<string>")
-		while_flag = 0
-		from itertools import islice
-		with open(result_file, 'r') as exec_result:
-			while True:
-				exec_lines_gen = islice(exec_result, 2)
-				exec_content = list(exec_lines_gen)
-	
-				if not exec_content:
-					break
-				else:				
-        			# ===================================================================================
-					# STEP 1: grab information for the code line
-					# 0 for userfile_name, 1 for line_no, 2 for line_content
-					code_parse = list(parse.parse("{0}({1}): {2}", exec_content[0]))
-					a,b,c = list(parse.parse("{0}({1}): {2}", exec_content[0]))
-					# print(code_parse)
-					if filename == code_parse[0]:
-
-						line_no = int(code_parse[1])
-						line_content = code_parse[2]
-						# CASE 1: IF_STATEMENT
-						if_search = re.search(r"if\s*\((.*)\)\s*:", line_content)
-						if if_search:
-							continue
-
-						# CASE 2: WHILE_LOOP
-						# use regular expression to match
-						while_loop_search = re.search(r"while\s*\((.*)\)\s*:", line_content)
-						if (while_loop_search):
-							while_statement = while_loop_search.group(0)
-							while_judgement = while_loop_search.group(1)
-							# DONE: 2022-05-11 while_statement and while_judgement parsing correctly
-							# if (while_statement is not None):
-							# 	print(f"while_statement == {while_statement}")
-							# 	print(f"while_judgement == {while_judgement}")
-							while_lines.append(line_no)
-
-						# DONE: 2022-05-11 tabs parsing correctly
-						# print("Tabs Count ==", line_content.count('\t'))
-						tab_dict[line_no] = line_content.count('\t')
-
-					# ===================================================================================
-					# STEP 2: grab information for the local_variable line
-					vari_parse = list(parse.parse("local_variables == {0}", exec_content[1]))
-					local_variables = eval(vari_parse[0])
-					steps_info.append((line_no, local_variables))
-					# DONE: 2022-05-11 variable parsing correctly
-					# print(f"variable == {local_variables}")
-					# print(f"while_lines == {while_lines}, steps == {steps_info}, tab_dict == {tab_dict}")
-		exec_result.close()
-		# delete result_file after tracer_using
-		delete_file(result_file)
-		all_line_nos = [line_no for (line_no, _) in steps_info]
-
-		# parse str_ListOfList into ListOfList
-		parse_result = parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict)
-		print(parse_result)
-	else:
-		return
-	
-=======
 	# call trace customer's execution
 	tracer = my_trace.Trace(ignoredirs=[sys.prefix, sys.exec_prefix], trace=1, count=1, outfile=result_file)
 	tracer.run(UserFileName + ".main()")
@@ -177,7 +113,6 @@ def trace_execution_tracking(UserFileName, result_file):
 	# parse str_ListOfList into ListOfList
 	parse_result = parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict)
 	return parse_result
->>>>>>> SHI-TONG-YUAN
 
 def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):  
 	# Create a stack, put it in from left to right, and pop one out every time the indentation is greater than or equal to.
