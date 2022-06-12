@@ -21,7 +21,7 @@ html, body {
     align-items: center;
 }
 
-.editor__wrapper {
+.editor_wrapper {
     width: 50%;
     height: 70%;
     display: flex;
@@ -32,18 +32,18 @@ html, body {
     border: 1px solid #ccc;
 }
 
-.editor__body {
+.editor_body {
     flex: 1;
 }
 
-.editor__footer {
+.editor_footer {
     margin-top: 12px;
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
 }
 
-.editor__code {
+.editor_code {
     position: relative;
     height: 100%;
     width: 100%;
@@ -55,5 +55,9 @@ html, body {
 }
 
 .btn {
+    display: flex;
+}
+
+.visualisation_div {
     display: flex;
 }
