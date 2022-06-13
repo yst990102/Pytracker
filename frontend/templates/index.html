@@ -27,7 +27,13 @@
     </div>
 
     <div id="output" class="visualisation_div">
-        <table id="code_output"></table>
+        <div class="left">
+            <table id="code_output" class="code_table"></table>
+        </div>
+        <div class="right">
+            <div id="graph" class="grid"></div>
+        </div>
+
     </div>
 
     <script src="{{ url_for('static',filename='scripts/src-min/ace.js') }}"></script>

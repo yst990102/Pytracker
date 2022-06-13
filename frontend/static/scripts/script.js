@@ -20,7 +20,8 @@ $("#codeSubmit").click(() => {
         editordiv.style.display = "none";
     }
 
-    const usercode = editor.getValue();
+    const txt = editor.getValue();
+    var usercode = txt.trim()
     var lines = usercode.split('\n');
     parselist = []
     for (var i = 1; i <= lines.length; i++) {
@@ -41,6 +42,17 @@ $("#codeSubmit").click(() => {
         table.append(markup);
 
     });
+
+    var grid = $("#graph");
+    markup = "";
+    for (var i = 0; i < parselist.length; i++) {
+        markup += '<div class="row">';
+        for (var j = 0; j < 3; j++) {
+            markup += '<div class="col"></div>'
+        }
+        markup += '</div>';
+    }
+    grid.append(markup);
 
     $.ajax({
         type: 'POST',
