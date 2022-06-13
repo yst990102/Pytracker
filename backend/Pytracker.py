@@ -188,7 +188,6 @@ def pre_execute_check():
  
 if __name__ == "__main__":
 	output_file = pre_execute_check()
-	# user_code_file, output_file = "sample3", "Pytracker_output"
 	
 	# 【non-necessary】pre-step: call traceback to check if any bug
 	if not traceback_bug_catch(sample1.__name__):
@@ -203,7 +202,6 @@ if __name__ == "__main__":
 	program = parse_convert_ListOfList_into_Program(parse_result)
 	program.print_linklist(Print_Forward)
 	program.print_linklist(Print_Backward)
-	
 	
 	# clean after execution
 	delete_file(output_file)    # delete output file

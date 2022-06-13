@@ -4,8 +4,6 @@ from typing import List
 Print_Forward  = 0
 Print_Backward = 1
 
-yst_personal_debug = True
-
 class Statement():
     def __init__(self, program) -> None:
         self.previous = None
@@ -48,7 +46,7 @@ class While_Loop(Statement):
     def __init__(self, steps:List[List], program) -> None:
         super().__init__(program)
         
-        if yst_personal_debug: print(f"---- create {self.__class__.__name__} {steps}")
+        print(f"---- create {self.__class__.__name__} {steps}")
         self.general_steps = steps
         self.steps = []
         self.while_line_no = self.general_steps[0]
@@ -81,13 +79,13 @@ class While_Loop(Statement):
             return pointer.get_last_inner_step()
 
     def print_info(self) -> None:
-        if yst_personal_debug: print(f"==== {self.__class__.__name__} {hex(id(self))} =====")
+        print(f"==== {self.__class__.__name__} {hex(id(self))} =====")
         for  step in self.steps:
             step.print_info()
-        if yst_personal_debug: print(f"previous = {self.previous}, next = {self.next}")
+        print(f"previous = {self.previous}, next = {self.next}")
     
     def print_val(self) -> None:
-        if yst_personal_debug: print(self.general_steps, end=" ")
+        print(self.general_steps, end=" ")
 
 class Basic_While_Loop(While_Loop):
     def __init__(self, steps:List[List], program) -> None:
@@ -121,28 +119,25 @@ class Nested_While_Loop(While_Loop):
                 else:
                     new_statement = Nested_While_Loop(step, self.program)
                 self.sub_while_loops.append(new_statement)
-                
-                # 06-07 print out test for appending loop to loop
-                # if yst_personal_debug: print(f"append {new_statement.__class__.__name__} {hex(id(new_statement))} to {self.__class__.__name__} {hex(id(self))}")
             self.steps.append(new_statement)
     
     def print_info(self) -> None:
         super().print_info()
-        if yst_personal_debug: print(f"{self.__class__.__name__} {hex(id(self))} sub_while_loop = {self.sub_while_loops}")
+        print(f"{self.__class__.__name__} {hex(id(self))} sub_while_loop = {self.sub_while_loops}")
     
 class Assignment(Statement):
     def __init__(self, line_no:int, program) -> None:
         super().__init__(program)
-        if yst_personal_debug: print(f"---- create {self.__class__.__name__} {line_no}")
+        print(f"---- create {self.__class__.__name__} {line_no}")
         self.line_no = line_no
 
     def print_info(self) -> None:
-        if yst_personal_debug: print(f"==== {self.__class__.__name__} {hex(id(self))} =====")
-        if yst_personal_debug: print(f"line_no == {self.line_no}")
-        if yst_personal_debug: print(f"previous = {self.previous}, next = {self.next}")
+        print(f"==== {self.__class__.__name__} {hex(id(self))} =====")
+        print(f"line_no == {self.line_no}")
+        print(f"previous = {self.previous}, next = {self.next}")
         
     def print_val(self) -> None:
-        if yst_personal_debug: print(self.line_no, end=" ")
+        print(self.line_no, end=" ")
 
 class Program():
     def __init__(self) -> None:
@@ -157,18 +152,21 @@ class Program():
             cur_while_line_no = while_loop_info.get("while_line_no")
             cur_while_iterations = while_loop_info.get("iterations")
             if new_while_line_no == cur_while_line_no:
-                cur_while_iterations.append(new_while_loop.general_steps)
+                cur_while_iterations.append(new_while_loop)
                 refered_found = True
                 break
         if not refered_found:
-            self.while_loops.append({"while_line_no": new_while_loop.while_line_no, "iterations": [new_while_loop.general_steps]})
+            self.while_loops.append({"while_line_no": new_while_loop.while_line_no, "iterations": [new_while_loop]})
         
         # 06-07 test for print out self.while_loops
         # self.print_while_loops_inlayer()
         
     def print_while_loops_inlayer(self):
         for while_loop_info in self.while_loops:
-            if yst_personal_debug: print(f"while_loop_info == {while_loop_info}")
+            while_line_no, iterations = while_loop_info["while_line_no"], while_loop_info["iterations"]
+            print(f"while_loop_info == {while_loop_info}")
+            for iteration in iterations:
+                print(iteration.general_steps)
     
     def get_first_process(self) -> Statement:
         pointer = self.statements[0]
@@ -201,7 +199,14 @@ class Program():
             self.statements[-1].set_next(statement)
             
             self.statements.append(statement)
-    
+        
+    def remove_statement(self, statement:Statement) -> None:
+        for cur_statement in self.statements:
+            if cur_statement == statement:
+                cur_statement.get_previous().set_next(cur_statement.get_next())
+                cur_statement.get_next().set_previous(cur_statement.get_previous())
+                return
+        
     def print_statements(self) -> None:
         for statement in self.statements:
             statement.print_info()
@@ -210,7 +215,7 @@ class Program():
         try:
             assert(direction == Print_Forward or direction == Print_Backward)
         except:
-            if yst_personal_debug: raise Exception(f"Direction for {self.print_linklist.__name__} is not acceptable.")
+            raise Exception(f"Direction for {self.print_linklist.__name__} is not acceptable.")
     
         if direction == Print_Forward:
             if isinstance(self.statements[0], Assignment):
@@ -220,7 +225,8 @@ class Program():
 
             while pointer_statement:
                 pointer_statement.print_val()
-                if yst_personal_debug: print(" -> ", end=end)
+                if pointer_statement.get_next():
+                    print(" -> ", end=end)
                 pointer_statement = pointer_statement.get_next()
         elif direction == Print_Backward:
             if isinstance(self.statements[-1], Assignment):
@@ -230,6 +236,7 @@ class Program():
                 
             while pointer_statement:
                 pointer_statement.print_val()
-                if yst_personal_debug: print(" -> ", end=end)
+                if pointer_statement.get_previous():
+                    print(" -> ", end=end)
                 pointer_statement = pointer_statement.get_previous()
-        if yst_personal_debug: print()
+        print()
