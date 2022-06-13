@@ -176,7 +176,7 @@ def parse_convert_ListOfList_into_Program(listoflist):
 
 def pre_execute_check():
 	if len(sys.argv) != 2 and len(sys.argv) != 3:
-		raise Exception(f"execute format: python {__file__.split('/')[-1]} 'User_Code'")
+		raise Exception(f"Arguments Error: execute format: python {__file__.split('/')[-1]} 'User_Code'")
 		exit(1)
 	
 	# define the user_code_import
@@ -184,7 +184,7 @@ def pre_execute_check():
 	try:
 		user_code_import = __import__(user_code_file)
 	except:
-		raise Exception("can't import your User_Code file.")
+		raise Exception(f"Import Error: Can't find {sys.argv[1]}")
 	
 	# define the output_file name, optional given by sys.argv[2]
 	if len(sys.argv) == 3:
@@ -199,7 +199,6 @@ if __name__ == "__main__":
 	# user_code_file, output_file = "sample3", "Pytracker_output"
 	
 	# 【non-necessary】pre-step: call traceback to check if any bug
-	user_code = __import__("UserCode")
 	if not traceback_bug_catch(user_code_file):
 		sys.exit("======== error occured ========")
 
@@ -212,3 +211,7 @@ if __name__ == "__main__":
 	program = parse_convert_ListOfList_into_Program(parse_result)
 	program.print_linklist(Print_Forward)
 	program.print_linklist(Print_Backward)
+	
+	
+	# clean after execution
+	delete_file(output_file)    # delete output_file
