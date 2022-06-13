@@ -5,6 +5,8 @@ import re
 import traceback
 import parse
 
+import sample1
+
 # import helper_functions
 # file_op helpers
 from helper_functions import del_line_in_file, delete_file, clean_content_in_file
@@ -51,7 +53,7 @@ def trace_execution_tracking(UserFileName, result_file):
 	while_lines = []
 	tab_dict = {}
 
-	# call trace customer's execution
+	# call trace customer's execution	
 	tracer = my_trace.Trace(ignoredirs=[sys.prefix, sys.exec_prefix], trace=1, count=1, outfile=result_file)
 	tracer.run(UserFileName + ".main()")
 
@@ -106,8 +108,6 @@ def trace_execution_tracking(UserFileName, result_file):
 				# print(f"variable == {local_variables}")
 				# print(f"while_lines == {while_lines}, steps == {steps_info}, tab_dict == {tab_dict}")
 	exec_result.close()
-	# delete result_file after tracer_using
-	delete_file(result_file)
 	all_line_nos = [line_no for (line_no, _) in steps_info]
 
 	# parse str_ListOfList into ListOfList
@@ -165,48 +165,40 @@ def parse_convert_ListOfList_into_Program(listoflist):
 	program = Program()
 	for step_no_index in range(len(listoflist)):
 		if isinstance(listoflist[step_no_index], int):
-			new_statement = Assignment(listoflist[step_no_index])
+			new_statement = Assignment(listoflist[step_no_index], program)
 		elif isinstance(listoflist[step_no_index], list):
 			if all(isinstance(i, int) for i in listoflist[step_no_index]):
-				new_statement = Basic_While_Loop(listoflist[step_no_index])
+				new_statement = Basic_While_Loop(listoflist[step_no_index], program)
 			else:
-				new_statement = Nested_While_Loop(listoflist[step_no_index])
+				new_statement = Nested_While_Loop(listoflist[step_no_index], program)
 		program.add_statement(new_statement)
 	return program
 
 def pre_execute_check():
-	if len(sys.argv) != 2 and len(sys.argv) != 3:
+	if len(sys.argv) != 1 and len(sys.argv) != 2:
 		raise Exception(f"Arguments Error: execute format: python {__file__.split('/')[-1]} 'User_Code'")
-		exit(1)
-	
-	# define the user_code_import
-	user_code_file = sys.argv[1].replace(".py", "")
-	try:
-		user_code_import = __import__(user_code_file)
-	except:
-		raise Exception(f"Import Error: Can't find {sys.argv[1]}")
 	
 	# define the output_file name, optional given by sys.argv[2]
-	if len(sys.argv) == 3:
-		output_file = sys.argv[2]
+	if len(sys.argv) == 2:
+		output_file = sys.argv[1]
 	else:
 		output_file = "Pytracker_output"
 	
-	return (user_code_file, output_file)
+	return output_file
  
 if __name__ == "__main__":
-	user_code_file, output_file = pre_execute_check()
+	output_file = pre_execute_check()
 	# user_code_file, output_file = "sample3", "Pytracker_output"
 	
 	# 【non-necessary】pre-step: call traceback to check if any bug
-	if not traceback_bug_catch(user_code_file):
+	if not traceback_bug_catch(sample1.__name__):
 		sys.exit("======== error occured ========")
 
 	# clean the execution txt before start a new tracer
 	clean_content_in_file(output_file)
 
 	# trace the whole execution process via my_tracer
-	parse_result = trace_execution_tracking(user_code_file, output_file)
+	parse_result = trace_execution_tracking(sample1.__name__, output_file)
 
 	program = parse_convert_ListOfList_into_Program(parse_result)
 	program.print_linklist(Print_Forward)
@@ -214,4 +206,4 @@ if __name__ == "__main__":
 	
 	
 	# clean after execution
-	delete_file(output_file)    # delete output_file
+	delete_file(output_file)    # delete output file
