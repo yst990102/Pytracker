@@ -159,7 +159,11 @@ def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
 	result = "[" + result + "]"
 	result = result.replace(",]", "],")
 	
-	assert(isBracket_match(result) == True)
+	try:
+		assert(isBracket_match(result) == True)
+	except:
+		print(f"ERROR: isBracket_match Failed! result == {result}")
+		exit(1)
 	
 	# print("before listoflist evaluated", result)
 	parse_result = eval(result)
@@ -183,11 +187,12 @@ def parse_convert_ListOfList_into_Program(listoflist):
 def pre_execute_check():
 	if len(sys.argv) != 1 and len(sys.argv) != 2 and len(sys.argv) != 3:
 		raise Exception(f"Arguments Error: execute format: python {__file__.split('/')[-1]} [User_Code] [Output_File]")
-		
-	try:
-		open(sys.argv[1], 'r')
-	except FileNotFoundError:
-		raise FileNotFoundError(f"Can't open your input file: {sys.argv[1]}")
+	
+	if len(sys.argv) >= 2:
+		try:
+			open(sys.argv[1], 'r')
+		except FileNotFoundError:
+			raise FileNotFoundError(f"Can't open your input file: {sys.argv[1]}")
 	
 	# define the IO files
 	if len(sys.argv) == 1:
@@ -222,9 +227,9 @@ if __name__ == "__main__":
 	# convert ListOfList into Program
 	program = parse_convert_ListOfList_into_Program(parse_result)
 	
-	
-	program.print_linklist(Print_Forward)
-	program.print_linklist(Print_Backward)
+	# linklist printing test
+	# program.print_linklist(Print_Forward)
+	# program.print_linklist(Print_Backward)
 	
 	# clean after execution
 	delete_file(test_script_with_main.__name__+".py")    # delete test_script_with_main for UserCode_test_file
