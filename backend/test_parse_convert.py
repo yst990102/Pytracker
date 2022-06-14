@@ -1,5 +1,5 @@
 from parse_classes import Print_Backward, Print_Forward
-from parse_classes import Basic_While_Loop, Nested_While_Loop, Program, Assignment
+from parse_classes import Basic_Iteration, Nested_Iteration, Program, Assignment
 
 case_1     = [3, 4, 5, [6, 7, 8, 9]]
 tab_dict_1 = {3:1, 4:1, 5:1, 6:1, 7:2, 8:2, 9:2}
@@ -26,9 +26,9 @@ for step_no_index in range(len(case)):
         new_statement = Assignment(case[step_no_index], program)
     elif isinstance(case[step_no_index], list):
         if all(isinstance(i, int) for i in case[step_no_index]):
-            new_statement = Basic_While_Loop(case[step_no_index], program)
+            new_statement = Basic_Iteration(case[step_no_index], program)
         else:
-            new_statement = Nested_While_Loop(case[step_no_index], program)
+            new_statement = Nested_Iteration(case[step_no_index], program)
     program.add_statement(new_statement)
 
 print("""

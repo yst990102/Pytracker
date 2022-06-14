@@ -11,7 +11,7 @@ from helper_functions import create_test_file, del_line_in_file, delete_file, cl
 # checkers
 from helper_functions import isBracket_match
 # classes and objects definition
-from parse_classes import Assignment, Basic_While_Loop, Nested_While_Loop, Print_Backward, Print_Forward, Program, While_Loop
+from parse_classes import Assignment, Basic_Iteration, Nested_Iteration, Print_Backward, Print_Forward, Program, Iteration
 
 
 
@@ -174,9 +174,9 @@ def parse_convert_ListOfList_into_Program(listoflist):
 			new_statement = Assignment(listoflist[step_no_index], program)
 		elif isinstance(listoflist[step_no_index], list):
 			if all(isinstance(i, int) for i in listoflist[step_no_index]):
-				new_statement = Basic_While_Loop(listoflist[step_no_index], program)
+				new_statement = Basic_Iteration(listoflist[step_no_index], program)
 			else:
-				new_statement = Nested_While_Loop(listoflist[step_no_index], program)
+				new_statement = Nested_Iteration(listoflist[step_no_index], program)
 		program.add_statement(new_statement)
 	return program
 

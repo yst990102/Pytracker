@@ -16,7 +16,7 @@ class Statement():
     def set_previous(self, previous) -> None:
         if isinstance(self, Assignment):
             self.previous = previous
-        elif isinstance(self, While_Loop):
+        elif isinstance(self, Iteration):
             pointer = self.get_first_inner_step()
             pointer.previous = previous
     
@@ -24,7 +24,7 @@ class Statement():
     def set_next(self, next) -> None:
         if isinstance(self, Assignment):
             self.next = next
-        elif isinstance(self, While_Loop):
+        elif isinstance(self, Iteration):
             pointer = self.get_last_inner_step()
             pointer.next = next
     
@@ -33,7 +33,7 @@ class Statement():
         pointer = self.previous
         if isinstance(pointer, Assignment):
             return pointer
-        elif isinstance(pointer, While_Loop):
+        elif isinstance(pointer, Iteration):
             return pointer.get_last_inner_step()
     
     # get the next statement
@@ -41,10 +41,10 @@ class Statement():
         pointer = self.next
         if isinstance(pointer, Assignment):
             return pointer
-        elif isinstance(pointer, While_Loop):
+        elif isinstance(pointer, Iteration):
             return pointer.get_first_inner_step()
 
-class While_Loop(Statement):
+class Iteration(Statement):
     def __init__(self, steps:List[List], program) -> None:
         super().__init__(program)
         
@@ -53,7 +53,7 @@ class While_Loop(Statement):
         self.steps = []
         self.while_line_no = self.general_steps[0]
         
-        # add while_loop to program.while_loops attribute
+        # classify iteration to program.while_loops attribute
         assert(isinstance(self.program, Program))
         self.program.add_while_loop(self)
             
@@ -70,14 +70,14 @@ class While_Loop(Statement):
         pointer = self.steps[0]
         if isinstance(pointer, Assignment):
             return pointer
-        elif isinstance(pointer, While_Loop):
+        elif isinstance(pointer, Iteration):
             return pointer.get_first_inner_step()
             
     def get_last_inner_step(self) -> Statement:
         pointer = self.steps[-1]
         if isinstance(pointer, Assignment):
             return pointer
-        elif isinstance(pointer, While_Loop):
+        elif isinstance(pointer, Iteration):
             return pointer.get_last_inner_step()
 
     def print_info(self) -> None:
@@ -89,7 +89,7 @@ class While_Loop(Statement):
     def print_val(self) -> None:
         print(self.general_steps, end=" ")
 
-class Basic_While_Loop(While_Loop):
+class Basic_Iteration(Iteration):
     def __init__(self, steps:List[List], program) -> None:
         super().__init__(steps, program)
         
@@ -102,10 +102,10 @@ class Basic_While_Loop(While_Loop):
             new_statement = Assignment(step, self.program)
             self.steps.append(new_statement)
 
-class Nested_While_Loop(While_Loop):    
+class Nested_Iteration(Iteration):    
     def __init__(self, steps:List[List], program) -> None:
         super().__init__(steps, program)
-        self.sub_while_loops = []
+        self.subloop_iterations = []
         
         self.add_sub_statements(steps)
         self.inner_bi_linklist_set()
@@ -117,15 +117,15 @@ class Nested_While_Loop(While_Loop):
                 new_statement = Assignment(step, self.program)
             elif isinstance(step, list):
                 if all(isinstance(i, int) for i in step):
-                    new_statement = Basic_While_Loop(step, self.program)
+                    new_statement = Basic_Iteration(step, self.program)
                 else:
-                    new_statement = Nested_While_Loop(step, self.program)
-                self.sub_while_loops.append(new_statement)
+                    new_statement = Nested_Iteration(step, self.program)
+                self.subloop_iterations.append(new_statement)
             self.steps.append(new_statement)
     
     def print_info(self) -> None:
         super().print_info()
-        print(f"{self.__class__.__name__} {hex(id(self))} sub_while_loop = {self.sub_while_loops}")
+        print(f"{self.__class__.__name__} {hex(id(self))} subloop_iterations = {self.subloop_iterations}")
     
 class Assignment(Statement):
     def __init__(self, line_no:int, program) -> None:
@@ -146,19 +146,18 @@ class Program():
         self.statements = []
         self.while_loops = []
     
-    def add_while_loop(self, new_while_loop:While_Loop):
-        new_while_line_no = new_while_loop.while_line_no
+    def add_while_loop(self, new_iteration:Iteration):
+        new_while_line_no = new_iteration.while_line_no
         
         refered_found = False
         for while_loop_info in self.while_loops:
-            cur_while_line_no = while_loop_info.get("while_line_no")
-            cur_while_iterations = while_loop_info.get("iterations")
+            cur_while_line_no, cur_while_iterations = while_loop_info["while_line_no"], while_loop_info["iterations"]
             if new_while_line_no == cur_while_line_no:
-                cur_while_iterations.append(new_while_loop)
+                cur_while_iterations.append(new_iteration)
                 refered_found = True
                 break
         if not refered_found:
-            self.while_loops.append({"while_line_no": new_while_loop.while_line_no, "iterations": [new_while_loop]})
+            self.while_loops.append({"while_line_no": new_iteration.while_line_no, "iterations": [new_iteration]})
         
         # 06-07 test for print out self.while_loops
         # self.print_while_loops_inlayer()
@@ -174,14 +173,14 @@ class Program():
         pointer = self.statements[0]
         if isinstance(pointer, Assignment):
             return pointer
-        elif isinstance(pointer, While_Loop):
+        elif isinstance(pointer, Iteration):
             return pointer.get_first_inner_step()
             
     def get_last_process(self) -> Statement:
         pointer = self.statements[-1]
         if isinstance(pointer, Assignment):
             return pointer
-        elif isinstance(pointer, While_Loop):
+        elif isinstance(pointer, Iteration):
             return pointer.get_last_inner_step()
     
     def add_statement(self, statement:Statement) -> None:
@@ -222,7 +221,7 @@ class Program():
         if direction == Print_Forward:
             if isinstance(self.statements[0], Assignment):
                 pointer_statement = self.statements[0]
-            elif isinstance(self.statements[0], While_Loop):
+            elif isinstance(self.statements[0], Iteration):
                 pointer_statement = self.statements[0].get_first_inner_step()
 
             while pointer_statement:
@@ -233,7 +232,7 @@ class Program():
         elif direction == Print_Backward:
             if isinstance(self.statements[-1], Assignment):
                 pointer_statement = self.statements[-1]
-            elif isinstance(self.statements[-1], While_Loop):
+            elif isinstance(self.statements[-1], Iteration):
                 pointer_statement = self.statements[-1].get_last_inner_step()
                 
             while pointer_statement:
