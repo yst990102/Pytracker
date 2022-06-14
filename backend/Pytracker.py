@@ -19,6 +19,10 @@ from parse_classes import Assignment, Basic_Iteration, Nested_Iteration, Print_B
 SUCCESS = 1
 FAILURE = 0
 
+
+# printing switches
+strListOfList_into_ListOfList = False
+
 def traceback_bug_catch(user_code_file):
 	print(
 		"************************************************************\n" +
@@ -113,61 +117,70 @@ def trace_execution_tracking(UserFileName, result_file):
 	return parse_result
 
 def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
-	# print("========================== parse_strListOfList_into_ListOfList ==========================")
-	# print(all_line_nos, while_lines, tab_dict)
-	
+	if strListOfList_into_ListOfList: print("========================== parse_strListOfList_into_ListOfList ==========================")	
 	
 	# Create a stack, put it in from left to right, and pop one out every time the indentation is greater than or equal to.
 	stack = []
 	result = ""
 	for count, line_no in enumerate(all_line_nos):
-		# print(f"stack = {stack}, result == {result}\tall_line_nos = {all_line_nos}, while_lines = {while_lines}, tab_dict == {tab_dict}")
 		if while_lines == []:
 			if stack == []:
-				# print(f"{line_no}\t out of loop, {stack} {while_lines}")
 				result = result + str(line_no)
+				result = result.replace(",]", "],")
+				if strListOfList_into_ListOfList: print(f"{line_no}\t out of loop\t {stack}\t {result}")
 			elif tab_dict[line_no] > tab_dict[stack[-1]]:
-				# print(f"{line_no}\t in loop {stack} {while_lines}")
 				result = result + str(line_no)
+				result = result.replace(",]", "],")
+				if strListOfList_into_ListOfList: print(f"{line_no}\t in loop\t {stack}\t {result}")
 			else:
-				# print(f"{line_no}\t outer break, {stack} {while_lines}")
 				result = result + "]" + str(line_no)
 				stack.pop()
+				result = result.replace(",]", "],")
+				if strListOfList_into_ListOfList: print(f"{line_no}\t outer break\t {stack}\t {result}")
 		elif line_no == while_lines[0]:
 			if line_no in stack:
-				# print(f"{line_no}\t next round loop, loop statement, {stack} {while_lines}")
 				result = result + "]" + "[" + str(line_no)
+				result = result.replace(",]", "],")
+				if strListOfList_into_ListOfList: print(f"{line_no}\t next round loop, loop statement\t {stack}\t {result}")
 			else:
-				# print(f"{line_no}\t new loop statement, {stack} {while_lines}")
 				stack.append(while_lines[0])
 				result = result + "[" + str(line_no)
+				result = result.replace(",]", "],")
+				if strListOfList_into_ListOfList: print(f"{line_no}\t new loop statement\t {stack}\t {result}")
 			del while_lines[0]
 		else:
 			if stack == []:
-				# print(f"{line_no}\t out of loop, {stack} {while_lines}")
 				result = result + str(line_no)
+				result = result.replace(",]", "],")
+				if strListOfList_into_ListOfList: print(f"{line_no}\t out of loop\t {stack}\t {result}")
 			elif tab_dict[line_no] > tab_dict[stack[-1]]:
-				# print(f"{line_no}\t in loop, {stack} {while_lines}")
 				result = result + str(line_no)
+				result = result.replace(",]", "],")
+				if strListOfList_into_ListOfList: print(f"{line_no}\t in loop\t {stack}\t {result}")
 			else:
-				# print(f"{line_no}\t inner break, {stack} {while_lines}")
 				result = result + str(line_no) + "]"
 				stack.pop()
+				result = result.replace(",]", "],")
+				if strListOfList_into_ListOfList: print(f"{line_no}\t inner break\t {stack}\t {result}")
+				
 		if count < len(all_line_nos) - 1:
 			result = result + ","
-		
+	
+	# add remaining right bracket from stack.pop()
+	result = result + len(stack) * "]"
+	stack.clear()       # clear stack
+	
 	result = "[" + result + "]"
-	result = result.replace(",]", "],")
 	
 	try:
 		assert(isBracket_match(result) == True)
 	except:
-		print(f"ERROR: isBracket_match Failed! result == {result}")
+		print(f"ERROR: isBracket_match Failed! result == {result}, stack == {stack}")
 		exit(1)
 	
-	# print("before listoflist evaluated", result)
+	if strListOfList_into_ListOfList: print("before listoflist evaluated", result)
 	parse_result = eval(result)
-	# print("after listoflist evaluated", parse_result)
+	if strListOfList_into_ListOfList: print("after listoflist evaluated", parse_result)
 	
 	return parse_result
  

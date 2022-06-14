@@ -1,8 +1,0 @@
-def main():
-	a = 10
-	b = 20
-	if a < b:
-	    print("HELLO")
-
-if __name__ == "__main__":
-	main()
