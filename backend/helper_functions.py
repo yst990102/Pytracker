@@ -60,12 +60,15 @@ def clean_content_in_file(filename):
 def create_test_file(user_code_input_file, output_test_file):
 		def_main_str = "def main():\n"
 		if_NameEqMain_str = "\n\nif __name__ == \"__main__\":\n\tmain()"
-		with open(user_code_input_file, 'r') as user_code:
-			if NameEqMain_check(user_code_input_file):
-				testing_user_code = user_code.read()
-			else:
-				testing_user_code = def_main_str + "".join(["\t" + i for i in user_code.readlines()]) + if_NameEqMain_str
-		user_code.close()
+		try:
+			with open(user_code_input_file, 'r') as user_code:
+				if NameEqMain_check(user_code_input_file):
+					testing_user_code = user_code.read()
+				else:
+					testing_user_code = def_main_str + "".join(["\t" + i for i in user_code.readlines()]) + if_NameEqMain_str
+			user_code.close()
+		except FileNotFoundError:
+			raise FileNotFoundError("InputFile Not Found")
 		
 		with open(output_test_file, 'w') as user_code_output:
 			user_code_output.write(testing_user_code)

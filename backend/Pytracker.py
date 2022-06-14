@@ -5,11 +5,9 @@ import re
 import traceback
 import parse
 
-import sample1
-
 # import helper_functions
 # file_op helpers
-from helper_functions import del_line_in_file, delete_file, clean_content_in_file
+from helper_functions import create_test_file, del_line_in_file, delete_file, clean_content_in_file
 # checkers
 from helper_functions import isBracket_match
 # classes and objects definition
@@ -79,13 +77,13 @@ def trace_execution_tracking(UserFileName, result_file):
 				line_no = int(code_parse[1])
 				line_content = code_parse[2]
 				# CASE 1: IF_STATEMENT
-				if_search = re.search(r"if\s*\((.*)\)\s*:", line_content)
+				if_search = re.search(r"if\s*(.*)\s*:", line_content)
 				if if_search:
 					continue
 
 				# CASE 2: WHILE_LOOP
 				# use regular expression to match
-				while_loop_search = re.search(r"while\s*\((.*)\)\s*:", line_content)
+				while_loop_search = re.search(r"while\s*(.*)\s*:", line_content)
 				if (while_loop_search):
 					while_statement = while_loop_search.group(0)
 					while_judgement = while_loop_search.group(1)
@@ -114,7 +112,11 @@ def trace_execution_tracking(UserFileName, result_file):
 	parse_result = parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict)
 	return parse_result
 
-def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):  
+def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
+	# print("========================== parse_strListOfList_into_ListOfList ==========================")
+	# print(all_line_nos, while_lines, tab_dict)
+	
+	
 	# Create a stack, put it in from left to right, and pop one out every time the indentation is greater than or equal to.
 	stack = []
 	result = ""
@@ -156,9 +158,13 @@ def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
 		
 	result = "[" + result + "]"
 	result = result.replace(",]", "],")
-
+	
 	assert(isBracket_match(result) == True)
+	
+	# print("before listoflist evaluated", result)
 	parse_result = eval(result)
+	# print("after listoflist evaluated", parse_result)
+	
 	return parse_result
  
 def parse_convert_ListOfList_into_Program(listoflist):
@@ -175,33 +181,54 @@ def parse_convert_ListOfList_into_Program(listoflist):
 	return program
 
 def pre_execute_check():
-	if len(sys.argv) != 1 and len(sys.argv) != 2:
-		raise Exception(f"Arguments Error: execute format: python {__file__.split('/')[-1]} 'User_Code'")
+	if len(sys.argv) != 1 and len(sys.argv) != 2 and len(sys.argv) != 3:
+		raise Exception(f"Arguments Error: execute format: python {__file__.split('/')[-1]} [User_Code] [Output_File]")
+		
+	try:
+		open(sys.argv[1], 'r')
+	except FileNotFoundError:
+		raise FileNotFoundError(f"Can't open your input file: {sys.argv[1]}")
 	
-	# define the output_file name, optional given by sys.argv[2]
-	if len(sys.argv) == 2:
-		output_file = sys.argv[1]
-	else:
+	# define the IO files
+	if len(sys.argv) == 1:
+		input_file = "sample1.py"
 		output_file = "Pytracker_output"
+	elif len(sys.argv) == 2:
+		input_file = sys.argv[1]
+		output_file = "Pytracker_output"
+	else:
+		input_file = sys.argv[1]
+		output_file = sys.argv[2]
 	
-	return output_file
+	return input_file, output_file
  
 if __name__ == "__main__":
-	output_file = pre_execute_check()
+	input_file, output_file = pre_execute_check()
+	
+	# base on input file, create a test script with main() method
+	create_test_file(input_file, "test_script_with_main.py")
+	test_script_with_main = __import__("test_script_with_main")
 	
 	# 【non-necessary】pre-step: call traceback to check if any bug
-	if not traceback_bug_catch(sample1.__name__):
+	if not traceback_bug_catch(test_script_with_main.__name__):
 		sys.exit("======== error occured ========")
 
 	# clean the execution txt before start a new tracer
 	clean_content_in_file(output_file)
 
-	# trace the whole execution process via my_tracer
-	parse_result = trace_execution_tracking(sample1.__name__, output_file)
+	# trace the whole execution, return a ListOfList
+	parse_result = trace_execution_tracking(test_script_with_main.__name__, output_file)
 
+	# convert ListOfList into Program
 	program = parse_convert_ListOfList_into_Program(parse_result)
+	
+	
 	program.print_linklist(Print_Forward)
 	program.print_linklist(Print_Backward)
 	
 	# clean after execution
-	delete_file(output_file)    # delete output file
+	delete_file(test_script_with_main.__name__+".py")    # delete test_script_with_main for UserCode_test_file
+	
+	# if there is sys.argv[2], keep output_file
+	if len(sys.argv) < 3:
+		delete_file(output_file)    # delete output file of trace

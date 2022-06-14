@@ -4,6 +4,8 @@ from typing import List
 Print_Forward  = 0
 Print_Backward = 1
 
+creation_print = False
+
 class Statement():
     def __init__(self, program) -> None:
         self.previous = None
@@ -46,7 +48,7 @@ class While_Loop(Statement):
     def __init__(self, steps:List[List], program) -> None:
         super().__init__(program)
         
-        print(f"---- create {self.__class__.__name__} {steps}")
+        if creation_print: print(f"---- create {self.__class__.__name__} {steps}")
         self.general_steps = steps
         self.steps = []
         self.while_line_no = self.general_steps[0]
@@ -128,7 +130,7 @@ class Nested_While_Loop(While_Loop):
 class Assignment(Statement):
     def __init__(self, line_no:int, program) -> None:
         super().__init__(program)
-        print(f"---- create {self.__class__.__name__} {line_no}")
+        if creation_print: print(f"---- create {self.__class__.__name__} {line_no}")
         self.line_no = line_no
 
     def print_info(self) -> None:
