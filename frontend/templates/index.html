@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pytracker</title>
+    <script 
+        src="https://code.jquery.com/jquery-3.6.0.min.js" 
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/style.css') }}">
+</head>
+
+<body>
+    <h1 class="pytracker">Pytracker</h1>
+    <div id="inputeditor" class="editor">
+        <div class="editor_wrapper">
+            <div class="editor_body">
+                <div id="editor" class="editor_code"></div>
+            </div>
+            <div class="editor_footer">
+                <button id="codeSubmit" type="submit" class="editor_btn">Analyse</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="output" class="visualisation_div">
+        <table id="code_output"></table>
+    </div>
+
+    <script src="{{ url_for('static',filename='scripts/src-min/ace.js') }}"></script>
+    <script src="{{ url_for('static',filename='scripts/src-min/mode-python.js') }}"></script>
+    <script src="{{ url_for('static',filename='scripts/src-min/ext-language_tools.js') }}"></script>
+    <script src="{{ url_for('static',filename='scripts/script.js') }}"></script>
+</body>
+
+</html>
