@@ -1,0 +1,10 @@
+test_script_with_main.py(2): 	a = 10
+local_variables == {}
+test_script_with_main.py(3): 	b = 20
+local_variables == {'a': 10}
+test_script_with_main.py(4): 	tmp = a
+local_variables == {'a': 10, 'b': 20}
+test_script_with_main.py(5): 	a = b
+local_variables == {'a': 10, 'b': 20, 'tmp': 10}
+test_script_with_main.py(6): 	b = tmp
+local_variables == {'a': 20, 'b': 20, 'tmp': 10}
