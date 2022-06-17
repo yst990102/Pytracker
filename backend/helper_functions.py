@@ -59,7 +59,7 @@ def clean_content_in_file(filename):
 
 def create_test_file(user_code_input_file, output_test_file):
 		def_main_str = "def main():\n"
-		if_NameEqMain_str = "\n\nif __name__ == \"__main__\":\n\tmain()"
+		if_NameEqMain_str = "\nif __name__ == \"__main__\":\n\tmain()"
 		try:
 			with open(user_code_input_file, 'r') as user_code:
 				if NameEqMain_check(user_code_input_file):
