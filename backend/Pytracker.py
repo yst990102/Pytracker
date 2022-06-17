@@ -42,7 +42,7 @@ def traceback_bug_catch(user_code_file):
 		return FAILURE
 	return SUCCESS
 
-def trace_execution_tracking(UserFileName, result_file):
+def trace_execution_tracking(tracer, result_file):
 	print(
 		"************************************************************\n" +
 		"*************              trace               *************\n" +
@@ -54,10 +54,6 @@ def trace_execution_tracking(UserFileName, result_file):
 	steps_info = []
 	while_lines = []
 	tab_dict = {}
-
-	# call trace customer's execution	
-	tracer = my_trace.Trace(ignoredirs=[sys.prefix, sys.exec_prefix], trace=1, count=1, outfile=result_file)
-	tracer.run(UserFileName + ".main()")
 
 	# delete the initial <string>(1) line in the execution output
 	del_line_in_file(result_file, "<string>")
@@ -234,8 +230,11 @@ if __name__ == "__main__":
 	# clean the execution txt before start a new tracer
 	clean_content_in_file(output_file)
 
+	# create tracer	
+	tracer = my_trace.Trace(ignoredirs=[sys.prefix, sys.exec_prefix], trace=1, count=1, outfile=output_file)
+	tracer.run(test_script_with_main.__name__ + ".main()")
 	# trace the whole execution, return a ListOfList
-	parse_result = trace_execution_tracking(test_script_with_main.__name__, output_file)
+	parse_result = trace_execution_tracking(tracer, output_file)
 
 	# convert ListOfList into Program
 	program = parse_convert_ListOfList_into_Program(parse_result)
