@@ -2,7 +2,6 @@ import os
 import sys
 import my_trace
 import re
-import traceback
 import parse
 
 # import helper_functions
@@ -23,31 +22,12 @@ FAILURE = 0
 # printing switches
 strListOfList_into_ListOfList = False
 
-def traceback_bug_catch(user_code_file):
-	print(
-		"************************************************************\n" +
-		"*************            traceback             *************\n" +
-		"************************************************************"
-	)
-
-	try:
-		user_code_import = __import__(user_code_file)
-		user_code_import.main()
-	except Exception as e:
-		exc_type, exc_value, exc_traceback = sys.exc_info()
-
-		# trackback summary
-		traceback_summary = traceback.extract_tb(exc_traceback)
-		traceback.print_tb(exc_traceback)
-		return FAILURE
-	return SUCCESS
-
 def trace_execution_tracking(tracer, result_file):
-	print(
-		"************************************************************\n" +
-		"*************              trace               *************\n" +
-		"************************************************************"
-	)
+	# print(
+	# 	"************************************************************\n" +
+	# 	"*************              trace               *************\n" +
+	# 	"************************************************************"
+	# )
 
 	# steps -- all the execution steps
 	# formate -- [(line_no, local_variables), (..), ...]
@@ -56,7 +36,7 @@ def trace_execution_tracking(tracer, result_file):
 	tab_dict = {}
 
 	# delete the initial <string>(1) line in the execution output
-	# del_line_in_file(result_file, "<string>")
+	del_line_in_file(result_file, "<string>")
 
 	from itertools import islice
 	with open(result_file, 'r') as exec_result:
@@ -194,8 +174,8 @@ def parse_convert_ListOfList_into_Program(listoflist):
 	return program
 
 def pre_execute_check():
-	if len(sys.argv) != 1 and len(sys.argv) != 2 and len(sys.argv) != 3:
-		raise Exception(f"Arguments Error: execute format: python {__file__.split('/')[-1]} [User_Code] [Output_File]")
+	if len(sys.argv) != 1 and len(sys.argv) != 2 and len(sys.argv) != 3 and len(sys.argv) != 4:
+		raise Exception(f"Arguments Error: execute format: python {__file__.split('/')[-1]} [User_Code] [Output_File] [ListOfList_File]")
 	
 	if len(sys.argv) >= 2:
 		try:
@@ -207,45 +187,49 @@ def pre_execute_check():
 	if len(sys.argv) == 1:
 		input_file = "sample1.py"
 		output_file = "Pytracker_output"
+		listoflist_file = "listoflist"
 	elif len(sys.argv) == 2:
 		input_file = sys.argv[1]
 		output_file = "Pytracker_output"
-	else:
+		listoflist_file = "listoflist"
+	elif len(sys.argv) == 3:
 		input_file = sys.argv[1]
 		output_file = sys.argv[2]
+		listoflist_file = "listoflist"
+	elif len(sys.argv) == 4:
+		input_file = sys.argv[1]
+		output_file = sys.argv[2]
+		listoflist_file = sys.argv[3]
+		
 	
-	return input_file, output_file
+	return input_file, output_file, listoflist_file
  
 if __name__ == "__main__":
-	input_file, output_file = pre_execute_check()
+	input_file, output_file, listoflist_file = pre_execute_check()
 	
 	# base on input file, create a test script with main() method
 	create_test_file(input_file, "test_script_with_main.py")
 	test_script_with_main = __import__("test_script_with_main")
-	
-	# 【non-necessary】pre-step: call traceback to check if any bug
-	if not traceback_bug_catch(test_script_with_main.__name__):
-		sys.exit("======== error occured ========")
 
 	# clean the execution txt before start a new tracer
 	clean_content_in_file(output_file)
 
 	# create tracer	
 	tracer = my_trace.Trace(ignoredirs=[sys.prefix, sys.exec_prefix], trace=1, count=1, outfile=output_file)
+	# tracer method 01: from main method
 	tracer.run(test_script_with_main.__name__ + ".main()")
+	# tracer method 02: from read()
+	# tracer.run(open(input_file).read())
+	
 	# trace the whole execution, return a ListOfList
 	parse_result = trace_execution_tracking(tracer, output_file)
+	with open(listoflist_file, 'w') as listoflist_out:
+		listoflist_out.write(str(parse_result))
+	listoflist_out.close()
+	
+	# clean after execution
+	delete_file(test_script_with_main.__name__+".py")    # delete test_script_with_main for UserCode_test_file
 
 	# convert ListOfList into Program
 	program = parse_convert_ListOfList_into_Program(parse_result)
 	
-	# linklist printing test
-	# program.print_linklist(Print_Forward)
-	# program.print_linklist(Print_Backward)
-	
-	# clean after execution
-	delete_file(test_script_with_main.__name__+".py")    # delete test_script_with_main for UserCode_test_file
-	
-	# if there is sys.argv[2], keep output_file
-	# if len(sys.argv) < 3:
-	# 	delete_file(output_file)    # delete output file of trace

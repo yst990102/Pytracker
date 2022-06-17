@@ -1,5 +1,3 @@
 __pycache__/*
 *.pyc
 references/*
-*.trace
-*.out
