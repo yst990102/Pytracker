@@ -1,6 +1,7 @@
-import os
+import os, sys
 from helper_functions import clean_content_in_file, create_test_file, delete_file
 from Pytracker import trace_execution_tracking
+import my_trace
 
 if __name__ == "__main__":
 	test_cases = os.listdir("./test_cases")
@@ -26,13 +27,16 @@ if __name__ == "__main__":
 		print(f"------ Generate Tests for {parsing_input_file[i]} ------")
 		input_file, output_file, trace_file = parsing_input_file[i], parsing_output_file[i], parsing_trace_file[i]
 		
-		# base on input file, create a test script with main() method
-		create_test_file("test_cases/"+input_file, "test_script_with_main.py")
-		test_script_with_main = __import__("test_script_with_main")
-		# clean the execution txt before start a new tracer
-		clean_content_in_file("test_cases/"+trace_file)
+		with open("test_cases/"+input_file, 'r') as f_in:
+			input_file_content = f_in.read()
+		f_in.close()
+		
+		# create tracer	
+		tracer = my_trace.Trace(ignoredirs=[sys.prefix, sys.exec_prefix], trace=1, count=1, outfile="test_cases/"+trace_file)
+		tracer.run(input_file_content)
 		# trace the whole execution, return a ListOfList
-		parse_result = trace_execution_tracking(test_script_with_main.__name__, "test_cases/"+trace_file)
+		parse_result = trace_execution_tracking(tracer, "test_cases/"+trace_file)
+		print("parse_result == ", parse_result)
 		
 		with open("test_cases/"+output_file, 'w') as f:
 			f.write(str(parse_result))

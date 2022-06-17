@@ -56,7 +56,7 @@ def trace_execution_tracking(tracer, result_file):
 	tab_dict = {}
 
 	# delete the initial <string>(1) line in the execution output
-	del_line_in_file(result_file, "<string>")
+	# del_line_in_file(result_file, "<string>")
 
 	from itertools import islice
 	with open(result_file, 'r') as exec_result:
@@ -247,5 +247,5 @@ if __name__ == "__main__":
 	delete_file(test_script_with_main.__name__+".py")    # delete test_script_with_main for UserCode_test_file
 	
 	# if there is sys.argv[2], keep output_file
-	if len(sys.argv) < 3:
-		delete_file(output_file)    # delete output file of trace
+	# if len(sys.argv) < 3:
+	# 	delete_file(output_file)    # delete output file of trace
