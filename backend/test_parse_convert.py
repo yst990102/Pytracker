@@ -18,18 +18,9 @@ tab_dict_5 = {2:1, 3:1, 4:2, 5:2, 6:2, 7:3, 8:3, 9:3}
 
 
 case = case_5
+tab_dict = tab_dict_5
 
-program = Program()
-
-for step_no_index in range(len(case)):
-    if isinstance(case[step_no_index], int):
-        new_statement = Assignment(case[step_no_index], program)
-    elif isinstance(case[step_no_index], list):
-        if all(isinstance(i, int) for i in case[step_no_index]):
-            new_statement = Basic_Iteration(case[step_no_index], program)
-        else:
-            new_statement = Nested_Iteration(case[step_no_index], program)
-    program.add_statement(new_statement)
+program = Program(case, tab_dict)
 
 print("""
 =================================================

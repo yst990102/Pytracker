@@ -89,8 +89,8 @@ def trace_execution_tracking(tracer, result_file):
 	all_line_nos = [line_no for (line_no, _) in steps_info]
 
 	# parse str_ListOfList into ListOfList
-	parse_result = parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict)
-	return parse_result
+	listoflist_result = parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict)
+	return listoflist_result, tab_dict
 
 def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
 	if strListOfList_into_ListOfList: print("========================== parse_strListOfList_into_ListOfList ==========================")	
@@ -160,17 +160,8 @@ def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
 	
 	return parse_result
  
-def parse_convert_ListOfList_into_Program(listoflist):
-	program = Program()
-	for step_no_index in range(len(listoflist)):
-		if isinstance(listoflist[step_no_index], int):
-			new_statement = Assignment(listoflist[step_no_index], program)
-		elif isinstance(listoflist[step_no_index], list):
-			if all(isinstance(i, int) for i in listoflist[step_no_index]):
-				new_statement = Basic_Iteration(listoflist[step_no_index], program)
-			else:
-				new_statement = Nested_Iteration(listoflist[step_no_index], program)
-		program.add_statement(new_statement)
+def parse_convert_ListOfList_into_Program(listoflist, tab_dict):
+	program = Program(listoflist, tab_dict)
 	return program
 
 def pre_execute_check():
@@ -203,8 +194,28 @@ def pre_execute_check():
 		
 	
 	return input_file, output_file, listoflist_file
- 
+
+def get_step_json(program: Program):
+	start_statement = program.get_first_statement()
+	end_statement   = start_statement.get_next()
+	
+	step_list = []
+	while end_statement:
+		start_location = (program.tab_dict[start_statement.line_no], start_statement.line_no)
+		end_location   = (program.tab_dict[end_statement.line_no], end_statement.line_no)
+		cur_step = {"type": "step", "start": start_location, "end": end_location}
+		step_list.append(cur_step)
+		
+		start_statement = start_statement.get_next()
+		end_statement = end_statement.get_next()
+		
+	max_depth = max(program.tab_dict.values())
+	return {"depth":max_depth, "list": step_list}
+	
 if __name__ == "__main__":
+	# =====================================================
+	# ===========   Stage 01 : previous_check   ===========
+	# =====================================================
 	input_file, output_file, listoflist_file = pre_execute_check()
 	
 	# base on input file, create a test script with main() method
@@ -221,15 +232,31 @@ if __name__ == "__main__":
 	# tracer method 02: from read()
 	# tracer.run(open(input_file).read())
 	
+	
+	# =====================================================
+	# ============   Stage 02 : main_tracing   ============
+	# =====================================================
 	# trace the whole execution, return a ListOfList
-	parse_result = trace_execution_tracking(tracer, output_file)
+	listoflist_result, tab_dict = trace_execution_tracking(tracer, output_file)
+	
+	# write listoflist_result into listoflist_file
 	with open(listoflist_file, 'w') as listoflist_out:
-		listoflist_out.write(str(parse_result))
+		listoflist_out.write(str(listoflist_result))
 	listoflist_out.close()
 	
 	# clean after execution
 	delete_file(test_script_with_main.__name__+".py")    # delete test_script_with_main for UserCode_test_file
 
+
+	# =====================================================
+	# =========   Stage 03 : convert_to_program   =========
+	# =====================================================
 	# convert ListOfList into Program
-	program = parse_convert_ListOfList_into_Program(parse_result)
+	program = parse_convert_ListOfList_into_Program(listoflist_result, tab_dict)
 	
+	
+	# =====================================================
+	# ===========   Stage 03 : get_step_json   ============
+	# =====================================================
+	step_json = get_step_json(program)
+	print(step_json)

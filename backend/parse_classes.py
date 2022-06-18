@@ -8,29 +8,30 @@ creation_print = False
 
 class Statement():
     def __init__(self, program) -> None:
-        self.previous = None
-        self.next     = None
+        self.__previous = None
+        self.__next     = None
+        
         self.program  = program
     
     # set the previous statement
     def set_previous(self, previous) -> None:
         if isinstance(self, Assignment):
-            self.previous = previous
+            self.__previous = previous
         elif isinstance(self, Iteration):
             pointer = self.get_first_inner_step()
-            pointer.previous = previous
+            pointer.__previous = previous
     
     # set the next statement
     def set_next(self, next) -> None:
         if isinstance(self, Assignment):
-            self.next = next
+            self.__next = next
         elif isinstance(self, Iteration):
             pointer = self.get_last_inner_step()
-            pointer.next = next
+            pointer.__next = next
     
     # get the previous statement
     def get_previous(self):
-        pointer = self.previous
+        pointer = self.__previous
         if isinstance(pointer, Assignment):
             return pointer
         elif isinstance(pointer, Iteration):
@@ -38,7 +39,7 @@ class Statement():
     
     # get the next statement
     def get_next(self):
-        pointer = self.next
+        pointer = self.__next
         if isinstance(pointer, Assignment):
             return pointer
         elif isinstance(pointer, Iteration):
@@ -84,7 +85,7 @@ class Iteration(Statement):
         print(f"==== {self.__class__.__name__} {hex(id(self))} =====")
         for  step in self.steps:
             step.print_info()
-        print(f"previous = {self.previous}, next = {self.next}")
+        print(f"previous = {self.__previous}, next = {self.__next}")
     
     def print_val(self) -> None:
         print(self.general_steps, end=" ")
@@ -136,15 +137,28 @@ class Assignment(Statement):
     def print_info(self) -> None:
         print(f"==== {self.__class__.__name__} {hex(id(self))} =====")
         print(f"line_no == {self.line_no}")
-        print(f"previous = {self.previous}, next = {self.next}")
+        print(f"previous = {self.__previous}, next = {self.__next}")
         
     def print_val(self) -> None:
         print(self.line_no, end=" ")
 
 class Program():
-    def __init__(self) -> None:
+    def __init__(self, listoflist: list, tab_dict:dict) -> None:
+        self.initial_listoflist = listoflist
+        self.tab_dict = tab_dict
+        
         self.statements = []
         self.while_loops = []
+        
+        for step_no_index in range(len(self.initial_listoflist)):
+            if isinstance(self.initial_listoflist[step_no_index], int):
+                new_statement = Assignment(self.initial_listoflist[step_no_index], self)
+            elif isinstance(self.initial_listoflist[step_no_index], list):
+                if all(isinstance(i, int) for i in self.initial_listoflist[step_no_index]):
+                    new_statement = Basic_Iteration(self.initial_listoflist[step_no_index], self)
+                else:
+                    new_statement = Nested_Iteration(self.initial_listoflist[step_no_index], self)
+            self.add_statement(new_statement)
     
     def add_while_loop(self, new_iteration:Iteration):
         new_while_line_no = new_iteration.while_line_no
@@ -169,14 +183,14 @@ class Program():
             for iteration in iterations:
                 print(iteration.general_steps)
     
-    def get_first_process(self) -> Statement:
+    def get_first_statement(self) -> Statement:
         pointer = self.statements[0]
         if isinstance(pointer, Assignment):
             return pointer
         elif isinstance(pointer, Iteration):
             return pointer.get_first_inner_step()
             
-    def get_last_process(self) -> Statement:
+    def get_last_statement(self) -> Statement:
         pointer = self.statements[-1]
         if isinstance(pointer, Assignment):
             return pointer
