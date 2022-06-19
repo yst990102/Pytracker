@@ -46,6 +46,8 @@ html, body {
 
 .editor_code {
     position: relative;
+    display: flex;
+    flex-direction: column;
     height: 100%;
     width: 100%;
     top: 0;
@@ -70,6 +72,20 @@ html, body {
 
 .code_table {
     float: right;
+}
+
+.editor_btn_prev {
+    float: right;
+    position: relative;
+    display:flex;
+    flex-direction: column;
+}
+
+.editor_btn_next {
+    float: right;
+    position: relative;
+    display:flex;
+    flex-direction: column;
 }
 
 .line_num {
@@ -106,4 +122,5 @@ tr {
     height: 27px;
     display: inline-block;
     vertical-align: top;
+    margin-right: 30px;
 }

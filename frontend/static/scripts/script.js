@@ -43,16 +43,76 @@ $("#codeSubmit").click(() => {
 
     });
 
+    var buttons = $("#stepbtns")
+    buttons.append('<button type="submit" class="editor_btn_prev">Prev</button>')
+    buttons.append('<button type="submit" class="editor_btn_next">Next</button>')
+
     var grid = $("#graph");
     markup = "";
     for (var i = 0; i < parselist.length; i++) {
         markup += '<div class="row">';
         for (var j = 0; j < 3; j++) {
-            markup += '<div class="col"></div>'
+            id = "" + i + j;
+            markup += '<div id ="' + id + '" class="col"></div>'
         }
         markup += '</div>';
     }
     grid.append(markup);
+
+
+    arrowLine({
+        source: `#${CSS.escape('00')}`,
+        destination: `#${CSS.escape('10')}`,
+        sourcePosition: 'middleLeft',
+        destinationPosition: 'middleLeft',
+        pivots: [{x: 30 ,y: 0}, {x: 2, y: -2}],
+        forceDirection: 'horizontal'
+    });
+
+    arrowLine({
+        source: `#${CSS.escape('10')}`,
+        destination: `#${CSS.escape('50')}`,
+        sourcePosition: 'middleLeft',
+        destinationPosition: 'middleLeft',
+        pivots: [{x: 50 ,y: 0}, {x: 2, y: -4}],
+        forceDirection: 'horizontal'
+    });
+
+    arrowLine({
+        source: `#${CSS.escape('50')}`,
+        destination: `#${CSS.escape('21')}`,
+        sourcePosition: 'middleLeft',
+        destinationPosition: 'middleLeft',
+        curvature: 0,
+        style: 'dot',
+        forceDirection: 'horizontal',
+        endpoint: {
+            type: 'none'
+        }
+    });
+
+    arrowLine({
+        source: `#${CSS.escape('21')}`,
+        destination: `#${CSS.escape('21')}`,
+        sourcePosition: 'middleLeft',
+        destinationPosition: 'middleLeft',
+        pivots: [{x: 30, y: -40}, {x: 30, y: 15}],
+        forceDirection: 'horizontal',
+
+    });
+    // console.log(arrow)
+    // instance = jsPlumb.getInstance({});
+    // instance.setContainer("diagram");
+    // instance.bind("ready", function() {
+    //     instance.connect({
+    //         source:"00", 
+    //         target:"10",
+    //         anchors:["Right", "Right" ],
+    //         endpoint: "Blank",
+    //         paintStyle: { width: 10, stroke:"black"},
+    //         detachable: false
+    //     });
+    // })
 
     $.ajax({
         type: 'POST',
