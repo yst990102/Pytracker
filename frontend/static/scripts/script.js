@@ -59,7 +59,7 @@ $("#codeSubmit").click(() => {
     }
     grid.append(markup);
 
-
+    // Normal step line
     arrowLine({
         source: `#${CSS.escape('00')}`,
         destination: `#${CSS.escape('10')}`,
@@ -69,6 +69,7 @@ $("#codeSubmit").click(() => {
         forceDirection: 'horizontal'
     });
 
+    // Longer step line
     arrowLine({
         source: `#${CSS.escape('10')}`,
         destination: `#${CSS.escape('50')}`,
@@ -78,6 +79,7 @@ $("#codeSubmit").click(() => {
         forceDirection: 'horizontal'
     });
 
+    // Dashed line
     arrowLine({
         source: `#${CSS.escape('50')}`,
         destination: `#${CSS.escape('21')}`,
@@ -91,6 +93,7 @@ $("#codeSubmit").click(() => {
         }
     });
 
+     // Reflexive line for while loops
     arrowLine({
         source: `#${CSS.escape('21')}`,
         destination: `#${CSS.escape('21')}`,
