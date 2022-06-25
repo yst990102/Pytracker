@@ -18,6 +18,7 @@ FAILURE = 0
 
 # DEBUG_printing
 DEBUG_parse_strListOfList_into_ListOfList = False
+DEBUG_tabdict_to_gridindent = False
 
 
 def trace_execution_tracking(tracer, result_file):
@@ -85,10 +86,11 @@ def trace_execution_tracking(tracer, result_file):
 				# print(f"while_lines == {while_lines}, steps == {steps_info}, tab_dict == {tab_dict}")
 	exec_result.close()
 	all_line_nos = [line_no for (line_no, _) in steps_info]
+	tab_dict = dict(sorted(tab_dict.items()))
 
 	# parse str_ListOfList into ListOfList
 	listoflist_result = parse_strListOfList_into_ListOfList(all_line_nos, while_lines[:], tab_dict)
-	return listoflist_result, tab_dict
+	return listoflist_result, tab_dict, while_lines
 
 
 def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
@@ -171,8 +173,8 @@ def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
 	return parse_result
 
 
-def parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict):
-	program = Program(TupleOfIntAndTuple, tab_dict)
+def parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict:dict, grid_indent:dict):
+	program = Program(TupleOfIntAndTuple, tab_dict, grid_indent)
 	return program
 
 
@@ -237,23 +239,63 @@ def minus1_for_listoflist(item):
 		return minus1_list
 
 
-def get_step_json(program: Program):
-	print(program.tab_dict)
+def get_step_json(program: Program, while_lines:list):
 	start_statement = program.get_first_statement()
 	end_statement = start_statement.get_next()
+	while_line_set = list(set(while_lines))
 
 	step_list = []
 	while end_statement:
-		start_location = (program.tab_dict[start_statement.line_no], start_statement.line_no)
-		end_location = (program.tab_dict[end_statement.line_no], end_statement.line_no)
-		cur_step = {"type": "step", "start": start_location, "end": end_location}
-		step_list.append(cur_step)
+		start_location = (program.grid_indent[start_statement.line_no], start_statement.line_no)
+		end_location = (program.grid_indent[end_statement.line_no], end_statement.line_no)
+
+		# if start at a while_line, need an extra step: "circle"
+		if start_statement.line_no in while_line_set:
+			extra_step = {"type": "circle"}
+			step_list.append(extra_step)
+			cur_step = {"type": "step", "start": start_location, "end": end_location}
+			step_list.append(cur_step)
+		# if end at a while_line, need an extra step: "dash_line"
+		elif end_statement.line_no in while_line_set:
+			cur_step = {"type": "dash_line", "start": start_location, "end": end_location}
+			step_list.append(cur_step)
+		else:
+			cur_step = {"type": "step", "start": start_location, "end": end_location}
+			step_list.append(cur_step)
 
 		start_statement = start_statement.get_next()
 		end_statement = end_statement.get_next()
 
-	max_depth = max(program.tab_dict.values())
+	max_depth = max(program.grid_indent.values())
 	return {"depth": max_depth, "list": step_list}
+
+
+def tabdict_to_gridindent(tab_dict: dict, while_lines: list) -> dict:
+	if DEBUG_tabdict_to_gridindent: print(f"tab_dict == {tab_dict}\nwhile_lines == {while_lines}")
+	if while_lines == []:
+		return tab_dict
+	while_list = list(set(while_lines))
+	while_line_iter = 0
+	cur_while = while_list[while_line_iter]
+
+	grid_indent = tab_dict.copy()
+	for i in [k for k, v in tab_dict.items() if k > cur_while and v > tab_dict[cur_while]]:
+		if i not in while_list:
+			if tab_dict[i] > tab_dict[cur_while]:
+				grid_indent[i] = tab_dict[cur_while]
+			else:
+				while_line_iter -= 1
+				cur_while = while_list[while_line_iter]
+				grid_indent[i] = tab_dict[cur_while]
+		else:
+			while_line_iter += 1
+			cur_while = while_list[while_line_iter]
+		if DEBUG_tabdict_to_gridindent:
+			print(f"i == {i}\ngrid_indent == {grid_indent}\ncur_while == {cur_while}")
+
+	if DEBUG_tabdict_to_gridindent:
+		print(f"tab_dict == \t{tab_dict}\ngrid_indent == \t{grid_indent}")
+	return grid_indent
 
 
 if __name__ == "__main__":
@@ -282,14 +324,13 @@ if __name__ == "__main__":
 	# ============   Stage 02 : main_tracing   ============
 	# =====================================================
 	# trace the whole execution, return a ListOfList
-	listoflist_result, tab_dict = trace_execution_tracking(tracer, output_file)
+	listoflist_result, tab_dict, while_lines = trace_execution_tracking(tracer, output_file)
 
 	# ADD: 2022-06-25 minus1_for_item add, used for minusing 1 for every item in the listoflist
-	print(tab_dict)
 	if do_usercode_have_main == False:
 		listoflist_result = minus1_for_listoflist(listoflist_result)
 		tab_dict = dict(zip([i - 1 for i in tab_dict.keys()], [i - 1 for i in tab_dict.values()]))
-	print(tab_dict)
+		while_lines = [i - 1 for i in while_lines]
 
 	# write listoflist_result into listoflist_file
 	with open(listoflist_file, 'w') as listoflist_out:
@@ -305,8 +346,10 @@ if __name__ == "__main__":
 	# convert ListOfList into TupleOfIntAndTuple
 	count_tab = {}
 	TupleOfIntAndTuple = listoflist_to_listofinttuple(listoflist_result, count_tab)
+	grid_indent = tabdict_to_gridindent(tab_dict, while_lines)
 	# then convert into Program
-	program = parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict)
+	program = parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict, grid_indent)
+	print(while_lines)
 
 	# TEST: all available print ways testing for program
 	# program.print_statements()
@@ -317,5 +360,5 @@ if __name__ == "__main__":
 	# =====================================================
 	# ===========   Stage 03 : get_step_json   ============
 	# =====================================================
-	step_json = get_step_json(program)
+	step_json = get_step_json(program, while_lines)
 	print(step_json)

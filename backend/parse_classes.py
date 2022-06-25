@@ -144,9 +144,10 @@ class Assignment(Statement):
 
 class Program():
 
-	def __init__(self, TupleOfIntAndTuple: tuple, tab_dict: dict) -> None:
+	def __init__(self, TupleOfIntAndTuple: tuple, tab_dict: dict, grid_indent: dict) -> None:
 		self.initial_TupleOfIntAndTuple = TupleOfIntAndTuple
 		self.tab_dict = tab_dict
+		self.grid_indent = grid_indent
 
 		self.statements = []
 		self.while_loops = []
