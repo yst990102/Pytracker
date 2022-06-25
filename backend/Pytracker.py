@@ -160,8 +160,8 @@ def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
 	
 	return parse_result
  
-def parse_convert_ListOfList_into_Program(listoflist, tab_dict):
-	program = Program(listoflist, tab_dict)
+def parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict):
+	program = Program(TupleOfIntAndTuple, tab_dict)
 	return program
 
 def pre_execute_check():
@@ -285,15 +285,14 @@ if __name__ == "__main__":
 	# =====================================================
 	# =========   Stage 03 : convert_to_program   =========
 	# =====================================================
-	# convert ListOfList into TupleOfIntTuple
+	# convert ListOfList into TupleOfIntAndTuple
 	count_tab = {}
 	TupleOfIntAndTuple = listoflist_to_listofinttuple(listoflist_result, count_tab)
 	# then convert into Program
-	program = parse_convert_ListOfList_into_Program(TupleOfIntAndTuple, tab_dict)
+	program = parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict)
 	
 	
 	# =====================================================
 	# ===========   Stage 03 : get_step_json   ============
 	# =====================================================
-	program.print_linklist(Print_Forward)
-	# step_json = get_step_json(program)
+	step_json = get_step_json(program)

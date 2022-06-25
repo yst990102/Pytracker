@@ -159,7 +159,6 @@ class Program():
                 else:
                     new_statement = Nested_Iteration(self.initial_tupleofinttuple[1][step_no_index], self)
             self.add_statement(new_statement)
-        exit(0)
     
     def add_while_loop(self, new_iteration:Iteration):
         new_while_line_no = new_iteration.while_line_no
