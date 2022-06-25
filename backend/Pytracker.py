@@ -176,7 +176,7 @@ def pre_execute_check():
 	
 	# define the IO files
 	if len(sys.argv) == 1:
-		input_file = "sample1.py"
+		input_file = "UserCode.py"
 		output_file = "Pytracker_output"
 		listoflist_file = "listoflist"
 	elif len(sys.argv) == 2:
