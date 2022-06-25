@@ -1,3 +1,6 @@
 __pycache__/*
 *.pyc
 references/*
+backend/listoflist
+backend/Pytracker_output
+backend/UserCode.py
