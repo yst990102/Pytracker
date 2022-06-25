@@ -104,19 +104,19 @@ class Basic_Iteration(Iteration):
             self.steps.append(new_statement)
 
 class Nested_Iteration(Iteration):    
-    def __init__(self, steps:List[List], program) -> None:
+    def __init__(self, steps:tuple, program) -> None:
         super().__init__(steps, program)
         self.subloop_iterations = []
         
         self.add_sub_statements(steps)
         self.inner_bi_linklist_set()
     
-    def add_sub_statements(self, steps:List[List]) -> None:
+    def add_sub_statements(self, steps:tuple) -> None:
         # add statements for self.steps
-        for step in steps:
+        for step in steps[1]:
             if isinstance(step, int):
                 new_statement = Assignment(step, self.program)
-            elif isinstance(step, list):
+            elif isinstance(step, tuple):
                 if all(isinstance(i, int) for i in step):
                     new_statement = Basic_Iteration(step, self.program)
                 else:
@@ -143,22 +143,23 @@ class Assignment(Statement):
         print(self.line_no, end=" ")
 
 class Program():
-    def __init__(self, listoflist: list, tab_dict:dict) -> None:
-        self.initial_listoflist = listoflist
+    def __init__(self, tupleofinttuple: tuple, tab_dict:dict) -> None:
+        self.initial_tupleofinttuple = tupleofinttuple
         self.tab_dict = tab_dict
         
         self.statements = []
         self.while_loops = []
         
-        for step_no_index in range(len(self.initial_listoflist)):
-            if isinstance(self.initial_listoflist[step_no_index], int):
-                new_statement = Assignment(self.initial_listoflist[step_no_index], self)
-            elif isinstance(self.initial_listoflist[step_no_index], list):
-                if all(isinstance(i, int) for i in self.initial_listoflist[step_no_index]):
-                    new_statement = Basic_Iteration(self.initial_listoflist[step_no_index], self)
+        for step_no_index in range(len(self.initial_tupleofinttuple[1])):
+            if isinstance(self.initial_tupleofinttuple[1][step_no_index], int):
+                new_statement = Assignment(self.initial_tupleofinttuple[1][step_no_index], self)
+            elif isinstance(self.initial_tupleofinttuple[1][step_no_index], tuple):
+                if all(isinstance(i, int) for i in self.initial_tupleofinttuple[1][step_no_index]):
+                    new_statement = Basic_Iteration(self.initial_tupleofinttuple[1][step_no_index], self)
                 else:
-                    new_statement = Nested_Iteration(self.initial_listoflist[step_no_index], self)
+                    new_statement = Nested_Iteration(self.initial_tupleofinttuple[1][step_no_index], self)
             self.add_statement(new_statement)
+        exit(0)
     
     def add_while_loop(self, new_iteration:Iteration):
         new_while_line_no = new_iteration.while_line_no

@@ -19,8 +19,8 @@ SUCCESS = 1
 FAILURE = 0
 
 
-# printing switches
-strListOfList_into_ListOfList = False
+# DEBUG_printing
+DEBUG_parse_strListOfList_into_ListOfList = False
 
 def trace_execution_tracking(tracer, result_file):
 	# print(
@@ -89,11 +89,11 @@ def trace_execution_tracking(tracer, result_file):
 	all_line_nos = [line_no for (line_no, _) in steps_info]
 
 	# parse str_ListOfList into ListOfList
-	listoflist_result = parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict)
+	listoflist_result = parse_strListOfList_into_ListOfList(all_line_nos, while_lines[:], tab_dict)
 	return listoflist_result, tab_dict
 
 def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
-	if strListOfList_into_ListOfList: print("========================== parse_strListOfList_into_ListOfList ==========================")	
+	if DEBUG_parse_strListOfList_into_ListOfList: print("========================== parse_strListOfList_into_ListOfList ==========================")	
 	
 	# Create a stack, put it in from left to right, and pop one out every time the indentation is greater than or equal to.
 	stack = []
@@ -103,41 +103,41 @@ def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
 			if stack == []:
 				result = result + str(line_no)
 				result = result.replace(",]", "],")
-				if strListOfList_into_ListOfList: print(f"{line_no}\t out of loop\t {stack}\t {result}")
+				if DEBUG_parse_strListOfList_into_ListOfList: print(f"{line_no}\t out of loop\t {stack}\t {result}")
 			elif tab_dict[line_no] > tab_dict[stack[-1]]:
 				result = result + str(line_no)
 				result = result.replace(",]", "],")
-				if strListOfList_into_ListOfList: print(f"{line_no}\t in loop\t {stack}\t {result}")
+				if DEBUG_parse_strListOfList_into_ListOfList: print(f"{line_no}\t in loop\t {stack}\t {result}")
 			else:
 				result = result + "]" + str(line_no)
 				stack.pop()
 				result = result.replace(",]", "],")
-				if strListOfList_into_ListOfList: print(f"{line_no}\t outer break\t {stack}\t {result}")
+				if DEBUG_parse_strListOfList_into_ListOfList: print(f"{line_no}\t outer break\t {stack}\t {result}")
 		elif line_no == while_lines[0]:
 			if line_no in stack:
 				result = result + "]" + "[" + str(line_no)
 				result = result.replace(",]", "],")
-				if strListOfList_into_ListOfList: print(f"{line_no}\t next round loop, loop statement\t {stack}\t {result}")
+				if DEBUG_parse_strListOfList_into_ListOfList: print(f"{line_no}\t next round loop, loop statement\t {stack}\t {result}")
 			else:
 				stack.append(while_lines[0])
 				result = result + "[" + str(line_no)
 				result = result.replace(",]", "],")
-				if strListOfList_into_ListOfList: print(f"{line_no}\t new loop statement\t {stack}\t {result}")
+				if DEBUG_parse_strListOfList_into_ListOfList: print(f"{line_no}\t new loop statement\t {stack}\t {result}")
 			del while_lines[0]
 		else:
 			if stack == []:
 				result = result + str(line_no)
 				result = result.replace(",]", "],")
-				if strListOfList_into_ListOfList: print(f"{line_no}\t out of loop\t {stack}\t {result}")
+				if DEBUG_parse_strListOfList_into_ListOfList: print(f"{line_no}\t out of loop\t {stack}\t {result}")
 			elif tab_dict[line_no] > tab_dict[stack[-1]]:
 				result = result + str(line_no)
 				result = result.replace(",]", "],")
-				if strListOfList_into_ListOfList: print(f"{line_no}\t in loop\t {stack}\t {result}")
+				if DEBUG_parse_strListOfList_into_ListOfList: print(f"{line_no}\t in loop\t {stack}\t {result}")
 			else:
 				result = result + str(line_no) + "]"
 				stack.pop()
 				result = result.replace(",]", "],")
-				if strListOfList_into_ListOfList: print(f"{line_no}\t inner break\t {stack}\t {result}")
+				if DEBUG_parse_strListOfList_into_ListOfList: print(f"{line_no}\t inner break\t {stack}\t {result}")
 				
 		if count < len(all_line_nos) - 1:
 			result = result + ","
@@ -154,9 +154,9 @@ def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
 		print(f"ERROR: isBracket_match Failed! result == {result}, stack == {stack}")
 		exit(1)
 	
-	if strListOfList_into_ListOfList: print("before listoflist evaluated", result)
+	if DEBUG_parse_strListOfList_into_ListOfList: print("before listoflist evaluated", result)
 	parse_result = eval(result)
-	if strListOfList_into_ListOfList: print("after listoflist evaluated", parse_result)
+	if DEBUG_parse_strListOfList_into_ListOfList: print("after listoflist evaluated", parse_result)
 	
 	return parse_result
  
@@ -194,6 +194,27 @@ def pre_execute_check():
 		
 	
 	return input_file, output_file, listoflist_file
+	
+	
+# 2022-06-25 使用递归式修改列表
+# change nestedlist_to_listofint&tuple
+def listoflist_to_listofinttuple(item, count_dict:dict):
+    if type(item) == int:
+        return item
+    elif type(item) == list:
+        while_line = item[0]
+        try:
+            count_dict[while_line] += 1
+            clear_keys = [i for i in count_dict.keys() if i > while_line]
+            for i in clear_keys:
+                count_dict.pop(i)
+        except:
+            count_dict[while_line] = 1
+        list_in_tuple = []
+        for i in item:
+            list_in_tuple.append(listoflist_to_listofinttuple(i, count_dict))
+        return (count_dict[while_line], list_in_tuple)
+
 
 def get_step_json(program: Program):
 	start_statement = program.get_first_statement()
@@ -252,11 +273,13 @@ if __name__ == "__main__":
 	# =========   Stage 03 : convert_to_program   =========
 	# =====================================================
 	# convert ListOfList into Program
-	program = parse_convert_ListOfList_into_Program(listoflist_result, tab_dict)
+	count_tab = {}
+	TupleOfIntAndTuple = listoflist_to_listofinttuple(listoflist_result, count_tab)
+	program = parse_convert_ListOfList_into_Program(TupleOfIntAndTuple, tab_dict)
 	
 	
 	# =====================================================
 	# ===========   Stage 03 : get_step_json   ============
 	# =====================================================
-	step_json = get_step_json(program)
-	print(step_json)
+	program.print_linklist(Print_Forward)
+	# step_json = get_step_json(program)

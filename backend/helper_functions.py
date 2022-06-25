@@ -77,7 +77,7 @@ def create_test_file(user_code_input_file, output_test_file):
 def NameEqMain_check(filename):
 	with open(filename, 'r') as f:
 		file_content = f.read()
-		if re.search("if[ ]*__name__[ ]*==[ ]*\"__main__\"[ ]*:", file_content):
+		if re.search("if[ ]*__name__[ ]*==[ ]*\"__main__\"[ ]*:", file_content) and re.search("def[ ]*main[ ]*\([ ]*\)[ ]*:", file_content):
 			return True
 	return False
 			
