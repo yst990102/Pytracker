@@ -215,6 +215,15 @@ def listoflist_to_listofinttuple(item, count_dict:dict):
             list_in_tuple.append(listoflist_to_listofinttuple(i, count_dict))
         return (count_dict[while_line], list_in_tuple)
 
+def minus1_for_item(item):
+	if type(item) == int:
+		return item - 1
+	elif type(item) == list:
+		minus1_list = []
+		for i in item:
+			minus1_list.append(minus1_for_item(i))
+		return minus1_list
+
 
 def get_step_json(program: Program):
 	start_statement = program.get_first_statement()
@@ -240,7 +249,7 @@ if __name__ == "__main__":
 	input_file, output_file, listoflist_file = pre_execute_check()
 	
 	# base on input file, create a test script with main() method
-	create_test_file(input_file, "test_script_with_main.py")
+	do_usercode_have_main = create_test_file(input_file, "test_script_with_main.py")
 	test_script_with_main = __import__("test_script_with_main")
 
 	# clean the execution txt before start a new tracer
@@ -260,6 +269,10 @@ if __name__ == "__main__":
 	# trace the whole execution, return a ListOfList
 	listoflist_result, tab_dict = trace_execution_tracking(tracer, output_file)
 	
+	# ADD: 2022-06-25 minus1_for_item add, used for minusing 1 for every item in the listoflist
+	if do_usercode_have_main == False:
+		listoflist_result = minus1_for_item(listoflist_result)
+	
 	# write listoflist_result into listoflist_file
 	with open(listoflist_file, 'w') as listoflist_out:
 		listoflist_out.write(str(listoflist_result))
@@ -272,9 +285,10 @@ if __name__ == "__main__":
 	# =====================================================
 	# =========   Stage 03 : convert_to_program   =========
 	# =====================================================
-	# convert ListOfList into Program
+	# convert ListOfList into TupleOfIntTuple
 	count_tab = {}
 	TupleOfIntAndTuple = listoflist_to_listofinttuple(listoflist_result, count_tab)
+	# then convert into Program
 	program = parse_convert_ListOfList_into_Program(TupleOfIntAndTuple, tab_dict)
 	
 	

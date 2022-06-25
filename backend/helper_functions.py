@@ -57,22 +57,33 @@ def clean_content_in_file(filename):
 		open(filename, 'w').close()
 		return
 
-def create_test_file(user_code_input_file, output_test_file):
+def create_test_file(user_code_filename, test_script_filename):
 		def_main_str = "def main():\n"
 		if_NameEqMain_str = "\nif __name__ == \"__main__\":\n\tmain()"
+		
+		# ADD: 2022-06-25 return a signal variable to tell parse_test if usercode have main()
+		do_main_contain = False
+		
 		try:
-			with open(user_code_input_file, 'r') as user_code:
-				if NameEqMain_check(user_code_input_file):
+			with open(user_code_filename, 'r') as user_code:
+				# nothing need to add, just create by read()
+				if NameEqMain_check(user_code_filename):
 					testing_user_code = user_code.read()
+					do_main_contain = True
+				# add main() and "if __name__ == ..."
 				else:
 					testing_user_code = def_main_str + "".join(["\t" + i for i in user_code.readlines()]) + if_NameEqMain_str
+					do_main_contain = False
 			user_code.close()
 		except FileNotFoundError:
 			raise FileNotFoundError("InputFile Not Found")
 		
-		with open(output_test_file, 'w') as user_code_output:
+		# write to the test_script_file
+		with open(test_script_filename, 'w') as user_code_output:
 			user_code_output.write(testing_user_code)
 		user_code_output.close()
+		
+		return do_main_contain
 
 def NameEqMain_check(filename):
 	with open(filename, 'r') as f:
