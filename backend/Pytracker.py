@@ -263,7 +263,7 @@ if __name__ == "__main__":
 	input_file, output_file, listoflist_file = pre_execute_check()
 
 	# format with yapf3 before create test_script
-	os.system(f"yapf3 -i {input_file}")
+	os.system(f"yapf -i {input_file}")
 	# base on input file, create a test script with main() method
 	do_usercode_have_main = create_test_file(input_file, "test_script_with_main.py")
 	test_script_with_main = __import__("test_script_with_main")
