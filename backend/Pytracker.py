@@ -2,58 +2,37 @@ import os
 import sys
 import my_trace
 import re
-import traceback
 import parse
 
 # import helper_functions
 # file_op helpers
-from helper_functions import del_line_in_file, delete_file, clean_content_in_file
+from helper_functions import create_test_file, del_line_in_file, delete_file, clean_content_in_file
 # checkers
 from helper_functions import isBracket_match
 # classes and objects definition
-from parse_classes import Assignment, Basic_While_Loop, Nested_While_Loop, Print_Backward, Print_Forward, Program, While_Loop
-
-
+from parse_classes import Assignment, Basic_Iteration, Nested_Iteration, Print_Backward, Print_Forward, Program, Iteration
 
 # global variables
 SUCCESS = 1
 FAILURE = 0
 
-def traceback_bug_catch(user_code_file):
-	print(
-		"************************************************************\n" +
-		"*************            traceback             *************\n" +
-		"************************************************************"
-	)
+# DEBUG_printing
+DEBUG_parse_strListOfList_into_ListOfList = False
+DEBUG_tabdict_to_gridindent = False
 
-	try:
-		user_code_import = __import__(user_code_file)
-		user_code_import.main()
-	except Exception as e:
-		exc_type, exc_value, exc_traceback = sys.exc_info()
 
-		# trackback summary
-		traceback_summary = traceback.extract_tb(exc_traceback)
-		traceback.print_tb(exc_traceback)
-		return FAILURE
-	return SUCCESS
-
-def trace_execution_tracking(UserFileName, result_file):
-	print(
-		"************************************************************\n" +
-		"*************              trace               *************\n" +
-		"************************************************************"
-	)
+def trace_execution_tracking(tracer, result_file):
+	# print(
+	# 	"************************************************************\n" +
+	# 	"*************              trace               *************\n" +
+	# 	"************************************************************"
+	# )
 
 	# steps -- all the execution steps
 	# formate -- [(line_no, local_variables), (..), ...]
 	steps_info = []
 	while_lines = []
 	tab_dict = {}
-
-	# call trace customer's execution
-	tracer = my_trace.Trace(ignoredirs=[sys.prefix, sys.exec_prefix], trace=1, count=1, outfile=result_file)
-	tracer.run(UserFileName + ".main()")
 
 	# delete the initial <string>(1) line in the execution output
 	del_line_in_file(result_file, "<string>")
@@ -66,24 +45,24 @@ def trace_execution_tracking(UserFileName, result_file):
 
 			if not exec_content:
 				break
-			else:				
+			else:
 				# ===================================================================================
 				# STEP 1: grab information for the code line
 				# 0 for userfile_name, 1 for line_no, 2 for line_content
 				code_parse = list(parse.parse("{0}({1}): {2}", exec_content[0]))
-				a,b,c = list(parse.parse("{0}({1}): {2}", exec_content[0]))
+				a, b, c = list(parse.parse("{0}({1}): {2}", exec_content[0]))
 				# print(code_parse)
 
 				line_no = int(code_parse[1])
 				line_content = code_parse[2]
 				# CASE 1: IF_STATEMENT
-				if_search = re.search(r"if\s*\((.*)\)\s*:", line_content)
+				if_search = re.search(r"if\s*(.*)\s*:", line_content)
 				if if_search:
 					continue
 
 				# CASE 2: WHILE_LOOP
 				# use regular expression to match
-				while_loop_search = re.search(r"while\s*\((.*)\)\s*:", line_content)
+				while_loop_search = re.search(r"while\s*(.*)\s*:", line_content)
 				if (while_loop_search):
 					while_statement = while_loop_search.group(0)
 					while_judgement = while_loop_search.group(1)
@@ -106,109 +85,293 @@ def trace_execution_tracking(UserFileName, result_file):
 				# print(f"variable == {local_variables}")
 				# print(f"while_lines == {while_lines}, steps == {steps_info}, tab_dict == {tab_dict}")
 	exec_result.close()
-	# delete result_file after tracer_using
-	delete_file(result_file)
 	all_line_nos = [line_no for (line_no, _) in steps_info]
+	tab_dict = dict(sorted(tab_dict.items()))
 
 	# parse str_ListOfList into ListOfList
-	parse_result = parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict)
-	return parse_result
+	listoflist_result = parse_strListOfList_into_ListOfList(all_line_nos, while_lines[:], tab_dict)
+	return listoflist_result, tab_dict, while_lines
 
-def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):  
+
+def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
+	if DEBUG_parse_strListOfList_into_ListOfList:
+		print("========================== parse_strListOfList_into_ListOfList ==========================")
+
 	# Create a stack, put it in from left to right, and pop one out every time the indentation is greater than or equal to.
 	stack = []
 	result = ""
 	for count, line_no in enumerate(all_line_nos):
-		# print(f"stack = {stack}, result == {result}\tall_line_nos = {all_line_nos}, while_lines = {while_lines}, tab_dict == {tab_dict}")
 		if while_lines == []:
 			if stack == []:
-				# print(f"{line_no}\t out of loop, {stack} {while_lines}")
 				result = result + str(line_no)
+				result = result.replace(",]", "],")
+				if DEBUG_parse_strListOfList_into_ListOfList:
+					print(f"{line_no}\t out of loop\t {stack}\t {result}")
 			elif tab_dict[line_no] > tab_dict[stack[-1]]:
-				# print(f"{line_no}\t in loop {stack} {while_lines}")
 				result = result + str(line_no)
+				result = result.replace(",]", "],")
+				if DEBUG_parse_strListOfList_into_ListOfList:
+					print(f"{line_no}\t in loop\t {stack}\t {result}")
 			else:
-				# print(f"{line_no}\t outer break, {stack} {while_lines}")
 				result = result + "]" + str(line_no)
 				stack.pop()
+				result = result.replace(",]", "],")
+				if DEBUG_parse_strListOfList_into_ListOfList:
+					print(f"{line_no}\t outer break\t {stack}\t {result}")
 		elif line_no == while_lines[0]:
 			if line_no in stack:
-				# print(f"{line_no}\t next round loop, loop statement, {stack} {while_lines}")
 				result = result + "]" + "[" + str(line_no)
+				result = result.replace(",]", "],")
+				if DEBUG_parse_strListOfList_into_ListOfList:
+					print(f"{line_no}\t next round loop, loop statement\t {stack}\t {result}")
 			else:
-				# print(f"{line_no}\t new loop statement, {stack} {while_lines}")
 				stack.append(while_lines[0])
 				result = result + "[" + str(line_no)
+				result = result.replace(",]", "],")
+				if DEBUG_parse_strListOfList_into_ListOfList:
+					print(f"{line_no}\t new loop statement\t {stack}\t {result}")
 			del while_lines[0]
 		else:
 			if stack == []:
-				# print(f"{line_no}\t out of loop, {stack} {while_lines}")
 				result = result + str(line_no)
+				result = result.replace(",]", "],")
+				if DEBUG_parse_strListOfList_into_ListOfList:
+					print(f"{line_no}\t out of loop\t {stack}\t {result}")
 			elif tab_dict[line_no] > tab_dict[stack[-1]]:
-				# print(f"{line_no}\t in loop, {stack} {while_lines}")
 				result = result + str(line_no)
+				result = result.replace(",]", "],")
+				if DEBUG_parse_strListOfList_into_ListOfList:
+					print(f"{line_no}\t in loop\t {stack}\t {result}")
 			else:
-				# print(f"{line_no}\t inner break, {stack} {while_lines}")
 				result = result + str(line_no) + "]"
 				stack.pop()
+				result = result.replace(",]", "],")
+				if DEBUG_parse_strListOfList_into_ListOfList:
+					print(f"{line_no}\t inner break\t {stack}\t {result}")
+
 		if count < len(all_line_nos) - 1:
 			result = result + ","
-		
-	result = "[" + result + "]"
-	result = result.replace(",]", "],")
 
-	assert(isBracket_match(result) == True)
+	# add remaining right bracket from stack.pop()
+	result = result + len(stack) * "]"
+	stack.clear()  # clear stack
+
+	result = "[" + result + "]"
+
+	try:
+		assert (isBracket_match(result) == True)
+	except:
+		print(f"ERROR: isBracket_match Failed! result == {result}, stack == {stack}")
+		exit(1)
+
+	if DEBUG_parse_strListOfList_into_ListOfList:
+		print("before listoflist evaluated", result)
 	parse_result = eval(result)
+	if DEBUG_parse_strListOfList_into_ListOfList:
+		print("after listoflist evaluated", parse_result)
+
 	return parse_result
- 
-def parse_convert_ListOfList_into_Program(listoflist):
-	program = Program()
-	for step_no_index in range(len(listoflist)):
-		if isinstance(listoflist[step_no_index], int):
-			new_statement = Assignment(listoflist[step_no_index])
-		elif isinstance(listoflist[step_no_index], list):
-			if all(isinstance(i, int) for i in listoflist[step_no_index]):
-				new_statement = Basic_While_Loop(listoflist[step_no_index])
-			else:
-				new_statement = Nested_While_Loop(listoflist[step_no_index])
-		program.add_statement(new_statement)
+
+
+def parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict:dict, grid_indent:dict):
+	program = Program(TupleOfIntAndTuple, tab_dict, grid_indent)
 	return program
 
+
 def pre_execute_check():
-	if len(sys.argv) != 2 and len(sys.argv) != 3:
-		raise Exception(f"execute format: python {__file__.split('/')[-1]} 'User_Code'")
-		exit(1)
-	
-	# define the user_code_import
-	user_code_file = sys.argv[1].replace(".py", "")
-	try:
-		user_code_import = __import__(user_code_file)
-	except:
-		raise Exception("can't import your User_Code file.")
-	
-	# define the output_file name, optional given by sys.argv[2]
-	if len(sys.argv) == 3:
-		output_file = sys.argv[2]
-	else:
+	if len(sys.argv) != 1 and len(sys.argv) != 2 and len(sys.argv) != 3 and len(sys.argv) != 4:
+		raise Exception(f"Arguments Error: execute format: python {__file__.split('/')[-1]} [User_Code] [Output_File] [ListOfList_File]")
+
+	if len(sys.argv) >= 2:
+		try:
+			open(sys.argv[1], 'r')
+		except FileNotFoundError:
+			raise FileNotFoundError(f"Can't open your input file: {sys.argv[1]}")
+
+	# define the IO files
+	if len(sys.argv) == 1:
+		input_file = "UserCode.py"
 		output_file = "Pytracker_output"
-	
-	return (user_code_file, output_file)
- 
+		listoflist_file = "listoflist"
+	elif len(sys.argv) == 2:
+		input_file = sys.argv[1]
+		output_file = "Pytracker_output"
+		listoflist_file = "listoflist"
+	elif len(sys.argv) == 3:
+		input_file = sys.argv[1]
+		output_file = sys.argv[2]
+		listoflist_file = "listoflist"
+	elif len(sys.argv) == 4:
+		input_file = sys.argv[1]
+		output_file = sys.argv[2]
+		listoflist_file = sys.argv[3]
+
+	return input_file, output_file, listoflist_file
+
+
+# 2022-06-25 使用递归式修改列表
+# change nestedlist_to_listofint&tuple
+def listoflist_to_listofinttuple(item, count_dict: dict):
+	if type(item) == int:
+		return item
+	elif type(item) == list:
+		while_line = item[0]
+		try:
+			count_dict[while_line] += 1
+			clear_keys = [i for i in count_dict.keys() if i > while_line]
+			for i in clear_keys:
+				count_dict.pop(i)
+		except:
+			count_dict[while_line] = 1
+		list_in_tuple = []
+		for i in item:
+			list_in_tuple.append(listoflist_to_listofinttuple(i, count_dict))
+		return (count_dict[while_line], list_in_tuple)
+
+
+def minus1_for_listoflist(item):
+	if type(item) == int:
+		return item - 1
+	elif type(item) == list:
+		minus1_list = []
+		for i in item:
+			minus1_list.append(minus1_for_listoflist(i))
+		return minus1_list
+
+def remove_singlelist_from_item(item):
+    if type(item) == int:
+        return item
+    elif type(item) == list:
+        return_list = []
+        for i in item:
+            if type(i) == list and len(i) == 1:
+                continue
+            return_list.append(remove_singlelist_from_item(i))
+        return return_list
+
+def get_step_json(program: Program, while_lines:list):
+	start_statement = program.get_first_statement()
+	end_statement = start_statement.get_next()
+	while_line_set = list(set(while_lines))
+
+	step_list = []
+	while end_statement:
+		start_location = (program.grid_indent[start_statement.line_no], start_statement.line_no)
+		end_location = (program.grid_indent[end_statement.line_no], end_statement.line_no)
+
+		# if start at a while_line, need an extra step: "circle"
+		if start_statement.line_no in while_line_set:
+			extra_step = {"type": "circle"}
+			step_list.append(extra_step)
+			cur_step = {"type": "step", "start": start_location, "end": end_location}
+			step_list.append(cur_step)
+		# if end at a while_line, need an extra step: "dash_line"
+		elif end_statement.line_no in while_line_set:
+			cur_step = {"type": "dash_line", "start": start_location, "end": end_location}
+			step_list.append(cur_step)
+		else:
+			cur_step = {"type": "step", "start": start_location, "end": end_location}
+			step_list.append(cur_step)
+
+		start_statement = start_statement.get_next()
+		end_statement = end_statement.get_next()
+
+	max_depth = max(program.grid_indent.values())
+	return {"depth": max_depth, "list": step_list}
+
+
+def tabdict_to_gridindent(tab_dict: dict, while_lines: list) -> dict:
+	if DEBUG_tabdict_to_gridindent: print(f"tab_dict == {tab_dict}\nwhile_lines == {while_lines}")
+	if while_lines == []:
+		return tab_dict
+	while_list = list(set(while_lines))
+	while_line_iter = 0
+	cur_while = while_list[while_line_iter]
+
+	grid_indent = tab_dict.copy()
+	for i in [k for k, v in tab_dict.items() if k > cur_while and v > tab_dict[cur_while]]:
+		if i not in while_list:
+			if tab_dict[i] > tab_dict[cur_while]:
+				grid_indent[i] = tab_dict[cur_while]
+			else:
+				while_line_iter -= 1
+				cur_while = while_list[while_line_iter]
+				grid_indent[i] = tab_dict[cur_while]
+		else:
+			while_line_iter += 1
+			cur_while = while_list[while_line_iter]
+		if DEBUG_tabdict_to_gridindent:
+			print(f"i == {i}\ngrid_indent == {grid_indent}\ncur_while == {cur_while}")
+
+	if DEBUG_tabdict_to_gridindent:
+		print(f"tab_dict == \t{tab_dict}\ngrid_indent == \t{grid_indent}")
+	return grid_indent
+
+
 if __name__ == "__main__":
-	user_code_file, output_file = pre_execute_check()
-	# user_code_file, output_file = "sample3", "Pytracker_output"
-	
-	# 【non-necessary】pre-step: call traceback to check if any bug
-	user_code = __import__("UserCode")
-	if not traceback_bug_catch(user_code_file):
-		sys.exit("======== error occured ========")
+	# =====================================================
+	# ===========   Stage 01 : previous_check   ===========
+	# =====================================================
+	input_file, output_file, listoflist_file = pre_execute_check()
+
+	# format with yapf3 before create test_script
+	os.system(f"yapf -i {input_file}")
+	# base on input file, create a test script with main() method
+	do_usercode_have_main = create_test_file(input_file, "test_script_with_main.py")
+	test_script_with_main = __import__("test_script_with_main")
 
 	# clean the execution txt before start a new tracer
 	clean_content_in_file(output_file)
 
-	# trace the whole execution process via my_tracer
-	parse_result = trace_execution_tracking(user_code_file, output_file)
+	# create tracer
+	tracer = my_trace.Trace(ignoredirs=[sys.prefix, sys.exec_prefix], trace=1, count=1, outfile=output_file)
+	# tracer method 01: from main method
+	tracer.run(test_script_with_main.__name__ + ".main()")
+	# tracer method 02: from read()
+	# tracer.run(open(input_file).read())
 
-	program = parse_convert_ListOfList_into_Program(parse_result)
-	program.print_linklist(Print_Forward)
-	program.print_linklist(Print_Backward)
+	# =====================================================
+	# ============   Stage 02 : main_tracing   ============
+	# =====================================================
+	# trace the whole execution, return a ListOfList
+	listoflist_result, tab_dict, while_lines = trace_execution_tracking(tracer, output_file)
+
+	# ADD: 2022-06-25 minus1_for_item add, used for minusing 1 for every item in the listoflist
+	if do_usercode_have_main == False:
+		listoflist_result = minus1_for_listoflist(listoflist_result)
+		tab_dict = dict(zip([i - 1 for i in tab_dict.keys()], [i - 1 for i in tab_dict.values()]))
+		while_lines = [i - 1 for i in while_lines]
+	
+	# ADD: 2022-06-26 remove single_list -> "[0-9]" from the listoflist_result
+	listoflist_result = remove_singlelist_from_item(listoflist_result)
+
+	# write listoflist_result into listoflist_file
+	with open(listoflist_file, 'w') as listoflist_out:
+		listoflist_out.write(str(listoflist_result))
+	listoflist_out.close()
+
+	# clean after execution
+	delete_file(test_script_with_main.__name__ + ".py")  # delete test_script_with_main for UserCode_test_file
+
+	# =====================================================
+	# =========   Stage 03 : convert_to_program   =========
+	# =====================================================
+	# convert ListOfList into TupleOfIntAndTuple
+	count_tab = {}
+	TupleOfIntAndTuple = listoflist_to_listofinttuple(listoflist_result, count_tab)
+	grid_indent = tabdict_to_gridindent(tab_dict, while_lines)
+	# then convert into Program
+	program = parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict, grid_indent)
+	print(while_lines)
+
+	# TEST: all available print ways testing for program
+	# program.print_statements()
+	# program.print_linklist(Print_Forward)
+	# program.print_linklist(Print_Backward)
+	# program.print_while_loops_inlayer()
+
+	# =====================================================
+	# ===========   Stage 03 : get_step_json   ============
+	# =====================================================
+	step_json = get_step_json(program, while_lines)
+	print(step_json)

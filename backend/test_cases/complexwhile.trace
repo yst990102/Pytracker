@@ -1,0 +1,36 @@
+test_script_with_main.py(2): 	a = 4
+local_variables == {}
+test_script_with_main.py(3): 	while a > 0:
+local_variables == {'a': 4}
+test_script_with_main.py(4): 	    if a % 2 == 0:
+local_variables == {'a': 4}
+test_script_with_main.py(5): 	        print("EVEN")
+local_variables == {'a': 4}
+test_script_with_main.py(8): 	    a -= 1
+local_variables == {'a': 4}
+test_script_with_main.py(3): 	while a > 0:
+local_variables == {'a': 3}
+test_script_with_main.py(4): 	    if a % 2 == 0:
+local_variables == {'a': 3}
+test_script_with_main.py(7): 	        print("ODD")
+local_variables == {'a': 3}
+test_script_with_main.py(8): 	    a -= 1
+local_variables == {'a': 3}
+test_script_with_main.py(3): 	while a > 0:
+local_variables == {'a': 2}
+test_script_with_main.py(4): 	    if a % 2 == 0:
+local_variables == {'a': 2}
+test_script_with_main.py(5): 	        print("EVEN")
+local_variables == {'a': 2}
+test_script_with_main.py(8): 	    a -= 1
+local_variables == {'a': 2}
+test_script_with_main.py(3): 	while a > 0:
+local_variables == {'a': 1}
+test_script_with_main.py(4): 	    if a % 2 == 0:
+local_variables == {'a': 1}
+test_script_with_main.py(7): 	        print("ODD")
+local_variables == {'a': 1}
+test_script_with_main.py(8): 	    a -= 1
+local_variables == {'a': 1}
+test_script_with_main.py(3): 	while a > 0:
+local_variables == {'a': 0}
