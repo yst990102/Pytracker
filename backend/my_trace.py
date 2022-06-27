@@ -49,6 +49,7 @@ Sample use, programmatically
 """
 __all__ = ['Trace', 'CoverageResults']
 
+from io import StringIO
 import linecache
 import os
 import sys
@@ -226,7 +227,7 @@ class CoverageResults:
 			print("calling relationships:")
 			lastfile = lastcfile = ""
 			for ((pfile, pmod, pfunc), (cfile, cmod, cfunc)) \
-                                                                 in sorted(self.callers):
+                                                                                                              in sorted(self.callers):
 				if pfile != lastfile:
 					print()
 					print("***", pfile, "***")
@@ -456,12 +457,24 @@ class Trace:
 		if not self.donothing:
 			threading.settrace(self.globaltrace)
 			sys.settrace(self.globaltrace)
+
+		old_stdout = sys.stdout
+		redirected_output = sys.stdout = StringIO()
 		try:
 			exec(cmd, globals, locals)
+		except:
+			raise
 		finally:
+			sys.stdout = old_stdout
 			if not self.donothing:
 				sys.settrace(None)
 				threading.settrace(None)
+			if self.outfile:
+				try:
+					with open(self.outfile+".stdout", "a") as f:
+						print(f"{redirected_output.getvalue()}", file=f)
+				except OSError as err:
+					print("Can't save runctx output because %s" % err, file=sys.stderr)
 
 	def runfunc(self, func, /, *args, **kw):
 		result = None

@@ -239,15 +239,15 @@ def minus1_for_listoflist(item):
 		return minus1_list
 
 def remove_singlelist_from_item(item):
-    if type(item) == int:
-        return item
-    elif type(item) == list:
-        return_list = []
-        for i in item:
-            if type(i) == list and len(i) == 1:
-                continue
-            return_list.append(remove_singlelist_from_item(i))
-        return return_list
+	if type(item) == int:
+		return item
+	elif type(item) == list:
+		return_list = []
+		for i in item:
+			if type(i) == list and len(i) == 1:
+				continue
+			return_list.append(remove_singlelist_from_item(i))
+		return return_list
 
 def get_step_json(program: Program, while_lines:list):
 	start_statement = program.get_first_statement()
@@ -341,7 +341,7 @@ if __name__ == "__main__":
 		listoflist_result = minus1_for_listoflist(listoflist_result)
 		tab_dict = dict(zip([i - 1 for i in tab_dict.keys()], [i - 1 for i in tab_dict.values()]))
 		while_lines = [i - 1 for i in while_lines]
-	
+
 	# ADD: 2022-06-26 remove single_list -> "[0-9]" from the listoflist_result
 	listoflist_result = remove_singlelist_from_item(listoflist_result)
 

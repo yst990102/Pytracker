@@ -1,4 +1,3 @@
-
 case_1        = [3, 4, 5, [6, 7, 8, 9]]
 case_1_ini    = [3, 4, 5, 6, 7, 8, 9]
 case_1_exp    = [3, 4, 5, (1,[6, 7, 8, 9])]
@@ -66,9 +65,32 @@ print(input)
 
 input = listoflist_to_listofinttuple(case_5, {})
 print(input)
-            
-# test for nestedlist_to_simplelist     
+
+# test for nestedlist_to_simplelist
 # assert(list(nestedlist_to_simplelist(case_1)) == case_1_ini)
 # assert(list(nestedlist_to_simplelist(case_2)) == case_2_ini)
 # assert(list(nestedlist_to_simplelist(case_3)) == case_3_ini)
 # assert(list(nestedlist_to_simplelist(case_4)) == case_4_ini)
+
+
+
+import sys
+from io import StringIO
+
+code = """
+i = [0,1,2]
+for j in i :
+    print(j)
+"""
+
+old_stdout = sys.stdout
+redirected_output = sys.stdout = StringIO()
+try:
+    exec(code)
+except:
+    raise
+finally:  # !
+    sys.stdout = old_stdout  # !
+
+print(redirected_output.getvalue())
+print('Hello, World!')  # now we see it in case of the exception above
