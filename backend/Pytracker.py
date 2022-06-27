@@ -362,7 +362,6 @@ if __name__ == "__main__":
 	grid_indent = tabdict_to_gridindent(tab_dict, while_lines)
 	# then convert into Program
 	program = parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict, grid_indent)
-	print(while_lines)
 
 	# TEST: all available print ways testing for program
 	# program.print_statements()
@@ -374,4 +373,3 @@ if __name__ == "__main__":
 	# ===========   Stage 03 : get_step_json   ============
 	# =====================================================
 	step_json = get_step_json(program, while_lines)
-	print(step_json)

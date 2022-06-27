@@ -6,99 +6,99 @@ test_script_with_main.py(4): 	i = 0
 local_variables == {'even_sum': 0, 'odd_sum': 0}
 test_script_with_main.py(5): 	while i < 4:
 local_variables == {'even_sum': 0, 'odd_sum': 0, 'i': 0}
-test_script_with_main.py(6): 	    j = 4
+test_script_with_main.py(6): 		j = 4
 local_variables == {'even_sum': 0, 'odd_sum': 0, 'i': 0}
-test_script_with_main.py(7): 	    while j < 6:
+test_script_with_main.py(7): 		while j < 6:
 local_variables == {'even_sum': 0, 'odd_sum': 0, 'i': 0, 'j': 4}
-test_script_with_main.py(8): 	        if (i + j) % 2 == 0:
+test_script_with_main.py(8): 			if (i + j) % 2 == 0:
 local_variables == {'even_sum': 0, 'odd_sum': 0, 'i': 0, 'j': 4}
-test_script_with_main.py(9): 	            even_sum += (i + j)
+test_script_with_main.py(9): 				even_sum += (i + j)
 local_variables == {'even_sum': 0, 'odd_sum': 0, 'i': 0, 'j': 4}
-test_script_with_main.py(12): 	        j += 1 
+test_script_with_main.py(12): 			j += 1
 local_variables == {'even_sum': 4, 'odd_sum': 0, 'i': 0, 'j': 4}
-test_script_with_main.py(7): 	    while j < 6:
+test_script_with_main.py(7): 		while j < 6:
 local_variables == {'even_sum': 4, 'odd_sum': 0, 'i': 0, 'j': 5}
-test_script_with_main.py(8): 	        if (i + j) % 2 == 0:
+test_script_with_main.py(8): 			if (i + j) % 2 == 0:
 local_variables == {'even_sum': 4, 'odd_sum': 0, 'i': 0, 'j': 5}
-test_script_with_main.py(11): 	            odd_sum += (i + j)
+test_script_with_main.py(11): 				odd_sum += (i + j)
 local_variables == {'even_sum': 4, 'odd_sum': 0, 'i': 0, 'j': 5}
-test_script_with_main.py(12): 	        j += 1 
+test_script_with_main.py(12): 			j += 1
 local_variables == {'even_sum': 4, 'odd_sum': 5, 'i': 0, 'j': 5}
-test_script_with_main.py(7): 	    while j < 6:
+test_script_with_main.py(7): 		while j < 6:
 local_variables == {'even_sum': 4, 'odd_sum': 5, 'i': 0, 'j': 6}
-test_script_with_main.py(13): 	    i += 1
+test_script_with_main.py(13): 		i += 1
 local_variables == {'even_sum': 4, 'odd_sum': 5, 'i': 0, 'j': 6}
 test_script_with_main.py(5): 	while i < 4:
 local_variables == {'even_sum': 4, 'odd_sum': 5, 'i': 1, 'j': 6}
-test_script_with_main.py(6): 	    j = 4
+test_script_with_main.py(6): 		j = 4
 local_variables == {'even_sum': 4, 'odd_sum': 5, 'i': 1, 'j': 6}
-test_script_with_main.py(7): 	    while j < 6:
+test_script_with_main.py(7): 		while j < 6:
 local_variables == {'even_sum': 4, 'odd_sum': 5, 'i': 1, 'j': 4}
-test_script_with_main.py(8): 	        if (i + j) % 2 == 0:
+test_script_with_main.py(8): 			if (i + j) % 2 == 0:
 local_variables == {'even_sum': 4, 'odd_sum': 5, 'i': 1, 'j': 4}
-test_script_with_main.py(11): 	            odd_sum += (i + j)
+test_script_with_main.py(11): 				odd_sum += (i + j)
 local_variables == {'even_sum': 4, 'odd_sum': 5, 'i': 1, 'j': 4}
-test_script_with_main.py(12): 	        j += 1 
+test_script_with_main.py(12): 			j += 1
 local_variables == {'even_sum': 4, 'odd_sum': 10, 'i': 1, 'j': 4}
-test_script_with_main.py(7): 	    while j < 6:
+test_script_with_main.py(7): 		while j < 6:
 local_variables == {'even_sum': 4, 'odd_sum': 10, 'i': 1, 'j': 5}
-test_script_with_main.py(8): 	        if (i + j) % 2 == 0:
+test_script_with_main.py(8): 			if (i + j) % 2 == 0:
 local_variables == {'even_sum': 4, 'odd_sum': 10, 'i': 1, 'j': 5}
-test_script_with_main.py(9): 	            even_sum += (i + j)
+test_script_with_main.py(9): 				even_sum += (i + j)
 local_variables == {'even_sum': 4, 'odd_sum': 10, 'i': 1, 'j': 5}
-test_script_with_main.py(12): 	        j += 1 
+test_script_with_main.py(12): 			j += 1
 local_variables == {'even_sum': 10, 'odd_sum': 10, 'i': 1, 'j': 5}
-test_script_with_main.py(7): 	    while j < 6:
+test_script_with_main.py(7): 		while j < 6:
 local_variables == {'even_sum': 10, 'odd_sum': 10, 'i': 1, 'j': 6}
-test_script_with_main.py(13): 	    i += 1
+test_script_with_main.py(13): 		i += 1
 local_variables == {'even_sum': 10, 'odd_sum': 10, 'i': 1, 'j': 6}
 test_script_with_main.py(5): 	while i < 4:
 local_variables == {'even_sum': 10, 'odd_sum': 10, 'i': 2, 'j': 6}
-test_script_with_main.py(6): 	    j = 4
+test_script_with_main.py(6): 		j = 4
 local_variables == {'even_sum': 10, 'odd_sum': 10, 'i': 2, 'j': 6}
-test_script_with_main.py(7): 	    while j < 6:
+test_script_with_main.py(7): 		while j < 6:
 local_variables == {'even_sum': 10, 'odd_sum': 10, 'i': 2, 'j': 4}
-test_script_with_main.py(8): 	        if (i + j) % 2 == 0:
+test_script_with_main.py(8): 			if (i + j) % 2 == 0:
 local_variables == {'even_sum': 10, 'odd_sum': 10, 'i': 2, 'j': 4}
-test_script_with_main.py(9): 	            even_sum += (i + j)
+test_script_with_main.py(9): 				even_sum += (i + j)
 local_variables == {'even_sum': 10, 'odd_sum': 10, 'i': 2, 'j': 4}
-test_script_with_main.py(12): 	        j += 1 
+test_script_with_main.py(12): 			j += 1
 local_variables == {'even_sum': 16, 'odd_sum': 10, 'i': 2, 'j': 4}
-test_script_with_main.py(7): 	    while j < 6:
+test_script_with_main.py(7): 		while j < 6:
 local_variables == {'even_sum': 16, 'odd_sum': 10, 'i': 2, 'j': 5}
-test_script_with_main.py(8): 	        if (i + j) % 2 == 0:
+test_script_with_main.py(8): 			if (i + j) % 2 == 0:
 local_variables == {'even_sum': 16, 'odd_sum': 10, 'i': 2, 'j': 5}
-test_script_with_main.py(11): 	            odd_sum += (i + j)
+test_script_with_main.py(11): 				odd_sum += (i + j)
 local_variables == {'even_sum': 16, 'odd_sum': 10, 'i': 2, 'j': 5}
-test_script_with_main.py(12): 	        j += 1 
+test_script_with_main.py(12): 			j += 1
 local_variables == {'even_sum': 16, 'odd_sum': 17, 'i': 2, 'j': 5}
-test_script_with_main.py(7): 	    while j < 6:
+test_script_with_main.py(7): 		while j < 6:
 local_variables == {'even_sum': 16, 'odd_sum': 17, 'i': 2, 'j': 6}
-test_script_with_main.py(13): 	    i += 1
+test_script_with_main.py(13): 		i += 1
 local_variables == {'even_sum': 16, 'odd_sum': 17, 'i': 2, 'j': 6}
 test_script_with_main.py(5): 	while i < 4:
 local_variables == {'even_sum': 16, 'odd_sum': 17, 'i': 3, 'j': 6}
-test_script_with_main.py(6): 	    j = 4
+test_script_with_main.py(6): 		j = 4
 local_variables == {'even_sum': 16, 'odd_sum': 17, 'i': 3, 'j': 6}
-test_script_with_main.py(7): 	    while j < 6:
+test_script_with_main.py(7): 		while j < 6:
 local_variables == {'even_sum': 16, 'odd_sum': 17, 'i': 3, 'j': 4}
-test_script_with_main.py(8): 	        if (i + j) % 2 == 0:
+test_script_with_main.py(8): 			if (i + j) % 2 == 0:
 local_variables == {'even_sum': 16, 'odd_sum': 17, 'i': 3, 'j': 4}
-test_script_with_main.py(11): 	            odd_sum += (i + j)
+test_script_with_main.py(11): 				odd_sum += (i + j)
 local_variables == {'even_sum': 16, 'odd_sum': 17, 'i': 3, 'j': 4}
-test_script_with_main.py(12): 	        j += 1 
+test_script_with_main.py(12): 			j += 1
 local_variables == {'even_sum': 16, 'odd_sum': 24, 'i': 3, 'j': 4}
-test_script_with_main.py(7): 	    while j < 6:
+test_script_with_main.py(7): 		while j < 6:
 local_variables == {'even_sum': 16, 'odd_sum': 24, 'i': 3, 'j': 5}
-test_script_with_main.py(8): 	        if (i + j) % 2 == 0:
+test_script_with_main.py(8): 			if (i + j) % 2 == 0:
 local_variables == {'even_sum': 16, 'odd_sum': 24, 'i': 3, 'j': 5}
-test_script_with_main.py(9): 	            even_sum += (i + j)
+test_script_with_main.py(9): 				even_sum += (i + j)
 local_variables == {'even_sum': 16, 'odd_sum': 24, 'i': 3, 'j': 5}
-test_script_with_main.py(12): 	        j += 1 
+test_script_with_main.py(12): 			j += 1
 local_variables == {'even_sum': 24, 'odd_sum': 24, 'i': 3, 'j': 5}
-test_script_with_main.py(7): 	    while j < 6:
+test_script_with_main.py(7): 		while j < 6:
 local_variables == {'even_sum': 24, 'odd_sum': 24, 'i': 3, 'j': 6}
-test_script_with_main.py(13): 	    i += 1
+test_script_with_main.py(13): 		i += 1
 local_variables == {'even_sum': 24, 'odd_sum': 24, 'i': 3, 'j': 6}
 test_script_with_main.py(5): 	while i < 4:
 local_variables == {'even_sum': 24, 'odd_sum': 24, 'i': 4, 'j': 6}
