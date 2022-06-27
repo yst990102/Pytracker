@@ -322,6 +322,7 @@ if __name__ == "__main__":
 
 	# clean the execution txt before start a new tracer
 	clean_content_in_file(output_file)
+	clean_content_in_file(output_file+".stdout")
 
 	# create tracer
 	tracer = my_trace.Trace(ignoredirs=[sys.prefix, sys.exec_prefix], trace=1, count=1, outfile=output_file)
