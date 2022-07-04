@@ -412,112 +412,6 @@ class Trace:
         @param outfile file in which to write the results
         @param timing true iff timing information be displayed
         """
-<<<<<<< HEAD
-        self.infile = infile
-        self.outfile = outfile
-        self.ignore = _Ignore(ignoremods, ignoredirs)
-        self.counts = {}   # keys are (filename, linenumber)
-        self.pathtobasename = {} # for memoizing os.path.basename
-        self.donothing = 0
-        self.trace = trace
-        self._calledfuncs = {}
-        self._callers = {}
-        self._caller_cache = {}
-        self.start_time = None
-        
-        # TODO: modify print of  these parts
-        if timing:
-            self.start_time = _time()
-        if countcallers:
-            self.globaltrace = self.globaltrace_trackcallers
-        elif countfuncs:
-            self.globaltrace = self.globaltrace_countfuncs
-        elif trace and count:
-            self.globaltrace = self.globaltrace_lt
-            self.localtrace = self.localtrace_trace_and_count
-        elif trace:
-            self.globaltrace = self.globaltrace_lt
-            self.localtrace = self.localtrace_trace
-        elif count:
-            self.globaltrace = self.globaltrace_lt
-            self.localtrace = self.localtrace_count
-        else:
-            # Ahem -- do nothing?  Okay.
-            self.donothing = 1
-
-    def run(self, cmd):
-        import __main__
-        dict = __main__.__dict__
-        self.runctx(cmd, dict, dict)
-
-    def runctx(self, cmd, globals=None, locals=None):
-        if globals is None: globals = {}
-        if locals is None: locals = {}
-        if not self.donothing:
-            threading.settrace(self.globaltrace)
-            sys.settrace(self.globaltrace)
-        try:
-            exec(cmd, globals, locals)
-        finally:
-            if not self.donothing:
-                sys.settrace(None)
-                threading.settrace(None)
-
-    def runfunc(self, func, test, *args, **kw):
-        result = None
-        if not self.donothing:
-            sys.settrace(self.globaltrace)
-        try:
-            result = func(*args, **kw)
-        finally:
-            if not self.donothing:
-                sys.settrace(None)
-        return result
-
-    def file_module_function_of(self, frame):
-        code = frame.f_code
-        filename = code.co_filename
-        if filename:
-            modulename = _modname(filename)
-        else:
-            modulename = None
-
-        funcname = code.co_name
-        clsname = None
-        if code in self._caller_cache:
-            if self._caller_cache[code] is not None:
-                clsname = self._caller_cache[code]
-        else:
-            self._caller_cache[code] = None
-            ## use of gc.get_referrers() was suggested by Michael Hudson
-            # all functions which refer to this code object
-            funcs = [f for f in gc.get_referrers(code)
-                         if inspect.isfunction(f)]
-            # require len(func) == 1 to avoid ambiguity caused by calls to
-            # new.function(): "In the face of ambiguity, refuse the
-            # temptation to guess."
-            if len(funcs) == 1:
-                dicts = [d for d in gc.get_referrers(funcs[0])
-                             if isinstance(d, dict)]
-                if len(dicts) == 1:
-                    classes = [c for c in gc.get_referrers(dicts[0])
-                                   if hasattr(c, "__bases__")]
-                    if len(classes) == 1:
-                        # ditto for new.classobj()
-                        clsname = classes[0].__name__
-                        # cache the result - assumption is that new.* is
-                        # not called later to disturb this relationship
-                        # _caller_cache could be flushed if functions in
-                        # the new module get called.
-                        self._caller_cache[code] = clsname
-        if clsname is not None:
-            funcname = "%s.%s" % (clsname, funcname)
-
-        return filename, modulename, funcname
-
-    def globaltrace_trackcallers(self, frame, why, arg):
-        """Handler for call events.
-=======
 		self.infile = infile
 		self.outfile = outfile
 		self.ignore = _Ignore(ignoremods, ignoredirs)
@@ -633,7 +527,6 @@ class Trace:
 
 	def globaltrace_trackcallers(self, frame, why, arg):
 		"""Handler for call events.
->>>>>>> SHI-TONG-YUAN
 
         Adds information about who called who to the self._callers dict.
         """
