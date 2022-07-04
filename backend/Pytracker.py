@@ -48,13 +48,11 @@ def trace_execution_tracking(tracer, result_file):
 			else:
 				# ===================================================================================
 				# STEP 1: grab information for the code line
-				# 0 for userfile_name, 1 for line_no, 2 for line_content
-				code_parse = list(parse.parse("{0}({1}): {2}", exec_content[0]))
-				a, b, c = list(parse.parse("{0}({1}): {2}", exec_content[0]))
-				# print(code_parse)
-
-				line_no = int(code_parse[1])
-				line_content = code_parse[2]
+				# 0 for line_no, 1 for line_content
+				code_parse = list(parse.parse("({0}): {1}", exec_content[0]))
+				
+				line_no = int(code_parse[0])
+				line_content = code_parse[1]
 				# CASE 1: IF_STATEMENT
 				if_search = re.search(r"if\s*(.*)\s*:", line_content)
 				if if_search:
@@ -66,14 +64,8 @@ def trace_execution_tracking(tracer, result_file):
 				if (while_loop_search):
 					while_statement = while_loop_search.group(0)
 					while_judgement = while_loop_search.group(1)
-					# DONE: 2022-05-11 while_statement and while_judgement parsing correctly
-					# if (while_statement is not None):
-					# 	print(f"while_statement == {while_statement}")
-					# 	print(f"while_judgement == {while_judgement}")
 					while_lines.append(line_no)
 
-				# DONE: 2022-05-11 tabs parsing correctly
-				# print("Tabs Count ==", line_content.count('\t'))
 				tab_dict[line_no] = line_content.count('\t')
 
 				# ===================================================================================
@@ -81,9 +73,7 @@ def trace_execution_tracking(tracer, result_file):
 				vari_parse = list(parse.parse("local_variables == {0}", exec_content[1]))
 				local_variables = eval(vari_parse[0])
 				steps_info.append((line_no, local_variables))
-				# DONE: 2022-05-11 variable parsing correctly
-				# print(f"variable == {local_variables}")
-				# print(f"while_lines == {while_lines}, steps == {steps_info}, tab_dict == {tab_dict}")
+				
 	exec_result.close()
 	all_line_nos = [line_no for (line_no, _) in steps_info]
 	tab_dict = dict(sorted(tab_dict.items()))
@@ -316,32 +306,22 @@ if __name__ == "__main__":
 
 	# format with yapf3 before create test_script
 	os.system(f"yapf -i {input_file}")
-	# base on input file, create a test script with main() method
-	do_usercode_have_main = create_test_file(input_file, "test_script_with_main.py")
-	test_script_with_main = __import__("test_script_with_main")
 
 	# clean the execution txt before start a new tracer
 	clean_content_in_file(output_file)
-	clean_content_in_file(output_file+".stdout")
 
 	# create tracer
 	tracer = my_trace.Trace(ignoredirs=[sys.prefix, sys.exec_prefix], trace=1, count=1, outfile=output_file)
 	# tracer method 01: from main method
-	tracer.run(test_script_with_main.__name__ + ".main()")
+	# tracer.run(test_script_with_main.__name__ + ".main()")
 	# tracer method 02: from read()
-	# tracer.run(open(input_file).read())
+	tracer.run(open(input_file).read())
 
 	# =====================================================
 	# ============   Stage 02 : main_tracing   ============
 	# =====================================================
 	# trace the whole execution, return a ListOfList
 	listoflist_result, tab_dict, while_lines = trace_execution_tracking(tracer, output_file)
-
-	# ADD: 2022-06-25 minus1_for_item add, used for minusing 1 for every item in the listoflist
-	if do_usercode_have_main == False:
-		listoflist_result = minus1_for_listoflist(listoflist_result)
-		tab_dict = dict(zip([i - 1 for i in tab_dict.keys()], [i - 1 for i in tab_dict.values()]))
-		while_lines = [i - 1 for i in while_lines]
 
 	# ADD: 2022-06-26 remove single_list -> "[0-9]" from the listoflist_result
 	listoflist_result = remove_singlelist_from_item(listoflist_result)
@@ -350,9 +330,6 @@ if __name__ == "__main__":
 	with open(listoflist_file, 'w') as listoflist_out:
 		listoflist_out.write(str(listoflist_result))
 	listoflist_out.close()
-
-	# clean after execution
-	delete_file(test_script_with_main.__name__ + ".py")  # delete test_script_with_main for UserCode_test_file
 
 	# =====================================================
 	# =========   Stage 03 : convert_to_program   =========

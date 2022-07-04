@@ -1,5 +1,4 @@
-a = 1
-p = 1
+a = int(input("enter a num:"))
 print(a)
-print(a)
-print(a)
+b = int(input("enter a num:"))
+print(f"b == {b}")
