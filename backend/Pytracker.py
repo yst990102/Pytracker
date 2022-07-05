@@ -20,7 +20,6 @@ FAILURE = 0
 DEBUG_parse_strListOfList_into_ListOfList = False
 DEBUG_tabdict_to_gridindent = False
 
-
 def trace_execution_tracking(tracer, result_file):
 	# print(
 	# 	"************************************************************\n" +

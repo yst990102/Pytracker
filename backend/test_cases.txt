@@ -19,6 +19,6 @@ if __name__ == "__main__":
 
 ==================== test case 3 ====================
 a = int(input("enter a num:"))
-	print(a)
-	b = int(input("enter a num:"))
-	print(f"b == {b}")
+print(a)
+b = int(input("enter a num:"))
+print(f"b == {b}")
