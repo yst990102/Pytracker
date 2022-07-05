@@ -49,7 +49,7 @@ def trace_execution_tracking(tracer, result_file):
 				# STEP 1: grab information for the code line
 				# 0 for line_no, 1 for line_content
 				code_parse = list(parse.parse("({0}): {1}", exec_content[0]))
-				
+
 				line_no = int(code_parse[0])
 				line_content = code_parse[1]
 				# CASE 1: IF_STATEMENT
@@ -70,9 +70,14 @@ def trace_execution_tracking(tracer, result_file):
 				# ===================================================================================
 				# STEP 2: grab information for the local_variable line
 				vari_parse = list(parse.parse("local_variables == {0}", exec_content[1]))
-				local_variables = eval(vari_parse[0])
+
+				local_variables = vari_parse[0]
+				local_variables = re.sub("<function", "'<function", local_variables)
+				local_variables = re.sub(">", ">'", local_variables)
+				local_variables = eval(local_variables)
+
 				steps_info.append((line_no, local_variables))
-				
+
 	exec_result.close()
 	all_line_nos = [line_no for (line_no, _) in steps_info]
 	tab_dict = dict(sorted(tab_dict.items()))
