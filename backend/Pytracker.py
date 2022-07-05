@@ -17,7 +17,7 @@ SUCCESS = 1
 FAILURE = 0
 
 # DEBUG_printing
-DEBUG_parse_strListOfList_into_ListOfList = False
+DEBUG_parse_strListOfList_into_ListOfList = True
 DEBUG_tabdict_to_gridindent = False
 
 def trace_execution_tracking(tracer, result_file):
@@ -31,6 +31,7 @@ def trace_execution_tracking(tracer, result_file):
 	# formate -- [(line_no, local_variables), (..), ...]
 	steps_info = []
 	while_lines = []
+	if_else_lines = []
 	tab_dict = {}
 
 	# delete the initial <string>(1) line in the execution output
@@ -55,7 +56,7 @@ def trace_execution_tracking(tracer, result_file):
 				# CASE 1: IF_STATEMENT
 				if_search = re.search(r"if\s*(.*)\s*:", line_content)
 				if if_search:
-					continue
+					if_else_lines.append(line_no)
 
 				# CASE 2: WHILE_LOOP
 				# use regular expression to match
@@ -84,12 +85,13 @@ def trace_execution_tracking(tracer, result_file):
 
 	# parse str_ListOfList into ListOfList
 	listoflist_result = parse_strListOfList_into_ListOfList(all_line_nos, while_lines[:], tab_dict)
-	return listoflist_result, tab_dict, while_lines
+	return listoflist_result, tab_dict, while_lines, if_else_lines
 
 
 def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
 	if DEBUG_parse_strListOfList_into_ListOfList:
 		print("========================== parse_strListOfList_into_ListOfList ==========================")
+		print(f"all_line_nos == {all_line_nos}\nwhile_lines == {while_lines}\ntab_dict == {tab_dict}")
 
 	# Create a stack, put it in from left to right, and pop one out every time the indentation is greater than or equal to.
 	stack = []
@@ -137,7 +139,7 @@ def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
 				if DEBUG_parse_strListOfList_into_ListOfList:
 					print(f"{line_no}\t in loop\t {stack}\t {result}")
 			else:
-				result = result + str(line_no) + "]"
+				result = result + "]" + str(line_no)
 				stack.pop()
 				result = result.replace(",]", "],")
 				if DEBUG_parse_strListOfList_into_ListOfList:
@@ -232,6 +234,7 @@ def minus1_for_listoflist(item):
 			minus1_list.append(minus1_for_listoflist(i))
 		return minus1_list
 
+# remove single_list == remove the last loop statement check
 def remove_singlelist_from_item(item):
 	if type(item) == int:
 		return item
@@ -241,6 +244,19 @@ def remove_singlelist_from_item(item):
 			if type(i) == list and len(i) == 1:
 				continue
 			return_list.append(remove_singlelist_from_item(i))
+		return return_list
+
+# remove if_else_lines from listoflist
+def remove_if_else_lines_from_listoflist(if_else_lines, listoflist):
+	if all(isinstance(item, int) for item in listoflist):
+		return [x for x in listoflist if x not in if_else_lines]
+	else:
+		return_list = []
+		for i in listoflist:
+			if isinstance(i, list):
+				return_list.append(remove_if_else_lines_from_listoflist(if_else_lines, i))
+			elif isinstance(i, int):
+				if i not in if_else_lines: return_list.append(i)
 		return return_list
 
 def get_step_json(program: Program, while_lines:list):
@@ -316,19 +332,17 @@ if __name__ == "__main__":
 
 	# create tracer
 	tracer = my_trace.Trace(ignoredirs=[sys.prefix, sys.exec_prefix], trace=1, count=1, outfile=output_file)
-	# tracer method 01: from main method
-	# tracer.run(test_script_with_main.__name__ + ".main()")
-	# tracer method 02: from read()
 	tracer.run(open(input_file).read())
 
 	# =====================================================
 	# ============   Stage 02 : main_tracing   ============
 	# =====================================================
 	# trace the whole execution, return a ListOfList
-	listoflist_result, tab_dict, while_lines = trace_execution_tracking(tracer, output_file)
+	listoflist_result, tab_dict, while_lines, if_else_lines = trace_execution_tracking(tracer, output_file)
 
 	# ADD: 2022-06-26 remove single_list -> "[0-9]" from the listoflist_result
 	listoflist_result = remove_singlelist_from_item(listoflist_result)
+	listoflist_result = remove_if_else_lines_from_listoflist(if_else_lines, listoflist_result)
 
 	# write listoflist_result into listoflist_file
 	with open(listoflist_file, 'w') as listoflist_out:
