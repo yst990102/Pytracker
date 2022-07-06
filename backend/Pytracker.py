@@ -368,6 +368,7 @@ def backend_main():
 	program = parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict, grid_indent)
 
 	# TEST: all available print ways testing for program
+	print(program.initial_TupleOfIntAndTuple)
 	# program.print_statements()
 	# program.print_linklist(Print_Forward)
 	# program.print_linklist(Print_Backward)
