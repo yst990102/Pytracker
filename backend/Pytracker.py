@@ -1,6 +1,6 @@
 import os
 import sys
-import my_trace
+from my_trace import Trace
 import re
 import parse
 
@@ -19,6 +19,7 @@ FAILURE = 0
 # DEBUG_printing
 DEBUG_parse_strListOfList_into_ListOfList = True
 DEBUG_tabdict_to_gridindent = False
+
 
 def trace_execution_tracking(tracer, result_file):
 	# print(
@@ -169,7 +170,7 @@ def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
 	return parse_result
 
 
-def parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict:dict, grid_indent:dict):
+def parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict: dict, grid_indent: dict):
 	program = Program(TupleOfIntAndTuple, tab_dict, grid_indent)
 	return program
 
@@ -234,6 +235,7 @@ def minus1_for_listoflist(item):
 			minus1_list.append(minus1_for_listoflist(i))
 		return minus1_list
 
+
 # remove single_list == remove the last loop statement check
 def remove_singlelist_from_item(item):
 	if type(item) == int:
@@ -246,6 +248,7 @@ def remove_singlelist_from_item(item):
 			return_list.append(remove_singlelist_from_item(i))
 		return return_list
 
+
 # remove if_else_lines from listoflist
 def remove_if_else_lines_from_listoflist(if_else_lines, listoflist):
 	if all(isinstance(item, int) for item in listoflist):
@@ -256,18 +259,20 @@ def remove_if_else_lines_from_listoflist(if_else_lines, listoflist):
 			if isinstance(i, list):
 				return_list.append(remove_if_else_lines_from_listoflist(if_else_lines, i))
 			elif isinstance(i, int):
-				if i not in if_else_lines: return_list.append(i)
+				if i not in if_else_lines:
+					return_list.append(i)
 		return return_list
 
-def get_step_json(program: Program, while_lines:list):
+
+def get_step_json(program: Program, while_lines: list):
 	start_statement = program.get_first_statement()
 	end_statement = start_statement.get_next()
 	while_line_set = list(set(while_lines))
 
 	step_list = []
 	while end_statement:
-		start_location = (program.grid_indent[start_statement.line_no], start_statement.line_no)
-		end_location = (program.grid_indent[end_statement.line_no], end_statement.line_no)
+		start_location = start_statement.line_no
+		end_location = end_statement.line_no
 
 		# if start at a while_line, need an extra step: "circle"
 		if start_statement.line_no in while_line_set:
@@ -277,8 +282,10 @@ def get_step_json(program: Program, while_lines:list):
 			step_list.append(cur_step)
 		# if end at a while_line, need an extra step: "dash_line"
 		elif end_statement.line_no in while_line_set:
-			cur_step = {"type": "dash_line", "start": start_location, "end": end_location}
+			cur_step = {"type": "step", "start": start_location, "end": end_location}
+			dash_step = {"type": "dash_line"}
 			step_list.append(cur_step)
+			step_list.append(dash_step)
 		else:
 			cur_step = {"type": "step", "start": start_location, "end": end_location}
 			step_list.append(cur_step)
@@ -291,7 +298,8 @@ def get_step_json(program: Program, while_lines:list):
 
 
 def tabdict_to_gridindent(tab_dict: dict, while_lines: list) -> dict:
-	if DEBUG_tabdict_to_gridindent: print(f"tab_dict == {tab_dict}\nwhile_lines == {while_lines}")
+	if DEBUG_tabdict_to_gridindent:
+		print(f"tab_dict == {tab_dict}\nwhile_lines == {while_lines}")
 	if while_lines == []:
 		return tab_dict
 	while_list = list(set(while_lines))
@@ -318,7 +326,7 @@ def tabdict_to_gridindent(tab_dict: dict, while_lines: list) -> dict:
 	return grid_indent
 
 
-if __name__ == "__main__":
+def backend_main():
 	# =====================================================
 	# ===========   Stage 01 : previous_check   ===========
 	# =====================================================
@@ -331,7 +339,7 @@ if __name__ == "__main__":
 	clean_content_in_file(output_file)
 
 	# create tracer
-	tracer = my_trace.Trace(ignoredirs=[sys.prefix, sys.exec_prefix], trace=1, count=1, outfile=output_file)
+	tracer = Trace(ignoredirs=[sys.prefix, sys.exec_prefix], trace=1, count=1, outfile=output_file)
 	tracer.run(open(input_file).read())
 
 	# =====================================================
@@ -369,3 +377,10 @@ if __name__ == "__main__":
 	# ===========   Stage 03 : get_step_json   ============
 	# =====================================================
 	step_json = get_step_json(program, while_lines)
+	print(f"final step_json == {step_json}")
+
+	return step_json
+
+
+if __name__ == "__main__":
+	backend_main()
