@@ -10,6 +10,7 @@ var depth = 0;
 var depth_stack = [];
 var prev_end = 0;
 var instructions = [];
+var no_starts = 0;
 
 let editorlib = {
     init() {
@@ -154,7 +155,8 @@ $("#codeSubmit").click(() => {
             },
             {
                 type: "circle",
-                start: 3
+                start: 3,
+                iteration: 1
             },
             {
                 type: "while_start",
@@ -172,7 +174,8 @@ $("#codeSubmit").click(() => {
             },
             {
                 type: "circle",
-                start: 5
+                start: 5,
+                iteration: 1
             },
             {
                 type: "while_start",
@@ -190,7 +193,8 @@ $("#codeSubmit").click(() => {
             },
             {
                 type: "circle",
-                start: 5
+                start: 5,
+                iteration: 1000
             },
             {
                 type: "step",
@@ -275,22 +279,33 @@ $(document).on('click', '#stepbtns .editor_btn_prev', function() {
         count -= 1;
         console.log(instructions[instructions.length - 1])
         console.log(instructions[recent.length - 2])
-        if (instructions[recent.length - 1]['type'] == "step" && recent.length - 2 >= 0 && instructions[recent.length - 2]['type'] == "circle") {
+        if (instructions[instructions.length - 1]['type'] == "step" && instructions.length - 2 >= 0 && instructions[instructions.length - 2]['type'] == "circle") {
+            console.log(instructions)
+            const circle_depth = depth
             depth--;
+            
+            // Remove step
             recent[recent.length - 1].remove();
             recent.pop();
             instructions.pop()
 
+            // Remove circle and iteration number
             recent[recent.length - 1].remove();
             recent.pop();
+            const it_row = instructions[instructions.length - 1]['start'] - 1
+            const it_cell_id = "" + it_row + circle_depth + "t"
+            $("#" + it_cell_id).remove()
             instructions.pop()
 
+            // Remove dashed line
             prev_end = instructions[recent.length - 1]['start']
             recent[recent.length - 1].remove();
             recent.pop();
             instructions.pop()
 
             count -= 1;
+            console.log(res['list'][count])
+            prev_end = res['list'][count]['end']
             if (res['list'][count]['type'] == "circle") {
                 count -= 1;
             }
@@ -311,7 +326,42 @@ $(document).on('click', '#stepbtns .editor_btn_prev', function() {
             instructions.pop()
 
             count -= 1;
-        } else {
+        } else if (instructions[instructions.length - 1]['type'] == "step" && instructions.length - 2 >= 0 && instructions[instructions.length - 2]['type'] == "while_start") {
+            const circle_depth = depth;
+            // Remove step
+            depth--;
+            recent[recent.length - 1].remove();
+            recent.pop();
+            instructions.pop()
+
+            // Remove while_start
+            instructions.pop();
+            no_starts--;
+
+            // Remove circle
+            recent[recent.length - 1].remove();
+            recent.pop();
+            const it_row = instructions[instructions.length - 1]['start'] - 1
+            const it_cell_id = "" + it_row + circle_depth + "t"
+            $("#" + it_cell_id).remove()
+            instructions.pop()
+
+            // Remove dashed
+            prev_end = instructions[recent.length - 1]['start']
+            recent[recent.length - 1].remove();
+            recent.pop();
+            instructions.pop()
+
+            // Remove step
+            recent[recent.length - 1].remove();
+            recent.pop();
+            instructions.pop()
+            count -= 3;
+
+            console.log("LAST TYPE")
+            console.log(res['list'][count])
+            console.log(instructions)
+        }else {
             recent[recent.length - 1].remove();
             recent.pop();
             instructions.pop()
@@ -322,6 +372,7 @@ $(document).on('click', '#stepbtns .editor_btn_prev', function() {
 function get_next() {
     if (res['list'].length - 1 > count) {
         count += 1;
+        console.log(instructions)
         if (res['list'][count]["type"] == "step") {
             var s = "" + res['list'][count]['start'] + depth;
             var e = "" + res['list'][count]['end'] + depth;
@@ -338,27 +389,19 @@ function get_next() {
             }));
             prev_end = res['list'][count]['end']
             instructions.push(res['list'][count])
-        } else if (res['list'][count]['type'] == "dashed") {
-            var s = "" + res['list'][count]['start'][0] + res['list'][count]['start'][1];
-            var e = "" + res['list'][count]['end'][0] + res['list'][count]['end'][1];
-            recent.push(arrowLine({
-                source: `#${CSS.escape(s)}`,
-                destination: `#${CSS.escape(e)}`,
-                sourcePosition: 'middleLeft',
-                destinationPosition: 'middleLeft',
-                curvature: 0,
-                style: 'dot',
-                forceDirection: 'horizontal',
-                endpoint: {
-                    type: 'none'
-                }
-            }));
-            get_next()
+            if (count + 1 < res['list'].length - 1 && res['list'][count + 1]['type'] == "circle" && count + 2 < res['list'].length - 1 && res['list'][count + 2]['type'] == "while_start") {
+                get_next();
+            }
         } else if (res['list'][count]['type'] == "circle") {    
             var prev_depth = depth;
             var p = "" + res['list'][count]['start'] + depth;
             depth++;
             var s = "" + res['list'][count]['start'] + depth;
+            var it = res['list'][count]['start'] - 1
+            var it_cell_id = "" + it + depth;
+            var iteration_cell = $("#" + it_cell_id);
+            iteration_cell.append('<p id="' + it_cell_id + 't" class="iteration_number">' + res['list'][count]['iteration'] + "</p>")
+            console.log(iteration_cell)
             if (res['list'][count]['start'] == prev_end) {
                 recent.push(arrowLine({
                     source: `#${CSS.escape(p)}`,
@@ -406,8 +449,14 @@ function get_next() {
             instructions.push(res['list'][count])
             get_next();
         } else if (res['list'][count]['type'] == "while_start") {
-            depth_stack.push(res['list'][count]['depth'])
-            console.log(depth_stack)
+            no_starts++;
+            if (depth_stack.length < no_starts) {
+                depth_stack.push(res['list'][count]['depth'])
+                console.log(depth_stack)
+            }
+            instructions.push({
+                type: "while_start"
+            })
             get_next();
         } else if (res['list'][count]['type'] == "while_end") {
             const pdepth = depth;
@@ -440,5 +489,15 @@ function get_next() {
         }
     }
 }
+
+$(window).resize(function() {
+    const height = $(window).height()
+    const width = $(window).width()
+    const svgParent = recent[recent.length - 1].getParentSvgId()
+    $("#" + svgParent).attr('height', height)
+    $("#" + svgParent).attr('width', width)
+
+    console.log(svgParent, height, width)
+})
 
 editorlib.init();
