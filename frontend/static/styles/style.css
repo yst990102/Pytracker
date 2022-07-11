@@ -124,3 +124,10 @@ tr {
     vertical-align: top;
     margin-right: 30px;
 }
+
+.iteration_number {
+    display: flex;
+    justify-content: right;
+    margin-top: 8px;
+    font-size: 12px;
+}
