@@ -1,0 +1,7 @@
+Week 06:
+1. dash-line issue for prev&next(horizontal dash-lines)
+2. for-loop
+3. get iteration_no for every step
+4. replace old get_json to the latest one in test.py, then make listoflist_to_json with listoftuple_to_json
+5. 【bonus】: have local_variables to step_list
+6. frontend arrows move to wrong position when resizing window

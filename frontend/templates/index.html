@@ -10,9 +10,11 @@
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
         crossorigin="anonymous">
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/arrow-line/dist/arrow-line.min.js"></script>
+    <!-- <script src="{{ url_for('static',filename='scripts/node_modules/jsplumb/dist/js/jsplumb.js') }}"></script> -->
     <link rel="stylesheet" href="{{ url_for('static',filename='styles/style.css') }}">
 </head>
-
+<script src="../"></script>
 <body>
     <h1 class="pytracker">Pytracker</h1>
     <div id="inputeditor" class="editor">
@@ -27,7 +29,18 @@
     </div>
 
     <div id="output" class="visualisation_div">
-        <table id="code_output"></table>
+        <div class="left">
+            <table id="code_output" class="code_table"></table>
+        </div>
+        <div id="diagram" class="right">
+            <div id="graph" class="grid"></div>
+        </div>
+
+    </div>
+
+    <div class="left">
+        <div id="stepbtns" class="buttons">
+        </div>
     </div>
 
     <script src="{{ url_for('static',filename='scripts/src-min/ace.js') }}"></script>
