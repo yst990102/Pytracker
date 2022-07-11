@@ -17,7 +17,7 @@ def home_page():
         step_json = backend_main()
         print(f"step_json from backend == {step_json}")
         
-        return "SUCCESS"
+        return step_json
     return render_template('index.html')
 
 
