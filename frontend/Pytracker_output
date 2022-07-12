@@ -2,39 +2,7 @@
 local_variables == {}
 (2): b = 20
 local_variables == {'a': 10}
-(3): tmp = a
+(3): if a < b:
 local_variables == {'a': 10, 'b': 20}
-(4): a = b
-local_variables == {'a': 10, 'b': 20, 'tmp': 10}
-(5): b = tmp
-local_variables == {'a': 20, 'b': 20, 'tmp': 10}
-(6): a = 10
-local_variables == {'a': 20, 'b': 10, 'tmp': 10}
-(7): b = 20
-local_variables == {'a': 10, 'b': 10, 'tmp': 10}
-(8): tmp = a
-local_variables == {'a': 10, 'b': 20, 'tmp': 10}
-(9): a = b
-local_variables == {'a': 10, 'b': 20, 'tmp': 10}
-(10): b = tmp
-local_variables == {'a': 20, 'b': 20, 'tmp': 10}
-(11): a = 10
-local_variables == {'a': 20, 'b': 10, 'tmp': 10}
-(12): b = 20
-local_variables == {'a': 10, 'b': 10, 'tmp': 10}
-(13): tmp = a
-local_variables == {'a': 10, 'b': 20, 'tmp': 10}
-(14): a = b
-local_variables == {'a': 10, 'b': 20, 'tmp': 10}
-(15): b = tmp
-local_variables == {'a': 20, 'b': 20, 'tmp': 10}
-(16): a = 10
-local_variables == {'a': 20, 'b': 10, 'tmp': 10}
-(17): b = 20
-local_variables == {'a': 10, 'b': 10, 'tmp': 10}
-(18): tmp = a
-local_variables == {'a': 10, 'b': 20, 'tmp': 10}
-(19): a = b
-local_variables == {'a': 10, 'b': 20, 'tmp': 10}
-(20): b = tmp
-local_variables == {'a': 20, 'b': 20, 'tmp': 10}
+(4):     print("HELLO")
+local_variables == {'a': 10, 'b': 20}
