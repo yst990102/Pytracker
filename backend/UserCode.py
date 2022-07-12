@@ -1,4 +1,3 @@
-a = 10
-b = 20
-if a < b:
-    print("HELLO")
+i = 0
+for i in range(5):
+	print("Here")

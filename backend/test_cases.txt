@@ -42,3 +42,14 @@ if a == 4:
     print(a)
 print("all finished!!")
 
+==================== test case 5 simple for-loop ====================
+i = 0
+for i in range(5):
+	print("Here")
+
+==================== test case 6 simple while-loop ====================
+i = 0
+while i < 5:
+	print("Here")
+	i += 1
+
