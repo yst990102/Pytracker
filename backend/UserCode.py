@@ -12,3 +12,4 @@ while i < 4:
     i += 1
 
 print(even_sum)
+print(odd_sum)
