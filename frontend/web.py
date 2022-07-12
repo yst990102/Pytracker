@@ -12,7 +12,7 @@ def home_page():
             usercode_w.write(request.json)
         usercode_w.close()
 
-        from backend.Pytracker import backend_main
+        from Pytracker import backend_main
         # run the backend Pytracker.py
         step_json = backend_main()
         print(f"step_json from backend == {step_json}")
