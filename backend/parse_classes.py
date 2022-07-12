@@ -6,9 +6,10 @@ creation_print = False
 
 class Statement():
 
-	def __init__(self, program) -> None:
+	def __init__(self, program, path) -> None:
 		self.__previous = None
 		self.__next = None
+		self.path = path
 
 		self.program = program
 
@@ -44,17 +45,11 @@ class Statement():
 		elif isinstance(pointer, Iteration):
 			return pointer.get_first_inner_step()
 
-	def print_info(self) -> None:
-		print(f"==== {self.__class__.__name__} {hex(id(self))} =====")
-		for step in self.steps:
-			step.print_info()
-		print(f"previous = {self.get_previous()}, next = {self.get_next()}")
-
 
 class Iteration(Statement):
 
-	def __init__(self, steps: tuple, program) -> None:
-		super().__init__(program)
+	def __init__(self, steps: tuple, program, path) -> None:
+		super().__init__(program, path)
 
 		if creation_print:
 			print(f"---- create {self.__class__.__name__} {steps}")
@@ -88,11 +83,18 @@ class Iteration(Statement):
 		elif isinstance(pointer, Iteration):
 			return pointer.get_last_inner_step()
 
+	def print_info(self) -> None:
+		print(f"==== {self.__class__.__name__} {hex(id(self))} =====")
+		for step in self.steps:
+			step.print_info()
+		print(f"previous = {self.get_previous()}, next = {self.get_next()}")
+		print(f"path = {self.path}")
+
 
 class Basic_Iteration(Iteration):
 
-	def __init__(self, steps: tuple, program) -> None:
-		super().__init__(steps, program)
+	def __init__(self, steps: tuple, program, path) -> None:
+		super().__init__(steps, program, path)
 
 		self.add_sub_statements(steps)
 		self.inner_bi_linklist_set()
@@ -100,14 +102,14 @@ class Basic_Iteration(Iteration):
 	def add_sub_statements(self, steps: tuple) -> None:
 		# add statements for self.steps
 		for step in steps[1]:
-			new_statement = Assignment(step, self.program)
+			new_statement = Assignment(step, self.program, self.path + [self])
 			self.steps.append(new_statement)
 
 
 class Nested_Iteration(Iteration):
 
-	def __init__(self, steps: tuple, program) -> None:
-		super().__init__(steps, program)
+	def __init__(self, steps: tuple, program, path) -> None:
+		super().__init__(steps, program, path)
 
 		self.add_sub_statements(steps)
 		self.inner_bi_linklist_set()
@@ -116,19 +118,19 @@ class Nested_Iteration(Iteration):
 		# add statements for self.steps
 		for step in steps[1]:
 			if isinstance(step, int):
-				new_statement = Assignment(step, self.program)
+				new_statement = Assignment(step, self.program, self.path + [self])
 			elif isinstance(step, tuple):
 				if all(isinstance(i, int) for i in step):
-					new_statement = Basic_Iteration(step, self.program)
+					new_statement = Basic_Iteration(step, self.program, self.path + [self])
 				else:
-					new_statement = Nested_Iteration(step, self.program)
+					new_statement = Nested_Iteration(step, self.program, self.path + [self])
 			self.steps.append(new_statement)
 
 
 class Assignment(Statement):
 
-	def __init__(self, line_no: int, program) -> None:
-		super().__init__(program)
+	def __init__(self, line_no: int, program, path) -> None:
+		super().__init__(program, path)
 		if creation_print:
 			print(f"---- create {self.__class__.__name__} {line_no}")
 		self.line_no = line_no
@@ -137,6 +139,7 @@ class Assignment(Statement):
 		print(f"==== {self.__class__.__name__} {hex(id(self))} =====")
 		print(f"line_no == {self.line_no}")
 		print(f"previous = {self.get_previous()}, next = {self.get_next()}")
+		print(f"path = {self.path}")
 
 	def print_val(self) -> None:
 		print(self.line_no, end=" ")
@@ -147,19 +150,19 @@ class Program():
 	def __init__(self, TupleOfIntAndTuple: tuple, tab_dict: dict, grid_indent: dict) -> None:
 		self.initial_TupleOfIntAndTuple = TupleOfIntAndTuple
 		self.tab_dict = tab_dict
-		self.grid_indent = grid_indent
+		self.grid_indent = grid_indent  # stored but not in use
 
 		self.statements = []
-		self.while_loops = []
+		self.while_loops = []  # classify iterations by while_line, not in use
 
 		for step_no_index in range(len(self.initial_TupleOfIntAndTuple[1])):
 			if isinstance(self.initial_TupleOfIntAndTuple[1][step_no_index], int):
-				new_statement = Assignment(self.initial_TupleOfIntAndTuple[1][step_no_index], self)
+				new_statement = Assignment(self.initial_TupleOfIntAndTuple[1][step_no_index], self, [self])
 			elif isinstance(self.initial_TupleOfIntAndTuple[1][step_no_index], tuple):
 				if all(isinstance(i, int) for i in self.initial_TupleOfIntAndTuple[1][step_no_index]):
-					new_statement = Basic_Iteration(self.initial_TupleOfIntAndTuple[1][step_no_index], self)
+					new_statement = Basic_Iteration(self.initial_TupleOfIntAndTuple[1][step_no_index], self, [self])
 				else:
-					new_statement = Nested_Iteration(self.initial_TupleOfIntAndTuple[1][step_no_index], self)
+					new_statement = Nested_Iteration(self.initial_TupleOfIntAndTuple[1][step_no_index], self, [self])
 			self.add_statement(new_statement)
 
 	def add_while_loop(self, new_iteration: Iteration):

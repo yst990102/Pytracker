@@ -275,33 +275,31 @@ def remove_if_else_lines_from_listoflist(if_else_lines, listoflist):
 def get_step_json(program: Program, while_lines: list):
 	start_statement = program.get_first_statement()
 	end_statement = start_statement.get_next()
-	while_line_set = list(set(while_lines))
 
 	step_list = []
 	while end_statement:
 		start_location = start_statement.line_no
 		end_location = end_statement.line_no
+		start_path = start_statement.path
+		end_path = end_statement.path
 
-		# if start at a while_line, need an extra step: "circle"
-		if start_statement.line_no in while_line_set:
-			extra_step = {"type": "circle"}
-			step_list.append(extra_step)
-			cur_step = {"type": "step", "start": start_location, "end": end_location}
-			step_list.append(cur_step)
-		# if end at a while_line, need an extra step: "dash_line"
-		elif end_statement.line_no in while_line_set:
-			cur_step = {"type": "step", "start": start_location, "end": end_location}
-			dash_step = {"type": "dash_line"}
-			step_list.append(cur_step)
-			step_list.append(dash_step)
+		# case 1: start_path length < end_path length, a while loop start
+		if len(start_path) < len(end_path):
+			continue
+		elif len(start_path) == len(end_path):
+			# case 2: start_path = end_path, they are in same iteration
+			if start_path == end_path:
+				continue
+			# case 3: same length but not equalled, new iteration in the same while loop
+			else:
+				continue
+		# case 4: start_path length > end_path length, break into father while loop
 		else:
-			cur_step = {"type": "step", "start": start_location, "end": end_location}
-			step_list.append(cur_step)
+			continue
 
-		start_statement = start_statement.get_next()
-		end_statement = end_statement.get_next()
 
-	max_depth = max(program.grid_indent.values())
+	# TODO: need to find a way to calculate the maximum depth
+	max_depth = 5
 	return {"depth": max_depth, "list": step_list}
 
 
@@ -434,10 +432,10 @@ def backend_main():
 	program = parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict, grid_indent)
 
 	# TEST: all available print ways testing for program
-	# program.print_statements()
-	# program.print_linklist(Print_Forward)
-	# program.print_linklist(Print_Backward)
-	# program.print_while_loops_inlayer()
+	program.print_statements()
+	program.print_linklist(Print_Forward)
+	program.print_linklist(Print_Backward)
+	program.print_while_loops_inlayer()
 
 	# =====================================================
 	# ===========   Stage 03 : get_step_json   ============
@@ -448,7 +446,7 @@ def backend_main():
 	# method 02 : get json from listoflist
 	# listoflist_to_json(0, listoflist_result, [])
 	# step_json = {"d": 5, "list": step_list_in_json}
-	
+
 	print(f"step_json == {step_json}")
 
 	return step_json
