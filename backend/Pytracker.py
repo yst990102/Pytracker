@@ -278,25 +278,61 @@ def get_step_json(program: Program, while_lines: list):
 
 	step_list = []
 	while end_statement:
-		start_location = start_statement.line_no
-		end_location = end_statement.line_no
-		start_path = start_statement.path
-		end_path = end_statement.path
+		start_location = start_statement.line_no - 1
+		end_location = end_statement.line_no - 1
 
-		# case 1: start_path length < end_path length, a while loop start
-		if len(start_path) < len(end_path):
-			continue
-		elif len(start_path) == len(end_path):
-			# case 2: start_path = end_path, they are in same iteration
-			if start_path == end_path:
-				continue
-			# case 3: same length but not equalled, new iteration in the same while loop
-			else:
-				continue
-		# case 4: start_path length > end_path length, break into father while loop
-		else:
-			continue
+		entered_iteration = end_statement.enter_into_iteration
+		breaked_iterations = start_statement.break_out_iterations
+		exiting_iterations = end_statement.break_out_iterations
+		enter_iteration_under_same_while_loop = False
+		try:
+			for breaked_iteration in breaked_iterations:
+				if breaked_iteration.while_line_no == entered_iteration.while_line_no:
+					enter_iteration_under_same_while_loop = True
+		except:
+			pass
+		finally:
+			# case 1: simply enter into a loop
+			# need: step, circle, while_start
+			if entered_iteration and not breaked_iterations:
+				print("========== case 01 ==========")
+				start_of_entered_iteration = entered_iteration.while_line_no - 1
+				step_list.append({"type": "step", "start": start_location, "end": end_location})
+				step_list.append({"type": "circle", "start": start_of_entered_iteration})
+				step_list.append({"type": "while_start", "depth": -1})
+			# case 2: from iteration_1 to iteration_2, which belongs to same while-loop
+			# need: step, circle
+			elif entered_iteration and breaked_iterations and enter_iteration_under_same_while_loop:
+				print("========== case 02 ==========")
+				start_of_entered_iteration = entered_iteration.while_line_no - 1
+				step_list.append({"type": "circle", "start": start_of_entered_iteration})
+			# case 3: break from a while-loop, get into a normal step
+			# need: step, while_end
+			elif not entered_iteration and breaked_iterations:
+				print("========== case 03 ==========")
+				step_list.append({"type": "step", "start": start_location, "end": end_location})
+				for breaked_iteration in breaked_iterations:
+					start_of_breaked_iteration = breaked_iteration.while_line_no - 1
+					end_of_breaked_iteration = breaked_iteration.get_last_inner_step().line_no - 1
+					step_list.append({"type": "while_end", "start": start_of_breaked_iteration, "end": end_of_breaked_iteration})
+			# case 4: break from a while-loop, get into another while-loop
+			# need: step, while_end, circle, while_start
+			elif entered_iteration and breaked_iterations and not enter_iteration_under_same_while_loop:
+				print("========== case 04 ==========")
+				step_list.append({"type": "step", "start": start_location, "end": end_location})
+				for breaked_iteration in breaked_iterations:
+					start_of_breaked_iteration = breaked_iteration.while_line_no - 1
+					end_of_breaked_iteration = breaked_iteration.get_last_inner_step().line_no - 1
+					step_list.append({"type": "while_end", "start": start_of_breaked_iteration, "end": end_of_breaked_iteration})
+				start_of_entered_iteration = entered_iteration.while_line_no - 1
+				step_list.append({"type": "circle", "start": start_of_entered_iteration})
+				step_list.append({"type": "while_start", "depth": -1})
+			elif not entered_iteration and not breaked_iterations:
+				print("========== case 05 ==========")
+				step_list.append({"type": "step", "start": start_location, "end": end_location})
 
+			start_statement = start_statement.get_next()
+			end_statement = end_statement.get_next()
 
 	# TODO: need to find a way to calculate the maximum depth
 	max_depth = 5
@@ -433,9 +469,9 @@ def backend_main():
 
 	# TEST: all available print ways testing for program
 	program.print_statements()
-	program.print_linklist(Print_Forward)
-	program.print_linklist(Print_Backward)
-	program.print_while_loops_inlayer()
+	# program.print_linklist(Print_Forward)
+	# program.print_linklist(Print_Backward)
+	# program.print_while_loops_inlayer()
 
 	# =====================================================
 	# ===========   Stage 03 : get_step_json   ============

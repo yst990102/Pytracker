@@ -83,6 +83,14 @@ class Iteration(Statement):
 		elif isinstance(pointer, Iteration):
 			return pointer.get_last_inner_step()
 
+	def set_enter_into_point(self):
+		assert(isinstance(self.get_first_inner_step(), Assignment))
+		self.get_first_inner_step().enter_into_iteration = self
+
+	def set_break_out_point(self):
+		assert(isinstance(self.get_last_inner_step(), Assignment))
+		self.get_last_inner_step().break_out_iterations += [self]
+
 	def print_info(self) -> None:
 		print(f"==== {self.__class__.__name__} {hex(id(self))} =====")
 		for step in self.steps:
@@ -99,6 +107,9 @@ class Basic_Iteration(Iteration):
 		self.add_sub_statements(steps)
 		self.inner_bi_linklist_set()
 
+		self.set_enter_into_point()
+		self.set_break_out_point()
+
 	def add_sub_statements(self, steps: tuple) -> None:
 		# add statements for self.steps
 		for step in steps[1]:
@@ -113,6 +124,9 @@ class Nested_Iteration(Iteration):
 
 		self.add_sub_statements(steps)
 		self.inner_bi_linklist_set()
+
+		self.set_enter_into_point()
+		self.set_break_out_point()
 
 	def add_sub_statements(self, steps: tuple) -> None:
 		# add statements for self.steps
@@ -135,11 +149,15 @@ class Assignment(Statement):
 			print(f"---- create {self.__class__.__name__} {line_no}")
 		self.line_no = line_no
 
+		self.enter_into_iteration = None
+		self.break_out_iterations = []
+
 	def print_info(self) -> None:
 		print(f"==== {self.__class__.__name__} {hex(id(self))} =====")
 		print(f"line_no == {self.line_no}")
 		print(f"previous = {self.get_previous()}, next = {self.get_next()}")
 		print(f"path = {self.path}")
+		print(f"enter_into_iteration = {self.enter_into_iteration}, break_out_iterations = {self.break_out_iterations}")
 
 	def print_val(self) -> None:
 		print(self.line_no, end=" ")

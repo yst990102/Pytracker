@@ -1,0 +1,130 @@
+1
+3
+4
+all finished!!
+==== Assignment 0x7fde96d2b8e0 =====
+line_no == 1
+previous = None, next = <parse_classes.Assignment object at 0x7fde96d44700>
+path = [<parse_classes.Program object at 0x7fde96d2b880>]
+enter_into_iteration = None, break_out_iterations = []
+==== Assignment 0x7fde96d44700 =====
+line_no == 2
+previous = <parse_classes.Assignment object at 0x7fde96d2b8e0>, next = <parse_classes.Assignment object at 0x7fde96d44730>
+path = [<parse_classes.Program object at 0x7fde96d2b880>]
+enter_into_iteration = None, break_out_iterations = []
+==== Assignment 0x7fde96d44730 =====
+line_no == 3
+previous = <parse_classes.Assignment object at 0x7fde96d44700>, next = <parse_classes.Assignment object at 0x7fde96d444c0>
+path = [<parse_classes.Program object at 0x7fde96d2b880>]
+enter_into_iteration = None, break_out_iterations = []
+==== Nested_Iteration 0x7fde96d44d90 =====
+==== Assignment 0x7fde96d444c0 =====
+line_no == 4
+previous = <parse_classes.Assignment object at 0x7fde96d44730>, next = <parse_classes.Assignment object at 0x7fde96d44490>
+path = [<parse_classes.Program object at 0x7fde96d2b880>, <parse_classes.Nested_Iteration object at 0x7fde96d44d90>]
+enter_into_iteration = <parse_classes.Nested_Iteration object at 0x7fde96d44d90>, break_out_iterations = []
+==== Assignment 0x7fde96d44490 =====
+line_no == 5
+previous = <parse_classes.Assignment object at 0x7fde96d444c0>, next = <parse_classes.Assignment object at 0x7fde96d441f0>
+path = [<parse_classes.Program object at 0x7fde96d2b880>, <parse_classes.Nested_Iteration object at 0x7fde96d44d90>]
+enter_into_iteration = None, break_out_iterations = []
+==== Nested_Iteration 0x7fde96d44190 =====
+==== Assignment 0x7fde96d441f0 =====
+line_no == 6
+previous = <parse_classes.Assignment object at 0x7fde96d44490>, next = <parse_classes.Assignment object at 0x7fde96d44220>
+path = [<parse_classes.Program object at 0x7fde96d2b880>, <parse_classes.Nested_Iteration object at 0x7fde96d44d90>, <parse_classes.Nested_Iteration object at 0x7fde96d44190>]
+enter_into_iteration = <parse_classes.Nested_Iteration object at 0x7fde96d44190>, break_out_iterations = []
+==== Assignment 0x7fde96d44220 =====
+line_no == 8
+previous = <parse_classes.Assignment object at 0x7fde96d441f0>, next = <parse_classes.Assignment object at 0x7fde96d44250>
+path = [<parse_classes.Program object at 0x7fde96d2b880>, <parse_classes.Nested_Iteration object at 0x7fde96d44d90>, <parse_classes.Nested_Iteration object at 0x7fde96d44190>]
+enter_into_iteration = None, break_out_iterations = []
+==== Assignment 0x7fde96d44250 =====
+line_no == 11
+previous = <parse_classes.Assignment object at 0x7fde96d44220>, next = <parse_classes.Assignment object at 0x7fde96d442b0>
+path = [<parse_classes.Program object at 0x7fde96d2b880>, <parse_classes.Nested_Iteration object at 0x7fde96d44d90>, <parse_classes.Nested_Iteration object at 0x7fde96d44190>]
+enter_into_iteration = None, break_out_iterations = [<parse_classes.Nested_Iteration object at 0x7fde96d44190>]
+previous = None, next = None
+path = [<parse_classes.Program object at 0x7fde96d2b880>, <parse_classes.Nested_Iteration object at 0x7fde96d44d90>]
+==== Nested_Iteration 0x7fde96d44280 =====
+==== Assignment 0x7fde96d442b0 =====
+line_no == 6
+previous = <parse_classes.Assignment object at 0x7fde96d44250>, next = <parse_classes.Assignment object at 0x7fde96d442e0>
+path = [<parse_classes.Program object at 0x7fde96d2b880>, <parse_classes.Nested_Iteration object at 0x7fde96d44d90>, <parse_classes.Nested_Iteration object at 0x7fde96d44280>]
+enter_into_iteration = <parse_classes.Nested_Iteration object at 0x7fde96d44280>, break_out_iterations = []
+==== Assignment 0x7fde96d442e0 =====
+line_no == 10
+previous = <parse_classes.Assignment object at 0x7fde96d442b0>, next = <parse_classes.Assignment object at 0x7fde96d44310>
+path = [<parse_classes.Program object at 0x7fde96d2b880>, <parse_classes.Nested_Iteration object at 0x7fde96d44d90>, <parse_classes.Nested_Iteration object at 0x7fde96d44280>]
+enter_into_iteration = None, break_out_iterations = []
+==== Assignment 0x7fde96d44310 =====
+line_no == 11
+previous = <parse_classes.Assignment object at 0x7fde96d442e0>, next = <parse_classes.Assignment object at 0x7fde96d44340>
+path = [<parse_classes.Program object at 0x7fde96d2b880>, <parse_classes.Nested_Iteration object at 0x7fde96d44d90>, <parse_classes.Nested_Iteration object at 0x7fde96d44280>]
+enter_into_iteration = None, break_out_iterations = [<parse_classes.Nested_Iteration object at 0x7fde96d44280>]
+previous = None, next = None
+path = [<parse_classes.Program object at 0x7fde96d2b880>, <parse_classes.Nested_Iteration object at 0x7fde96d44d90>]
+==== Assignment 0x7fde96d44340 =====
+line_no == 12
+previous = <parse_classes.Assignment object at 0x7fde96d44310>, next = <parse_classes.Assignment object at 0x7fde96d441c0>
+path = [<parse_classes.Program object at 0x7fde96d2b880>, <parse_classes.Nested_Iteration object at 0x7fde96d44d90>]
+enter_into_iteration = None, break_out_iterations = [<parse_classes.Nested_Iteration object at 0x7fde96d44d90>]
+previous = None, next = None
+path = [<parse_classes.Program object at 0x7fde96d2b880>]
+==== Assignment 0x7fde96d441c0 =====
+line_no == 14
+previous = <parse_classes.Assignment object at 0x7fde96d44340>, next = <parse_classes.Assignment object at 0x7fde96d444f0>
+path = [<parse_classes.Program object at 0x7fde96d2b880>]
+enter_into_iteration = None, break_out_iterations = []
+==== Assignment 0x7fde96d444f0 =====
+line_no == 15
+previous = <parse_classes.Assignment object at 0x7fde96d441c0>, next = None
+path = [<parse_classes.Program object at 0x7fde96d2b880>]
+enter_into_iteration = None, break_out_iterations = []
+listoflist_result == [1, 2, 3, [4, 5, [6, 8, 11], [6, 10, 11], 12], 14, 15]
+========== case 05 ==========
+========== case 05 ==========
+========== case 01 ==========
+========== case 05 ==========
+========== case 01 ==========
+========== case 05 ==========
+========== case 05 ==========
+========== case 02 ==========
+========== case 05 ==========
+========== case 05 ==========
+========== case 03 ==========
+========== case 03 ==========
+========== case 05 ==========
+step_json == {'depth': 5, 'list': [
+
+
+{'type': 'step', 'start': 0, 'end': 1}, 
+
+{'type': 'step', 'start': 1, 'end': 2},
+
+{'type': 'step', 'start': 2, 'end': 3}, 
+{'type': 'circle', 'start': 3}, 
+{'type': 'while_start', 'depth': -1}, 
+
+{'type': 'step', 'start': 3, 'end': 4}, 
+
+{'type': 'step', 'start': 4, 'end': 5}, 
+{'type': 'circle', 'start': 5}, 
+{'type': 'while_start', 'depth': -1}, 
+
+{'type': 'step', 'start': 5, 'end': 7}, 
+
+{'type': 'step', 'start': 7, 'end': 10}, 
+{'type': 'circle', 'start': 5}, 
+
+{'type': 'step', 'start': 5, 'end': 9}, 
+
+{'type': 'step', 'start': 9, 'end': 10}, 
+
+{'type': 'step', 'start': 10, 'end': 11}, 
+{'type': 'while_end', 'start': 5, 'end': 10}, 
+
+{'type': 'step', 'start': 11, 'end': 13}, 
+{'type': 'while_end', 'start': 3, 'end': 11}, 
+
+{'type': 'step', 'start': 13, 'end': 14}]}
