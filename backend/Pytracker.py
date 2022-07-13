@@ -6,7 +6,7 @@ import parse
 
 # import helper_functions
 # file_op helpers
-from helper_functions import ListOfList_to_ListOfIntAndTuple, create_test_file, del_line_in_file, delete_file, clean_content_in_file, get_step_json, remove_if_else_lines_from_listoflist, remove_singlelist_from_listoflist, tabdict_to_gridindent
+from helper_functions import ListOfList_to_ListOfIntAndTuple, create_test_file, del_line_in_file, delete_file, clean_content_in_file, get_step_json, listoflist_to_json, remove_if_else_lines_from_listoflist, remove_singlelist_from_listoflist, tabdict_to_gridindent, step_list_in_json
 # checkers
 from helper_functions import isBracket_match
 # classes and objects definition
@@ -209,6 +209,7 @@ def pre_execute_check():
 
 	return input_file, output_file, listoflist_file
 
+
 def backend_main():
 	# =====================================================
 	# ===========   Stage 01 : previous_check   ===========
@@ -259,10 +260,10 @@ def backend_main():
 	# ===========   Stage 03 : get_step_json   ============
 	# =====================================================
 	# method 01 : get json from program
-	step_json = get_step_json(program, while_lines)
+	# step_json = get_step_json(program, while_lines)
 	# method 02 : get json from listoflist
-	# listoflist_to_json(0, listoflist_result, [])
-	# step_json = {"d": 5, "list": step_list_in_json}
+	listoflist_to_json(0, listoflist_result, [])
+	step_json = {"d": 5, "list": step_list_in_json}
 
 	print(f"step_json == {step_json}")
 
