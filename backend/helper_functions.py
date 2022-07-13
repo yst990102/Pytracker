@@ -4,6 +4,8 @@ import re
 from parse_classes import Program
 
 DEBUG_listoflist_to_json = False
+DEBUG_get_step_json = False
+
 
 # helper functions
 def export_test_case_to_file(output_file: str, test_case: str) -> None:
@@ -183,7 +185,8 @@ def get_step_json(program: Program, while_lines: list):
 			# case 1: simply enter into a loop
 			# need: step, circle, while_start
 			if entered_iteration and not breaked_iterations:
-				print("========== case 01 ==========")
+				if DEBUG_get_step_json:
+					print("========== case 01 ==========")
 				start_of_entered_iteration = entered_iteration.while_line_no - 1
 				step_list.append({"type": "step", "start": start_location, "end": end_location})
 				step_list.append({"type": "circle", "start": start_of_entered_iteration})
@@ -191,13 +194,15 @@ def get_step_json(program: Program, while_lines: list):
 			# case 2: from iteration_1 to iteration_2, which belongs to same while-loop
 			# need: step, circle
 			elif entered_iteration and breaked_iterations and enter_iteration_under_same_while_loop:
-				print("========== case 02 ==========")
+				if DEBUG_get_step_json:
+					print("========== case 02 ==========")
 				start_of_entered_iteration = entered_iteration.while_line_no - 1
 				step_list.append({"type": "circle", "start": start_of_entered_iteration})
 			# case 3: break from a while-loop, get into a normal step
 			# need: step, while_end
 			elif not entered_iteration and breaked_iterations:
-				print("========== case 03 ==========")
+				if DEBUG_get_step_json:
+					print("========== case 03 ==========")
 				step_list.append({"type": "step", "start": start_location, "end": end_location})
 				for breaked_iteration in breaked_iterations:
 					start_of_breaked_iteration = breaked_iteration.while_line_no - 1
@@ -206,7 +211,8 @@ def get_step_json(program: Program, while_lines: list):
 			# case 4: break from a while-loop, get into another while-loop
 			# need: step, while_end, circle, while_start
 			elif entered_iteration and breaked_iterations and not enter_iteration_under_same_while_loop:
-				print("========== case 04 ==========")
+				if DEBUG_get_step_json:
+					print("========== case 04 ==========")
 				step_list.append({"type": "step", "start": start_location, "end": end_location})
 				for breaked_iteration in breaked_iterations:
 					start_of_breaked_iteration = breaked_iteration.while_line_no - 1
@@ -216,7 +222,8 @@ def get_step_json(program: Program, while_lines: list):
 				step_list.append({"type": "circle", "start": start_of_entered_iteration})
 				step_list.append({"type": "while_start", "depth": -1})
 			elif not entered_iteration and not breaked_iterations:
-				print("========== case 05 ==========")
+				if DEBUG_get_step_json:
+					print("========== case 05 ==========")
 				step_list.append({"type": "step", "start": start_location, "end": end_location})
 
 			start_statement = start_statement.get_next()
@@ -228,6 +235,8 @@ def get_step_json(program: Program, while_lines: list):
 
 
 step_list_in_json = []
+
+
 def listoflist_to_json(cur_depth, listoflist, while_stack) -> None:
 	index = 0
 	while index < len(listoflist) - 1:

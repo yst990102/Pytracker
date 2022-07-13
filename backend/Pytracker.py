@@ -179,65 +179,32 @@ def parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict: dic
 	return program
 
 
-def pre_execute_check():
-	if len(sys.argv) != 1 and len(sys.argv) != 2 and len(sys.argv) != 3 and len(sys.argv) != 4:
-		raise Exception(f"Arguments Error: execute format: python {__file__.split('/')[-1]} [User_Code] [Output_File] [ListOfList_File]")
-
-	if len(sys.argv) >= 2:
-		try:
-			open(sys.argv[1], 'r')
-		except FileNotFoundError:
-			raise FileNotFoundError(f"Can't open your input file: {sys.argv[1]}")
-
-	# define the IO files
-	if len(sys.argv) == 1:
-		input_file = "UserCode.py"
-		output_file = "Pytracker_output"
-		listoflist_file = "listoflist"
-	elif len(sys.argv) == 2:
-		input_file = sys.argv[1]
-		output_file = "Pytracker_output"
-		listoflist_file = "listoflist"
-	elif len(sys.argv) == 3:
-		input_file = sys.argv[1]
-		output_file = sys.argv[2]
-		listoflist_file = "listoflist"
-	elif len(sys.argv) == 4:
-		input_file = sys.argv[1]
-		output_file = sys.argv[2]
-		listoflist_file = sys.argv[3]
-
-	return input_file, output_file, listoflist_file
-
-
-def backend_main():
+def backend_main(usercode=open("UserCode.py").read()):
 	# =====================================================
 	# ===========   Stage 01 : previous_check   ===========
 	# =====================================================
-	input_file, output_file, listoflist_file = pre_execute_check()
-
 	# format with yapf3 before create test_script
-	os.system(f"yapf -i {input_file}")
+	os.system(f"yapf -i {'UserCode.py'}")
 
 	# clean the execution txt before start a new tracer
-	clean_content_in_file(output_file)
+	clean_content_in_file("Pytracker_output")
 
 	# create tracer
-	tracer = Trace(ignoredirs=[sys.prefix, sys.exec_prefix], trace=1, count=1, outfile=output_file)
-	tracer.run(open(input_file).read())
+	tracer = Trace(ignoredirs=[sys.prefix, sys.exec_prefix], trace=1, count=1, outfile="Pytracker_output")
+	tracer.run(usercode)
 
 	# =====================================================
 	# ============   Stage 02 : main_tracing   ============
 	# =====================================================
 	# trace the whole execution, return a ListOfList
-	listoflist_result, tab_dict, while_lines, if_else_lines = trace_execution_tracking(tracer, output_file)
+	listoflist_result, tab_dict, while_lines, if_else_lines = trace_execution_tracking(tracer, "Pytracker_output")
 
-	# ADD: 2022-06-26 remove single_list -> "[0-9]" from the listoflist_result
+	# remove single_list -> "[0-9]" from the listoflist_result
 	listoflist_result = remove_singlelist_from_listoflist(listoflist_result)
 	listoflist_result = remove_if_else_lines_from_listoflist(if_else_lines, listoflist_result)
 
-	# write listoflist_result into listoflist_file
-	with open(listoflist_file, 'w') as listoflist_out:
+	# write listoflist_result into "listoflist"
+	with open("listoflist", 'w') as listoflist_out:
 		listoflist_out.write(str(listoflist_result))
 	listoflist_out.close()
 
@@ -246,7 +213,10 @@ def backend_main():
 	# =====================================================
 	# convert ListOfList into TupleOfIntAndTuple
 	TupleOfIntAndTuple = ListOfList_to_ListOfIntAndTuple(listoflist_result)
+	print(f"listoflist == {listoflist_result}")
+	print(f"TupleOfIntAndTuple == {TupleOfIntAndTuple}")
 	grid_indent = tabdict_to_gridindent(tab_dict, while_lines)
+	print(f"grid_indent == {grid_indent}")
 	# then convert into Program
 	program = parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict, grid_indent)
 
@@ -260,10 +230,10 @@ def backend_main():
 	# ===========   Stage 03 : get_step_json   ============
 	# =====================================================
 	# method 01 : get json from program
-	# step_json = get_step_json(program, while_lines)
+	step_json = get_step_json(program, while_lines)
 	# method 02 : get json from listoflist
-	listoflist_to_json(0, listoflist_result, [])
-	step_json = {"d": 5, "list": step_list_in_json}
+	# listoflist_to_json(0, listoflist_result, [])
+	# step_json = {"d": 5, "list": step_list_in_json}
 
 	print(f"step_json == {step_json}")
 
