@@ -100,5 +100,36 @@ def NameEqMain_check(filename):
 	return False
 
 
-def add_main_to_file(file_name):
-	return
+def TupleOfIntAndTuple_to_ListOfList(TupleOfIntAndTuple):
+	if isinstance(TupleOfIntAndTuple, int):
+		return TupleOfIntAndTuple
+	elif isinstance(TupleOfIntAndTuple, tuple):
+		iteration_no = TupleOfIntAndTuple[0]
+		iteration_content = TupleOfIntAndTuple[1]
+		if all(isinstance(x, int) for x in iteration_content):
+			return iteration_content
+		else:
+			ret_list = []
+			for i in iteration_content:
+				ret_list.append(TupleOfIntAndTuple_to_ListOfList(i))
+			return ret_list
+
+
+# 2022-06-25 使用递归式修改列表
+# change nestedlist_to_listofint&tuple
+def ListOfList_to_ListOfIntAndTuple(item, count_dict: dict):
+	if type(item) == int:
+		return item
+	elif type(item) == list:
+		while_line = item[0]
+		try:
+			count_dict[while_line] += 1
+			clear_keys = [i for i in count_dict.keys() if i > while_line]
+			for i in clear_keys:
+				count_dict.pop(i)
+		except:
+			count_dict[while_line] = 1
+		list_in_tuple = []
+		for i in item:
+			list_in_tuple.append(ListOfList_to_ListOfIntAndTuple(i, count_dict))
+		return (count_dict[while_line], list_in_tuple)

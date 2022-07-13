@@ -166,21 +166,21 @@ class Assignment(Statement):
 class Program():
 
 	def __init__(self, TupleOfIntAndTuple: tuple, tab_dict: dict, grid_indent: dict) -> None:
-		self.initial_TupleOfIntAndTuple = TupleOfIntAndTuple
+		self.TupleOfIntAndTuple = TupleOfIntAndTuple
 		self.tab_dict = tab_dict
 		self.grid_indent = grid_indent  # stored but not in use
 
 		self.statements = []
 		self.while_loops = []  # classify iterations by while_line, not in use
 
-		for step_no_index in range(len(self.initial_TupleOfIntAndTuple[1])):
-			if isinstance(self.initial_TupleOfIntAndTuple[1][step_no_index], int):
-				new_statement = Assignment(self.initial_TupleOfIntAndTuple[1][step_no_index], self, [self])
-			elif isinstance(self.initial_TupleOfIntAndTuple[1][step_no_index], tuple):
-				if all(isinstance(i, int) for i in self.initial_TupleOfIntAndTuple[1][step_no_index]):
-					new_statement = Basic_Iteration(self.initial_TupleOfIntAndTuple[1][step_no_index], self, [self])
+		for step_no_index in range(len(self.TupleOfIntAndTuple[1])):
+			if isinstance(self.TupleOfIntAndTuple[1][step_no_index], int):
+				new_statement = Assignment(self.TupleOfIntAndTuple[1][step_no_index], self, [self])
+			elif isinstance(self.TupleOfIntAndTuple[1][step_no_index], tuple):
+				if all(isinstance(i, int) for i in self.TupleOfIntAndTuple[1][step_no_index]):
+					new_statement = Basic_Iteration(self.TupleOfIntAndTuple[1][step_no_index], self, [self])
 				else:
-					new_statement = Nested_Iteration(self.initial_TupleOfIntAndTuple[1][step_no_index], self, [self])
+					new_statement = Nested_Iteration(self.TupleOfIntAndTuple[1][step_no_index], self, [self])
 			self.add_statement(new_statement)
 
 	def add_while_loop(self, new_iteration: Iteration):

@@ -6,7 +6,7 @@ import parse
 
 # import helper_functions
 # file_op helpers
-from helper_functions import create_test_file, del_line_in_file, delete_file, clean_content_in_file
+from helper_functions import ListOfList_to_ListOfIntAndTuple, create_test_file, del_line_in_file, delete_file, clean_content_in_file
 # checkers
 from helper_functions import isBracket_match
 # classes and objects definition
@@ -212,26 +212,6 @@ def pre_execute_check():
 		listoflist_file = sys.argv[3]
 
 	return input_file, output_file, listoflist_file
-
-
-# 2022-06-25 使用递归式修改列表
-# change nestedlist_to_listofint&tuple
-def listoflist_to_listofinttuple(item, count_dict: dict):
-	if type(item) == int:
-		return item
-	elif type(item) == list:
-		while_line = item[0]
-		try:
-			count_dict[while_line] += 1
-			clear_keys = [i for i in count_dict.keys() if i > while_line]
-			for i in clear_keys:
-				count_dict.pop(i)
-		except:
-			count_dict[while_line] = 1
-		list_in_tuple = []
-		for i in item:
-			list_in_tuple.append(listoflist_to_listofinttuple(i, count_dict))
-		return (count_dict[while_line], list_in_tuple)
 
 
 def minus1_for_listoflist(item):
@@ -461,8 +441,7 @@ def backend_main():
 	# =========   Stage 03 : convert_to_program   =========
 	# =====================================================
 	# convert ListOfList into TupleOfIntAndTuple
-	count_tab = {}
-	TupleOfIntAndTuple = listoflist_to_listofinttuple(listoflist_result, count_tab)
+	TupleOfIntAndTuple = ListOfList_to_ListOfIntAndTuple(listoflist_result, {})
 	grid_indent = tabdict_to_gridindent(tab_dict, while_lines)
 	# then convert into Program
 	program = parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict, grid_indent)
