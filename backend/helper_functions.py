@@ -117,7 +117,7 @@ def TupleOfIntAndTuple_to_ListOfList(TupleOfIntAndTuple):
 
 # 2022-06-25 使用递归式修改列表
 # change nestedlist_to_listofint&tuple
-def ListOfList_to_ListOfIntAndTuple(item, count_dict: dict):
+def ListOfList_to_ListOfIntAndTuple(item, count_dict={}):
 	if type(item) == int:
 		return item
 	elif type(item) == list:
