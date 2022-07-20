@@ -227,10 +227,10 @@ def backend_main(usercode=open("UserCode.py").read(), return_data=RETURN_JSON):
 	# ===========   Stage 03 : get_step_json   ============
 	# =====================================================
 	# method 01 : get json from program
-	step_json = get_step_json(program)
+	# step_json = get_step_json(program)
 	# method 02 : get json from listoflist
-	# listoflist_to_json(0, listoflist_result, [])
-	# step_json = {"d": 5, "list": step_list_in_json}
+	listoflist_to_json(0, listoflist_result, [])
+	step_json = {"d": 5, "list": step_list_in_json}
 
 	if return_data == RETURN_JSON:
 		return step_json
