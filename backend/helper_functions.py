@@ -172,7 +172,7 @@ def get_step_json(program: Program):
 		start_location = start_statement.line_no - 1
 		end_location = end_statement.line_no - 1
 		'''
-		method 01:
+		method 01: not fully worked
 		entered_iteration = end_statement.enter_into_iteration
 		breaked_iterations = start_statement.break_out_iterations
 		exiting_iterations = end_statement.break_out_iterations
