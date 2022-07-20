@@ -69,7 +69,7 @@ from trace import CoverageResults, _Ignore, _modname
 
 class Trace:
 
-	def __init__(self, count=1, trace=1, countfuncs=0, countcallers=0, ignoremods=(), ignoredirs=(), infile=None, outfile=None, timing=False):
+	def __init__(self, count=1, trace=1, countfuncs=0, countcallers=0, ignoremods=(), ignoredirs=(), infile=None, outfile=None, usercode_file="UserCode.py", timing=False):
 		"""
 		@param count true iff it should count number of times each
 					 line is executed
@@ -100,7 +100,7 @@ class Trace:
 		self.start_time = None
 
 		# 个人定义的self属性
-		self.filename = "UserCode.py"
+		self.usercode_file = usercode_file
 
 		if timing:
 			self.start_time = _time()
@@ -124,6 +124,7 @@ class Trace:
 	def run(self, cmd):
 		import __main__
 		dict = __main__.__dict__
+		self.usercode = cmd
 		self.runctx(cmd, dict, dict)
 
 	def runctx(self, cmd, globals=None, locals=None):
@@ -179,7 +180,7 @@ class Trace:
 		if clsname is not None:
 			funcname = "%s.%s" % (clsname, funcname)
 
-		return self.filename, modulename, funcname
+		return self.usercode_file, modulename, funcname
 
 	def globaltrace_trackcallers(self, frame, why, arg):
 		"""Handler for call events.
@@ -227,7 +228,7 @@ class Trace:
 		if why == "line":
 			# record the file name and line number of every trace
 			lineno = frame.f_lineno
-			key = self.filename, lineno
+			key = self.usercode_file, lineno
 			self.counts[key] = self.counts.get(key, 0) + 1
 
 			local_variables = frame.f_locals
@@ -238,12 +239,14 @@ class Trace:
 
 			if self.outfile:
 				try:
-					print("(%d): %s" % (lineno, linecache.getline(self.filename, lineno)), end='', file=open(self.outfile, "a"))
+					# print("(%d): %s" % (lineno, linecache.getline(self.usercode_file, lineno)), end='', file=open(self.outfile, "a"))
+					print("(%d): %s" % (lineno, self.usercode.splitlines()[lineno-1]), end='\n', file=open(self.outfile, "a"))
 					print(f"local_variables == {local_variables}", file=open(self.outfile, "a"))
 				except OSError as err:
 					print("Can't save localtrace_trace_and_count output because %s" % err, file=sys.stderr)
 			else:
-				print("(%d): %s" % (lineno, linecache.getline(self.filename, lineno)), end='')
+				# print("(%d): %s" % (lineno, linecache.getline(self.usercode_file, lineno)), end='')
+				print("(%d): %s" % (lineno, self.usercode.splitlines()[lineno-1]), end='\n')
 		return self.localtrace
 
 	def localtrace_trace(self, frame, why, arg):
@@ -254,13 +257,15 @@ class Trace:
 			if self.start_time:
 				print('%.2f' % (_time() - self.start_time), end=' ')
 
-			print("(%d): %s" % (lineno, linecache.getline(self.filename, lineno)), end='')
+			# print("(%d): %s" % (lineno, linecache.getline(self.usercode_file, lineno)), end='')
+			print("(%d): %s" % (lineno, self.usercode.splitlines()[lineno-1]), end='\n')
+
 		return self.localtrace
 
 	def localtrace_count(self, frame, why, arg):
 		if why == "line":
 			lineno = frame.f_lineno
-			key = self.filename, lineno
+			key = self.usercode_file, lineno
 			self.counts[key] = self.counts.get(key, 0) + 1
 		return self.localtrace
 

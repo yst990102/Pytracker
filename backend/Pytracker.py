@@ -15,6 +15,10 @@ from parse_classes import Program
 # DEBUG_printing
 DEBUG_parse_strListOfList_into_ListOfList = False
 
+# RETURN_DATA Types
+RETURN_JSON = 0
+RETURN_LISTOFLIST = 1
+RETURN_PROGRAM = 2
 
 def trace_execution_tracking(tracer, result_file):
 	# print(
@@ -46,7 +50,8 @@ def trace_execution_tracking(tracer, result_file):
 				# STEP 1: grab information for the code line
 				# 0 for line_no, 1 for line_content
 				code_parse = list(parse.parse("({0}): {1}", exec_content[0]))
-
+				print(f"code_parse == {code_parse}")
+				
 				line_no = int(code_parse[0])
 				line_content = code_parse[1]
 				# CASE 1: IF_STATEMENT
@@ -175,7 +180,7 @@ def parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict: dic
 	return program
 
 
-def backend_main(usercode=open("UserCode.py").read()):
+def backend_main(usercode=open("UserCode.py").read(), return_data=RETURN_JSON):
 	# =====================================================
 	# ===========   Stage 01 : previous_check   ===========
 	# =====================================================
@@ -209,10 +214,7 @@ def backend_main(usercode=open("UserCode.py").read()):
 	# =====================================================
 	# convert ListOfList into TupleOfIntAndTuple
 	TupleOfIntAndTuple = ListOfList_to_ListOfIntAndTuple(listoflist_result)
-	print(f"listoflist == {listoflist_result}")
-	print(f"TupleOfIntAndTuple == {TupleOfIntAndTuple}")
 	grid_indent = tabdict_to_gridindent(tab_dict, while_lines)
-	print(f"grid_indent == {grid_indent}")
 	# then convert into Program
 	program = parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict, grid_indent)
 
@@ -231,9 +233,12 @@ def backend_main(usercode=open("UserCode.py").read()):
 	# listoflist_to_json(0, listoflist_result, [])
 	# step_json = {"d": 5, "list": step_list_in_json}
 
-	print(f"step_json == {step_json}")
-
-	return step_json
+	if return_data == RETURN_JSON:
+		return step_json
+	elif return_data == RETURN_LISTOFLIST:
+		return listoflist_result
+	elif return_data == RETURN_PROGRAM:
+		return program
 
 
 if __name__ == "__main__":
