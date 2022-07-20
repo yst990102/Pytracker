@@ -56,6 +56,7 @@ class Iteration(Statement):
 		self.general_steps = steps[1]
 		self.steps = []
 		self.while_line_no = self.general_steps[0]
+		self.iteration_num = steps[0]
 
 		# classify iteration to program.while_loops attribute
 		assert (isinstance(self.program, Program))

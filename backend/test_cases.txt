@@ -26,20 +26,20 @@ print(f"b == {b}")
 
 
 ==================== test case 4 nick's frontend ====================
-a=1
-a=2
-a=3
-while a==3:
-    b=1
-    while b<3:
-        if b % 2 == 1:
-            b += 1
-        else:
-            print(a)
-            b += 1
-    a += 1
+a = 1
+a = 2
+a = 3
+while a == 3:
+	b = 1
+	while b < 3:
+		if b % 2 == 1:
+			print(a)
+		else:
+			print(a)
+		b += 1
+	a += 1
 if a == 4:
-    print(a)
+	print(a)
 print("all finished!!")
 
 
@@ -49,47 +49,24 @@ res = {
         d: 5,
         list: [
 
-case 1: normal step
 {type: "step", start: 0, end: 1},
-
-case 1: normal step
 {type: "step", start: 1, end: 2,},
-
-case 2: normal step into, and start while-loop
 {type: "step", start: 2,end: 3},
 {type: "circle", start: 3,iteration: 1},
 {type: "while_start",depth: 0},
-
-case 1: normal step
 {type: "step", start: 3,end: 4},
-
-case 2: normal step into, and start while-loop
 {type: "step", start: 4,end: 5},
 {type: "circle", start: 5,iteration: 1},
 {type: "while_start",depth: 1},
-
-case 1: normal step
 {type: "step", start: 5,end: 7},
-
-case 3: step and end an iteration
 {type: "step", start: 7,end: 10},
 {type: "circle", start: 5,iteration: 1000},
-
-case 1: normal step
 {type: "step", start: 5,end: 9},
-
-case 4: step and end an while-loop
 {type: "step", start: 9,end: 10},
 {type: "while_end", start: 5,end: 10},
-
-case 4: step and end an while-loop
 {type: "step", start: 10,end: 11},
 {type: "while_end", start: 3,end: 11},
-
-case 1: normal step
 {type: "step", start: 11, end: 13},
-
-case 1: normal step
 {type: "step", start: 13,end: 14}
 
 ]}

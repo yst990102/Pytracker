@@ -1,10 +1,10 @@
 import os
 import re
 
-from parse_classes import Program
+from parse_classes import Iteration, Program
 
 DEBUG_listoflist_to_json = False
-DEBUG_get_step_json = False
+DEBUG_get_step_json = True
 
 
 # helper functions
@@ -162,15 +162,17 @@ def tabdict_to_gridindent(tab_dict: dict, while_lines: list) -> dict:
 	return grid_indent
 
 
-def get_step_json(program: Program, while_lines: list):
+def get_step_json(program: Program):
 	start_statement = program.get_first_statement()
 	end_statement = start_statement.get_next()
 
 	step_list = []
+	while_stack = []
 	while end_statement:
 		start_location = start_statement.line_no - 1
 		end_location = end_statement.line_no - 1
-
+		'''
+		method 01:
 		entered_iteration = end_statement.enter_into_iteration
 		breaked_iterations = start_statement.break_out_iterations
 		exiting_iterations = end_statement.break_out_iterations
@@ -225,9 +227,32 @@ def get_step_json(program: Program, while_lines: list):
 				if DEBUG_get_step_json:
 					print("========== case 05 ==========")
 				step_list.append({"type": "step", "start": start_location, "end": end_location})
+			'''
 
-			start_statement = start_statement.get_next()
-			end_statement = end_statement.get_next()
+		# method 02: use path to judge
+		# CASE 01: start a new while-loop
+		if len(end_statement.path) > len(start_statement.path):
+			entered_iteration = end_statement.path[-1]
+
+			step_list.append({"type": "step", "start": start_location, "end": end_location})
+			step_list.append({"type": "circle", "start": end_location, "iteration": entered_iteration.iteration_num})
+			step_list.append({"type": "while_start", "depth": -1})
+		# CASE 02: end a while-loop
+		elif len(end_statement.path) < len(start_statement.path):
+			ended_iteration = start_statement.path[-1]
+
+			step_list.append({"type": "while_end", "start": ended_iteration.get_first_inner_step().line_no - 1, "end": ended_iteration.get_last_inner_step().line_no - 1})
+			step_list.append({"type": "step", "start": start_location, "end": end_location})
+		else:
+			# CASE 03: length equalled, entering a new iteration under same while-loop
+			if start_statement.path != end_statement.path:
+				step_list.append({"type": "circle", "start": end_location})
+			# CASE 04: normal step
+			else:
+				step_list.append({"type": "step", "start": start_location, "end": end_location})
+
+		start_statement = start_statement.get_next()
+		end_statement = end_statement.get_next()
 
 	# TODO: need to find a way to calculate the maximum depth
 	max_depth = 5

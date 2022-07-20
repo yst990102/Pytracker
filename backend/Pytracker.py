@@ -12,10 +12,6 @@ from helper_functions import isBracket_match
 # classes and objects definition
 from parse_classes import Program
 
-# global variables
-SUCCESS = 1
-FAILURE = 0
-
 # DEBUG_printing
 DEBUG_parse_strListOfList_into_ListOfList = False
 
@@ -230,7 +226,7 @@ def backend_main(usercode=open("UserCode.py").read()):
 	# ===========   Stage 03 : get_step_json   ============
 	# =====================================================
 	# method 01 : get json from program
-	step_json = get_step_json(program, while_lines)
+	step_json = get_step_json(program)
 	# method 02 : get json from listoflist
 	# listoflist_to_json(0, listoflist_result, [])
 	# step_json = {"d": 5, "list": step_list_in_json}

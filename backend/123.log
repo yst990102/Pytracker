@@ -1,9 +1,29 @@
-Here
-Here
-Here
-Here
-Here
-listoflist == [1, [2, 3, 4], [2, 3, 4], [2, 3, 4], [2, 3, 4], [2, 3, 4]]
-TupleOfIntAndTuple == (1, [1, (1, [2, 3, 4]), (2, [2, 3, 4]), (3, [2, 3, 4]), (4, [2, 3, 4]), (5, [2, 3, 4])])
-grid_indent == {1: 0, 2: 0, 3: 0, 4: 0}
-step_json == {'depth': 5, 'list': [{'type': 'step', 'start': 0, 'end': 1}, {'type': 'circle', 'start': 1}, {'type': 'while_start', 'depth': -1}, {'type': 'step', 'start': 1, 'end': 2}, {'type': 'step', 'start': 2, 'end': 3}, {'type': 'circle', 'start': 1}, {'type': 'step', 'start': 1, 'end': 2}, {'type': 'step', 'start': 2, 'end': 3}, {'type': 'circle', 'start': 1}, {'type': 'step', 'start': 1, 'end': 2}, {'type': 'step', 'start': 2, 'end': 3}, {'type': 'circle', 'start': 1}, {'type': 'step', 'start': 1, 'end': 2}, {'type': 'step', 'start': 2, 'end': 3}, {'type': 'circle', 'start': 1}, {'type': 'step', 'start': 1, 'end': 2}, {'type': 'step', 'start': 2, 'end': 3}]}
+3
+3
+4
+all finished!!
+listoflist == [1, 2, 3, [4, 5, [6, 8, 11], [6, 10, 11], 12], 14, 15]
+TupleOfIntAndTuple == (1, [1, 2, 3, (1, [4, 5, (1, [6, 8, 11]), (2, [6, 10, 11]), 12]), 14, 15])
+grid_indent == {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 1, 7: 1, 8: 1, 10: 1, 11: 1, 12: 0, 13: 0, 14: 0, 15: 0}
+step_json == {'depth': 5, 'list': [
+
+
+{'type': 'step', 'start': 0, 'end': 1}, 
+{'type': 'step', 'start': 1, 'end': 2}, 
+{'type': 'step', 'start': 2, 'end': 3}, 
+{'type': 'circle', 'start': 3, 'iteration': 1}, 
+{'type': 'while_start', 'depth': -1}, 
+{'type': 'step', 'start': 3, 'end': 4}, 
+{'type': 'step', 'start': 4, 'end': 5}, 
+{'type': 'circle', 'start': 5, 'iteration': 1}, 
+{'type': 'while_start', 'depth': -1}, 
+{'type': 'step', 'start': 5, 'end': 7}, 
+{'type': 'step', 'start': 7, 'end': 10}, 
+{'type': 'circle', 'start': 5}, 
+{'type': 'step', 'start': 5, 'end': 9}, 
+{'type': 'step', 'start': 9, 'end': 10}, 
+{'type': 'while_end', 'start': 5, 'end': 10}, 
+{'type': 'step', 'start': 10, 'end': 11}, 
+{'type': 'while_end', 'start': 3, 'end': 11}, 
+{'type': 'step', 'start': 11, 'end': 13}, 
+{'type': 'step', 'start': 13, 'end': 14}]}
