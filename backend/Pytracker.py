@@ -50,7 +50,6 @@ def trace_execution_tracking(tracer, result_file):
 				# STEP 1: grab information for the code line
 				# 0 for line_no, 1 for line_content
 				code_parse = list(parse.parse("({0}): {1}", exec_content[0]))
-				print(f"code_parse == {code_parse}")
 				
 				line_no = int(code_parse[0])
 				line_content = code_parse[1]

@@ -256,7 +256,7 @@ def get_step_json(program: Program):
 
 	# TODO: need to find a way to calculate the maximum depth
 	max_depth = 5
-	return {"depth": max_depth, "list": step_list}
+	return {"d": max_depth, "list": step_list}
 
 
 step_list_in_json = []
