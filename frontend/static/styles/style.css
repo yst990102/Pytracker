@@ -118,7 +118,13 @@ body {
 }
 
 .right {
+<<<<<<< HEAD
   flex: 1;
+=======
+    flex: 1;
+    overflow-x: auto;
+    white-space: nowrap;
+>>>>>>> nick
 }
 
 tr {

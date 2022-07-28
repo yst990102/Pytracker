@@ -12,6 +12,7 @@ var prev_end = 0;
 var instructions = [];
 var no_starts = 0;
 var inner_while = null;
+var same_depth_while = false;
 
 let editorlib = {
     init() {
@@ -76,7 +77,7 @@ $("#codeSubmit").click(() => {
             markup = "";
             for (var i = 1; i <= parselist.length; i++) {
                 markup += '<div class="row">';
-                for (var j = 0; j < 15; j++) {
+                for (var j = 0; j < 100; j++) {
                     id = "r" + i + "c" + j;
                     markup += '<div id ="' + id + '" class="col"></div>';
                 }
@@ -134,6 +135,10 @@ $(document).on("click", "#stepbtns .editor_btn_prev", function () {
 				inner_while = dashed_line['ndepth'];
 			}
             prev_end = instructions[instructions.length - 1]["start"];
+            if (dashed_line['number'] !== 1) {
+                recent[recent.length - 1].remove();
+                recent.pop();
+            }
             recent[recent.length - 1].remove();
             recent.pop();
             instructions.pop();
@@ -183,6 +188,9 @@ $(document).on("click", "#stepbtns .editor_btn_prev", function () {
             instructions.pop();
 
             // Remove while_start
+            if (same_depth_while === true) {
+                same_depth_while = false;
+            }
             instructions.pop();
             depth_stack.pop();
             no_starts--;
@@ -233,7 +241,7 @@ function get_next() {
                     destinationPosition: "middleLeft",
                     pivots: [
                         { x: 30 + dist, y: 0 },
-                        { x: 2, y: -dist },
+                        { x: 2, y: - dist },
                     ],
                     forceDirection: "horizontal",
                 })
@@ -254,12 +262,15 @@ function get_next() {
 			var n_depth = null;
 			var depth_check = false;
 			console.log("inner_while = ", inner_while)
-			if (inner_while !== null) {
+			if (inner_while !== null && res['list'][count + 1]['type'] !== "while_start" && !same_depth_while) {
+                console.log("HERE")
 				n_depth = inner_while;
 				depth = inner_while;
 				inner_while = null;
 				depth_check = true;
-			}
+			} else if (inner_while !== null && res['list'][count + 1]['type'] === "while_start") {
+                same_depth_while = true;
+            }
             depth++;
             var s = "r" + res["list"][count]["start"] + "c" + depth;
             var it = res["list"][count]["start"] - 1;
@@ -293,26 +304,68 @@ function get_next() {
                 });
             } else {
                 p = "r" + prev_end + "c" + p_depth;
-                recent.push(
-                    arrowLine({
-                        source: `#${CSS.escape(p)}`,
-                        destination: `#${CSS.escape(s)}`,
-                        sourcePosition: "middleLeft",
-                        destinationPosition: "middleLeft",
-                        curvature: 0,
-                        style: "dot",
-                        forceDirection: "horizontal",
-                        endpoint: {
-                            type: "none",
-                        },
-                    })
-                );
+                var depth_diff = depth - p_depth;
+                if (depth_diff === 1) {
+                    recent.push(
+                        arrowLine({
+                            source: `#${CSS.escape(p)}`,
+                            destination: `#${CSS.escape(s)}`,
+                            sourcePosition: "middleLeft",
+                            destinationPosition: "middleLeft",
+                            curvature: 0,
+                            style: "dot",
+                            forceDirection: "horizontal",
+                            endpoint: {
+                                type: "none",
+                            },
+                        })
+                    ); 
+                } else {
+                    var previous_depth = depth - 1;
+                    var previous_line = prev_end - 1;
+                    var second_line_start = "r" + previous_line + "c" + previous_depth;
+                    recent.push(
+                        arrowLine({
+                            source: `#${CSS.escape(p)}`,
+                            destination: `#${CSS.escape(second_line_start)}`,
+                            sourcePosition: "middleLeft",
+                            destinationPosition: "middleRight",
+                            pivots: [
+                                { x: 0, y: 0 },
+                                { x: 0, y: 30 },
+                            ],
+                            style: "dot",
+                            forceDirection: "horizontal",
+                            endpoint: {
+                                type: "none",
+                            },
+                        })
+                    );
+                    recent.push(
+                        arrowLine({
+                            source: `#${CSS.escape(second_line_start)}`,
+                            destination: `#${CSS.escape(s)}`,
+                            sourcePosition: "middleRight",
+                            destinationPosition: "middleLeft",
+                            pivots: [
+                                { x: 0, y: 0 },
+                                { x: 0, y: 0 },
+                            ],
+                            style: "dot",
+                            forceDirection: "horizontal",
+                            endpoint: {
+                                type: "none",
+                            },
+                        })
+                    );
+                }
                 instructions.push({
                     type: "dashed",
                     start: prev_end,
 					pdepth: p_depth,
 					ndepth: n_depth,
-					check: depth_check
+					check: depth_check,
+                    number: depth_diff
                 });
             }
             recent.push(
@@ -342,9 +395,14 @@ function get_next() {
             get_next();
         } else if (res["list"][count]["type"] == "while_end") {
             const pdepth = depth;
-			if (inner_while === null) {
+            console.log(same_depth_while)
+			if (inner_while === null && same_depth_while === false) {
 				inner_while = depth
-			}
+			} else if (inner_while !== null && same_depth_while === true) {
+                console.log(inner_while, depth);
+                inner_while = Math.max(inner_while, depth);
+                same_depth_while = false;
+            }
             console.log("depth_stack = ", depth_stack)
             depth = depth_stack.pop();
             const while_depth = depth + 1;
