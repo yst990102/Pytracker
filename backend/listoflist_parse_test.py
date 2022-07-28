@@ -544,3 +544,12 @@ print(f"b == {b}")"""
 
 		assert (listoflist == [1, 2, 3, 4])
 		assert (step_json == {'d': 5, 'list': [{'end': 1, 'start': 0, 'type': 'step'}, {'end': 2, 'start': 1, 'type': 'step'}, {'end': 3, 'start': 2, 'type': 'step'}]})
+
+class Test_For_Statement():
+	pass
+
+class Test_Function_Calling():
+	pass
+
+class Test_Input():
+	pass
