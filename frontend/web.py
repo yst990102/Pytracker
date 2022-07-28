@@ -12,11 +12,11 @@ def home_page():
             usercode_w.write(request.json)
         usercode_w.close()
 
-        from Pytracker import backend_main
-        # run the backend Pytracker.py
-        step_json = backend_main()
+        os.system("python Pytracker.py")
+        step_json = eval(open("step_json", 'r').read())
+
         print(f"step_json from backend == {step_json}")
-        
+
         return step_json
     return render_template('index.html')
 

@@ -1,4 +1,5 @@
-a = int(input("enter a num:"))
-print(a)
-b = int(input("enter a num:"))
-print(f"b == {b}")
+a = 10
+b = 20
+tmp = a
+a = b
+b = tmp
