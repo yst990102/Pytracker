@@ -1,158 +1,135 @@
-html,
-body {
-  height: 100%;
-  width: 100%;
-  font-family: Verdana, sans-serif;
+html, body {
+    height: 100%;
+    width: 100%;
+    font-family: Verdana, sans-serif;
 }
 
 .pytracker {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .editor {
-  width: 100%;
-  height: 75%;
-  display: flex;
-  padding: 5px 0 5px 10px;
-  margin-bottom: 10px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+    width: 100%;
+    height: 75%;
+    display: flex;
+    padding: 5px 0 5px 10px;
+    margin-bottom: 10px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .editor_wrapper {
-  width: 50%;
-  height: 70%;
-  display: flex;
-  flex-direction: column;
-  background: #eee;
-  padding: 2em;
-  border-radius: 3px;
-  border: 1px solid #ccc;
+    width: 50%;
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    background: #eee;
+    padding: 2em;
+    border-radius: 3px;
+    border: 1px solid #ccc;
 }
 
 .editor_body {
-  flex: 1;
+    flex: 1;
 }
 
 .editor_footer {
-  margin-top: 12px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
+    margin-top: 12px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
 }
 
 .editor_code {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  border: 1px solid #333;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border: 1px solid #333;
 }
 
 .btn {
-  display: flex;
+    display: flex;
 }
 
 .visualisation_div {
-  display: flex;
+    display: flex;
 }
 
 .left {
-  height: 100%;
-  width: 50%;
+    height: 100%;
+    width: 50%;
 }
 
 .code_table {
-  border-radius: 3px;
-  overflow: hidden;
-  float: right;
-  background: #7918f2;
-  background: -webkit-linear-gradient(-68deg, #ac32e4, #4801ff);
-  background: -o-linear-gradient(-68deg, #ac32e4, #4801ff);
-  background: -moz-linear-gradient(-68deg, #ac32e4, #4801ff);
-  background: linear-gradient(-68deg, #ac32e4, #4801ff);
-}
-
-.code_table table {
-  background-color: transparent;
-}
-
-.code_table td {
-  font-family: Montserrat-Regular;
-  font-size: 12px;
-  color: #fff;
-  line-height: 1.4;
+    float: right;
 }
 
 .editor_btn_prev {
-  float: right;
-  position: relative;
-  display: flex;
-  flex-direction: column;
+    float: right;
+    position: relative;
+    display:flex;
+    flex-direction: column;
 }
 
 .editor_btn_next {
-  float: right;
-  position: relative;
-  display: flex;
-  flex-direction: column;
+    float: right;
+    position: relative;
+    display:flex;
+    flex-direction: column;
 }
 
 .line_num {
-  padding-right: 8px;
-  border-right: 2px solid black;
+    padding-right: 8px;
+    border-right: 2px solid black;
 }
 
 .line_content {
-  padding-left: 8px;
-  padding-right: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
 }
 
 .right {
-<<<<<<< HEAD
-  flex: 1;
-=======
     flex: 1;
     overflow-x: auto;
     white-space: nowrap;
->>>>>>> nick
 }
 
 tr {
-  height: 27px;
+    height: 27px;
 }
 
 .grid {
-  margin-top: 2px;
-  margin-bottom: 2px;
+    margin-top: 2px;
+    margin-bottom: 2px;
 }
 
 .row {
-  height: 27px;
-  margin-top: 2px;
-  margin-bottom: 2px;
+    height: 27px;
+    margin-top: 2px;
+    margin-bottom: 2px;
 }
 
 .col {
-  width: 20px;
-  height: 27px;
-  display: inline-block;
-  vertical-align: top;
-  margin-right: 30px;
+    width: 20px;
+    height: 27px;
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 30px;
 }
 
 .iteration_number {
-  display: flex;
-  justify-content: right;
-  margin-top: 8px;
-  font-size: 12px;
+    display: flex;
+    justify-content: right;
+    margin-top: 8px;
+    font-size: 12px;
 }
