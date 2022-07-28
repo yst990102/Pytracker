@@ -1,17 +1,24 @@
+import os
 from Pytracker import RETURN_JSON, RETURN_LISTOFLIST, backend_main
 
 
 class Test_Assignment():
-
 	def test_one(self):
 		usercode = """a = 10
 b = 20
 tmp = a
 a = b
 b = tmp"""
-		listoflist = backend_main(usercode=usercode, return_data=RETURN_LISTOFLIST)
-		step_json = backend_main(usercode=usercode, return_data=RETURN_JSON)
 
+		with open("UserCode.py", 'w') as f_w:
+			f_w.write(usercode)
+		f_w.close()
+	
+		os.system("python Pytracker.py")
+	
+		listoflist = eval(open("listoflist", 'r').read())
+		step_json = eval(open("step_json", 'r').read())
+	
 		assert (listoflist == [1, 2, 3, 4, 5])
 		assert (step_json == {
 		    'd': 5,
@@ -34,7 +41,6 @@ b = tmp"""
 		    }]
 		})
 
-
 class Test_IF_Statement():
 
 	def test_if(self):
@@ -43,8 +49,14 @@ b = 20
 if a < b:
 	print("HELLO")
 """
-		listoflist = backend_main(usercode=usercode, return_data=RETURN_LISTOFLIST)
-		step_json = backend_main(usercode=usercode, return_data=RETURN_JSON)
+		with open("UserCode.py", 'w') as f_w:
+			f_w.write(usercode)
+		f_w.close()
+	
+		os.system("python Pytracker.py")
+	
+		listoflist = eval(open("listoflist", 'r').read())
+		step_json = eval(open("step_json", 'r').read())
 
 		assert (listoflist == [1, 2, 4])
 		assert (step_json == {'d': 5, 'list': [{'type': 'step', 'start': 0, 'end': 1}, {'type': 'step', 'start': 1, 'end': 3}]})
@@ -57,12 +69,17 @@ if b < a:
 else:
 	print("BYE")
 """
-		listoflist = backend_main(usercode=usercode, return_data=RETURN_LISTOFLIST)
-		step_json = backend_main(usercode=usercode, return_data=RETURN_JSON)
+		with open("UserCode.py", 'w') as f_w:
+			f_w.write(usercode)
+		f_w.close()
+	
+		os.system("python Pytracker.py")
+	
+		listoflist = eval(open("listoflist", 'r').read())
+		step_json = eval(open("step_json", 'r').read())
 
 		assert (listoflist == [1, 2, 6])
 		assert (step_json == {'d': 5, 'list': [{'type': 'step', 'start': 0, 'end': 1}, {'type': 'step', 'start': 1, 'end': 5}]})
-
 
 class Test_While_Statement():
 
@@ -75,8 +92,14 @@ while a > 0:
 		print("ODD")
 	a -= 1
 """
-		listoflist = backend_main(usercode=usercode, return_data=RETURN_LISTOFLIST)
-		step_json = backend_main(usercode=usercode, return_data=RETURN_JSON)
+		with open("UserCode.py", 'w') as f_w:
+			f_w.write(usercode)
+		f_w.close()
+	
+		os.system("python Pytracker.py")
+	
+		listoflist = eval(open("listoflist", 'r').read())
+		step_json = eval(open("step_json", 'r').read())
 
 		assert (listoflist == [1, [2, 4, 7], [2, 6, 7], [2, 4, 7], [2, 6, 7]])
 		assert (step_json == {
@@ -154,8 +177,14 @@ while i < 4:
 print(even_sum)
 print(odd_sum)
 """
-		listoflist = backend_main(usercode=usercode, return_data=RETURN_LISTOFLIST)
-		step_json = backend_main(usercode=usercode, return_data=RETURN_JSON)
+		with open("UserCode.py", 'w') as f_w:
+			f_w.write(usercode)
+		f_w.close()
+	
+		os.system("python Pytracker.py")
+	
+		listoflist = eval(open("listoflist", 'r').read())
+		step_json = eval(open("step_json", 'r').read())
 
 		assert (listoflist == [1, 2, 3, [4, 5, [6, 8, 11], [6, 10, 11], 12], [4, 5, [6, 10, 11], [6, 8, 11], 12], [4, 5, [6, 8, 11], [6, 10, 11], 12], [4, 5, [6, 10, 11], [6, 8, 11], 12], 14, 15])
 		assert (step_json == {
@@ -378,8 +407,14 @@ while i < 5:
 	print("Here")
 	i += 1
 """
-		listoflist = backend_main(usercode=usercode, return_data=RETURN_LISTOFLIST)
-		step_json = backend_main(usercode=usercode, return_data=RETURN_JSON)
+		with open("UserCode.py", 'w') as f_w:
+			f_w.write(usercode)
+		f_w.close()
+	
+		os.system("python Pytracker.py")
+	
+		listoflist = eval(open("listoflist", 'r').read())
+		step_json = eval(open("step_json", 'r').read())
 
 		assert (listoflist == [1, [2, 3, 4], [2, 3, 4], [2, 3, 4], [2, 3, 4], [2, 3, 4]])
 		assert (step_json == {
@@ -451,7 +486,6 @@ while i < 5:
 		    }]
 		})
 
-
 class Test_Different_Main():
 
 	def test_call_by_main_method(self):
@@ -463,8 +497,14 @@ class Test_Different_Main():
 
 main()"""
 
-		listoflist = backend_main(usercode=usercode, return_data=RETURN_LISTOFLIST)
-		step_json = backend_main(usercode=usercode, return_data=RETURN_JSON)
+		with open("UserCode.py", 'w') as f_w:
+			f_w.write(usercode)
+		f_w.close()
+	
+		os.system("python Pytracker.py")
+	
+		listoflist = eval(open("listoflist", 'r').read())
+		step_json = eval(open("step_json", 'r').read())
 
 		assert (listoflist == [1, 7, 2, 3, 4, 5])
 		assert (step_json == {
@@ -503,8 +543,14 @@ main()"""
 if __name__ == "__main__":
 	main()"""
 
-		listoflist = backend_main(usercode=usercode, return_data=RETURN_LISTOFLIST)
-		step_json = backend_main(usercode=usercode, return_data=RETURN_JSON)
+		with open("UserCode.py", 'w') as f_w:
+			f_w.write(usercode)
+		f_w.close()
+	
+		os.system("python Pytracker.py")
+	
+		listoflist = eval(open("listoflist", 'r').read())
+		step_json = eval(open("step_json", 'r').read())
 
 		assert (listoflist == [1, 8, 2, 3, 4, 5])
 		assert (step_json == {
@@ -539,8 +585,14 @@ print(a)
 b = int(input("enter a num:"))
 print(f"b == {b}")"""
 
-		listoflist = backend_main(usercode=usercode, return_data=RETURN_LISTOFLIST)
-		step_json = backend_main(usercode=usercode, return_data=RETURN_JSON)
+		with open("UserCode.py", 'w') as f_w:
+			f_w.write(usercode)
+		f_w.close()
+	
+		os.system("python Pytracker.py")
+	
+		listoflist = eval(open("listoflist", 'r').read())
+		step_json = eval(open("step_json", 'r').read())
 
 		assert (listoflist == [1, 2, 3, 4])
 		assert (step_json == {'d': 5, 'list': [{'end': 1, 'start': 0, 'type': 'step'}, {'end': 2, 'start': 1, 'type': 'step'}, {'end': 3, 'start': 2, 'type': 'step'}]})
@@ -552,4 +604,7 @@ class Test_Function_Calling():
 	pass
 
 class Test_Input():
+	pass
+
+class Test_Special_Case():
 	pass

@@ -116,3 +116,15 @@ while i < 4:
 
 print(even_sum)
 print(odd_sum)
+
+==================== test case 7 simple function call ====================
+def myprint(something):
+    print(something)
+
+def main():
+    a=123
+    myprint(a)
+    b=321
+    myprint
+
+main()

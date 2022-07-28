@@ -80,7 +80,12 @@ def trace_execution_tracking(tracer, result_file):
 				local_variables = vari_parse[0]
 				local_variables = re.sub("<function", "'<function", local_variables)
 				local_variables = re.sub(">", ">'", local_variables)
-				local_variables = eval(local_variables)
+
+				if "__loader__" in str(local_variables):
+					local_variables = {}
+				else:
+					# print("not it is not in")
+					local_variables = eval(local_variables)
 
 				steps_info.append((line_no, local_variables))
 
@@ -228,11 +233,14 @@ def backend_main(usercode=open("UserCode.py").read(), return_data=RETURN_JSON):
 	# =====================================================
 	# method 01 : get json from program
 	step_json = get_step_json(program)
-	print(f"method 01: step_json == {step_json}")
 	# method 02 : get json from listoflist
 	# listoflist_to_json(0, listoflist_result, [])
 	# step_json = {"d": 5, "list": step_list_in_json}
-	# print(f"method 02: step_json == {step_json}")
+
+	# write step_json into "step_json"
+	with open("step_json", 'w') as step_json_out:
+		step_json_out.write(str(step_json))
+	step_json_out.close()
 
 	if return_data == RETURN_JSON:
 		return step_json
