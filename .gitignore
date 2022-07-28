@@ -1,10 +1,11 @@
 __pycache__/*
 *.pyc
+*.log
 references/*
-backend/listoflist
-backend/Pytracker_output
-backend/Pytracker_output.stdout
+
 test.py
+
 listoflist
+step_json
 Pytracker_output
 UseCode.py
