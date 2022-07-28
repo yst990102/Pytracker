@@ -15,10 +15,6 @@ from parse_classes import Program
 # DEBUG_printing
 DEBUG_parse_strListOfList_into_ListOfList = False
 
-# RETURN_DATA Types
-RETURN_JSON = 0
-RETURN_LISTOFLIST = 1
-RETURN_PROGRAM = 2
 
 def trace_execution_tracking(tracer, result_file):
 	# print(
@@ -184,7 +180,7 @@ def parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict: dic
 	return program
 
 
-def backend_main(usercode=open("UserCode.py").read(), return_data=RETURN_JSON):
+def backend_main(usercode=open("UserCode.py").read()):
 	# =====================================================
 	# ===========   Stage 01 : previous_check   ===========
 	# =====================================================
@@ -241,13 +237,6 @@ def backend_main(usercode=open("UserCode.py").read(), return_data=RETURN_JSON):
 	with open("step_json", 'w') as step_json_out:
 		step_json_out.write(str(step_json))
 	step_json_out.close()
-
-	if return_data == RETURN_JSON:
-		return step_json
-	elif return_data == RETURN_LISTOFLIST:
-		return listoflist_result
-	elif return_data == RETURN_PROGRAM:
-		return program
 
 
 if __name__ == "__main__":
