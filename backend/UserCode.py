@@ -1,5 +1,7 @@
-a = 10
-b = 20
-tmp = a
-a = b
-b = tmp
+a = 4
+while a > 0:
+    if a % 2 == 0:
+        print("EVEN")
+    else:
+        print("ODD")
+    a -= 1

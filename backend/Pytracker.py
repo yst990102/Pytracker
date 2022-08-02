@@ -1,4 +1,5 @@
 import os
+import pathlib
 import sys
 from my_trace import Trace
 import re
@@ -14,6 +15,9 @@ from parse_classes import Program
 
 # DEBUG_printing
 DEBUG_parse_strListOfList_into_ListOfList = False
+
+# personal defines && globals
+current_absolute_path = str(pathlib.Path(__file__).parent.resolve())
 
 
 def trace_execution_tracking(tracer, result_file):
@@ -180,7 +184,7 @@ def parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict: dic
 	return program
 
 
-def backend_main(usercode=open("UserCode.py").read()):
+def backend_main(usercode=open(current_absolute_path + "/" + "UserCode.py").read()):
 	# =====================================================
 	# ===========   Stage 01 : previous_check   ===========
 	# =====================================================
@@ -205,7 +209,7 @@ def backend_main(usercode=open("UserCode.py").read()):
 	listoflist_result = remove_if_else_lines_from_listoflist(if_else_lines, listoflist_result)
 
 	# write listoflist_result into "listoflist"
-	with open("listoflist", 'w') as listoflist_out:
+	with open(current_absolute_path + "/" + "listoflist", 'w') as listoflist_out:
 		listoflist_out.write(str(listoflist_result))
 	listoflist_out.close()
 
@@ -234,7 +238,7 @@ def backend_main(usercode=open("UserCode.py").read()):
 	# step_json = {"d": 5, "list": step_list_in_json}
 
 	# write step_json into "step_json"
-	with open("step_json", 'w') as step_json_out:
+	with open(current_absolute_path + "/" +"step_json", 'w') as step_json_out:
 		step_json_out.write(str(step_json))
 	step_json_out.close()
 
