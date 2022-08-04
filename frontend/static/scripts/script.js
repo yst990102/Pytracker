@@ -77,7 +77,7 @@ $("#codeSubmit").click(() => {
             markup = "";
             for (var i = 1; i <= parselist.length; i++) {
                 markup += '<div class="row">';
-                for (var j = 0; j < 100; j++) {
+                for (var j = 0; j < 70; j++) {
                     id = "r" + i + "c" + j;
                     markup += '<div id ="' + id + '" class="col"></div>';
                 }
