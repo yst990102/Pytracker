@@ -43,39 +43,3 @@ res = {
 {type: "step", start: 13,end: 14}
 
 ]}
-
-==================== test case 5 simple for-loop ====================
-i = 0
-for i in range(5):
-	print("Here")
-
-
-==================== test case 6 nested for-loop ====================
-even_sum = 0
-odd_sum = 0
-i = 0
-for i in range(i,4):
-	j = 4
-	for j in range(j,6):
-		if (i + j) % 2 == 0:
-			even_sum += (i + j)
-		else:
-			odd_sum += (i + j)
-		j += 1
-	i += 1
-
-print(even_sum)
-print(odd_sum)
-
-
-==================== test case 7 simple function call ====================
-def myprint(something):
-    print(something)
-
-def main():
-    a=123
-    myprint(a)
-    b=321
-    myprint
-
-main()

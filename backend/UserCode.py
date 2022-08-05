@@ -1,7 +1,4 @@
-a = 4
-while a > 0:
-    if a % 2 == 0:
-        print("EVEN")
-    else:
-        print("ODD")
-    a -= 1
+i = 0
+while i < 5:
+	print("Here")
+	i += 1
