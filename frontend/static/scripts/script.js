@@ -34,6 +34,10 @@ $("#codeSubmit").click(() => {
     var usercode = txt.trim();
     var lines = usercode.split("\n");
     parselist = [];
+    parselist.push({
+        num: "Program Start",
+        content: "",
+    })
     for (var i = 1; i <= lines.length; i++) {
         parselist.push({
             num: i,
@@ -75,7 +79,7 @@ $("#codeSubmit").click(() => {
             res = data;
             var grid = $("#graph");
             markup = "";
-            for (var i = 1; i <= parselist.length; i++) {
+            for (var i = 0; i <= parselist.length; i++) {
                 markup += '<div class="row">';
                 for (var j = 0; j < 70; j++) {
                     id = "r" + i + "c" + j;
@@ -211,11 +215,16 @@ $(document).on("click", "#stepbtns .editor_btn_prev", function () {
             recent.pop();
             instructions.pop();
 
-            // Remove step
-            recent[recent.length - 1].remove();
-            recent.pop();
-            instructions.pop();
-            count -= 3;
+            console.log(instructions[instructions.length - 2])
+            if (instructions.length - 2 >= 0 && instructions[instructions.length - 2]["type"] != "while_start") {
+                // Remove step
+                recent[recent.length - 1].remove();
+                recent.pop();
+                instructions.pop();
+                count -= 3;
+            } else {
+                count -= 2;
+            }
 
         } else {
             recent[recent.length - 1].remove();
@@ -252,7 +261,9 @@ function get_next() {
                 count + 1 < res["list"].length - 1 &&
                 res["list"][count + 1]["type"] == "circle" &&
                 count + 2 < res["list"].length - 1 &&
-                res["list"][count + 2]["type"] == "while_start"
+                res["list"][count + 2]["type"] == "while_start" &&
+                count + 4 < res["list"].length - 1 &&
+                res["list"][count + 4]["type"] == "circle"
             ) {
                 get_next();
             }
