@@ -1,3 +1,4 @@
+import json
 import os
 import pathlib
 import sys
@@ -238,9 +239,9 @@ def backend_main(usercode=open(current_absolute_path + "/" + "UserCode.py").read
 	# step_json = {"d": 5, "list": step_list_in_json}
 
 	# write step_json into "step_json"
-	with open(current_absolute_path + "/" +"step_json", 'w') as step_json_out:
-		step_json_out.write(str(step_json))
-	step_json_out.close()
+	with open(current_absolute_path + "/" + "step_json.json", "w") as step_json_file_write:
+		json.dump(step_json, step_json_file_write)
+	step_json_file_write.close()
 
 
 if __name__ == "__main__":

@@ -77,7 +77,7 @@ print(a)"""
 		assert (listoflist == [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18])
 		assert (step_json == {
 		    'd':
-                5,
+                                  5,
 		    'list': [{
 		        'type': 'step',
 		        'start': 0,
@@ -193,7 +193,92 @@ else:
 
 class Test_While_Statement():
 
-	def test_complex_while(self):
+	def test_simplest_while(self):
+		usercode = """i = 0
+while i < 5:
+	print("Here")
+	i += 1
+"""
+		with open(current_absolute_path + "/" + "UserCode.py", 'w') as f_w:
+			f_w.write(usercode)
+		f_w.close()
+
+		os.system("python " + current_absolute_path + "/" + "Pytracker.py")
+
+		listoflist = eval(open(current_absolute_path + "/" + "listoflist", 'r').read())
+		step_json = eval(open(current_absolute_path + "/" + "step_json", 'r').read())
+
+		assert (listoflist == [1, [2, 3, 4], [2, 3, 4], [2, 3, 4], [2, 3, 4], [2, 3, 4]])
+		assert (step_json == {
+		    'd':
+                                  5,
+		    'list': [{
+		        'type': 'step',
+		        'start': 0,
+		        'end': 1
+		    }, {
+		        'type': 'circle',
+		        'start': 1,
+		        'iteration': 1
+		    }, {
+		        'type': 'while_start',
+		        'depth': -1
+		    }, {
+		        'type': 'step',
+		        'start': 1,
+		        'end': 2
+		    }, {
+		        'type': 'step',
+		        'start': 2,
+		        'end': 3
+		    }, {
+		        'type': 'circle',
+		        'start': 1
+		    }, {
+		        'type': 'step',
+		        'start': 1,
+		        'end': 2
+		    }, {
+		        'type': 'step',
+		        'start': 2,
+		        'end': 3
+		    }, {
+		        'type': 'circle',
+		        'start': 1
+		    }, {
+		        'type': 'step',
+		        'start': 1,
+		        'end': 2
+		    }, {
+		        'type': 'step',
+		        'start': 2,
+		        'end': 3
+		    }, {
+		        'type': 'circle',
+		        'start': 1
+		    }, {
+		        'type': 'step',
+		        'start': 1,
+		        'end': 2
+		    }, {
+		        'type': 'step',
+		        'start': 2,
+		        'end': 3
+		    }, {
+		        'type': 'circle',
+		        'start': 1
+		    }, {
+		        'type': 'step',
+		        'start': 1,
+		        'end': 2
+		    }, {
+		        'type': 'step',
+		        'start': 2,
+		        'end': 3
+		    }]
+		})
+
+	def test_1layer_with_ifelse(self):
 		usercode = """a = 4
 while a > 0:
 	if a % 2 == 0:
@@ -214,7 +299,7 @@ while a > 0:
 		assert (listoflist == [1, [2, 4, 7], [2, 6, 7], [2, 4, 7], [2, 6, 7]])
 		assert (step_json == {
 		    'd':
-                5,
+                                  5,
 		    'list': [{
 		        'type': 'step',
 		        'start': 0,
@@ -270,7 +355,7 @@ while a > 0:
 		    }]
 		})
 
-	def test_nested_while(self):
+	def test_2layer_with_ifelse(self):
 		usercode = """even_sum = 0
 odd_sum = 0
 i = 0
@@ -299,7 +384,7 @@ print(odd_sum)
 		assert (listoflist == [1, 2, 3, [4, 5, [6, 8, 11], [6, 10, 11], 12], [4, 5, [6, 10, 11], [6, 8, 11], 12], [4, 5, [6, 8, 11], [6, 10, 11], 12], [4, 5, [6, 10, 11], [6, 8, 11], 12], 14, 15])
 		assert (step_json == {
 		    'd':
-                5,
+                                  5,
 		    'list': [{
 		        'type': 'step',
 		        'start': 0,
@@ -511,10 +596,18 @@ print(odd_sum)
 		    }]
 		})
 
-	def test_simple_while(self):
+	def test_3layer(self):
 		usercode = """i = 0
-while i < 5:
-	print("Here")
+j = 0
+k = 0
+while i < 1:
+	while j < 1:
+		while k < 1:
+			print(k)
+			k += 1
+		print(j)
+		j += 1
+	print(i)
 	i += 1
 """
 		with open(current_absolute_path + "/" + "UserCode.py", 'w') as f_w:
@@ -526,7 +619,7 @@ while i < 5:
 		listoflist = eval(open(current_absolute_path + "/" + "listoflist", 'r').read())
 		step_json = eval(open(current_absolute_path + "/" + "step_json", 'r').read())
 
-		assert (listoflist == [1, [2, 3, 4], [2, 3, 4], [2, 3, 4], [2, 3, 4], [2, 3, 4]])
+		assert (listoflist == [1, 2, 3, [4, [5, [6, 7, 8], 9, 10], 11, 12]])
 		assert (step_json == {
 		    'd':
                 5,
@@ -535,64 +628,74 @@ while i < 5:
 		        'start': 0,
 		        'end': 1
 		    }, {
-		        'type': 'circle',
+		        'type': 'step',
 		        'start': 1,
+		        'end': 2
+		    }, {
+		        'type': 'step',
+		        'start': 2,
+		        'end': 3
+		    }, {
+		        'type': 'circle',
+		        'start': 3,
 		        'iteration': 1
 		    }, {
 		        'type': 'while_start',
 		        'depth': -1
 		    }, {
 		        'type': 'step',
-		        'start': 1,
-		        'end': 2
-		    }, {
-		        'type': 'step',
-		        'start': 2,
-		        'end': 3
+		        'start': 3,
+		        'end': 4
 		    }, {
 		        'type': 'circle',
-		        'start': 1
+		        'start': 4,
+		        'iteration': 1
+		    }, {
+		        'type': 'while_start',
+		        'depth': -1
 		    }, {
 		        'type': 'step',
-		        'start': 1,
-		        'end': 2
-		    }, {
-		        'type': 'step',
-		        'start': 2,
-		        'end': 3
+		        'start': 4,
+		        'end': 5
 		    }, {
 		        'type': 'circle',
-		        'start': 1
+		        'start': 5,
+		        'iteration': 1
+		    }, {
+		        'type': 'while_start',
+		        'depth': -1
 		    }, {
 		        'type': 'step',
-		        'start': 1,
-		        'end': 2
+		        'start': 5,
+		        'end': 6
 		    }, {
 		        'type': 'step',
-		        'start': 2,
-		        'end': 3
+		        'start': 6,
+		        'end': 7
 		    }, {
-		        'type': 'circle',
-		        'start': 1
-		    }, {
-		        'type': 'step',
-		        'start': 1,
-		        'end': 2
+		        'type': 'while_end',
+		        'start': 5,
+		        'end': 7
 		    }, {
 		        'type': 'step',
-		        'start': 2,
-		        'end': 3
-		    }, {
-		        'type': 'circle',
-		        'start': 1
+		        'start': 7,
+		        'end': 8
 		    }, {
 		        'type': 'step',
-		        'start': 1,
-		        'end': 2
+		        'start': 8,
+		        'end': 9
+		    }, {
+		        'type': 'while_end',
+		        'start': 4,
+		        'end': 9
 		    }, {
 		        'type': 'step',
-		        'start': 2,
-		        'end': 3
+		        'start': 9,
+		        'end': 10
+		    }, {
+		        'type': 'step',
+		        'start': 10,
+		        'end': 11
 		    }]
 		})
 
@@ -620,7 +723,7 @@ main()"""
 		assert (listoflist == [1, 7, 2, 3, 4, 5])
 		assert (step_json == {
 		    'd':
-                5,
+                                  5,
 		    'list': [{
 		        'end': 6,
 		        'start': 0,
@@ -666,7 +769,7 @@ if __name__ == "__main__":
 		assert (listoflist == [1, 8, 2, 3, 4, 5])
 		assert (step_json == {
 		    'd':
-                5,
+                                  5,
 		    'list': [{
 		        'end': 7,
 		        'start': 0,
@@ -727,7 +830,7 @@ class Test_For_Statement():
 		assert (listoflist == [[1, 2], [1, 2], [1, 2], [1, 2], [1, 2]])
 		assert (step_json == {
 		    'd':
-		        5,
+                                  5,
 		    'list': [{
 		        'type': 'step',
 		        'start': 0,
@@ -850,7 +953,7 @@ class Test_For_Statement():
 		assert (listoflist == [[1, 3], [1, 5], [1, 3], [1, 5]])
 		assert (step_json == {
 		    'd':
-                5,
+                                  5,
 		    'list': [{
 		        'end': 1,
 		        'start': 0,
@@ -933,7 +1036,7 @@ print(odd_sum)
 		assert (listoflist == [1, 2, 3, [4, [5, 7], [5, 9], [5, 9], [5, 7], [5, 7], [5, 9], [5, 9], [5, 7], 11], 12])
 		assert (step_json == {
 		    'd':
-                5,
+                                  5,
 		    'list': [{
 		        'type': 'step',
 		        'start': 0,
@@ -1064,7 +1167,7 @@ main()
 		assert (listoflist == [1, 4, 10, 5, 6, 2, 7, 8, 2])
 		assert (step_json == {
 		    'd':
-                5,
+                                  5,
 		    'list': [{
 		        'end': 3,
 		        'start': 0,
