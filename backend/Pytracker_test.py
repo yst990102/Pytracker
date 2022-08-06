@@ -77,7 +77,7 @@ print(a)"""
 		assert (listoflist == [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18])
 		assert (step_json == {
 		    'd':
-                                                          5,
+		        5,
 		    'list': [{
 		        'type': 'step',
 		        'start': 0,
@@ -211,7 +211,7 @@ while i < 5:
 		assert (listoflist == [1, [2, 3, 4], [2, 3, 4], [2, 3, 4], [2, 3, 4], [2, 3, 4]])
 		assert (step_json == {
 		    'd':
-                                                          5,
+		        5,
 		    'list': [{
 		        'type': 'step',
 		        'start': 0,
@@ -298,7 +298,7 @@ while i < 6:
 		assert (listoflist == [1, 2, [3, [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], 6], [3, 6], [3, 6], [3, 6], [3, 6], [3, 6]])
 		assert (step_json == {
 		    "d":
-                            5,
+		        5,
 		    "list": [{
 		        "type": "step",
 		        "start": 0,
@@ -410,7 +410,6 @@ while i < 6:
 		    }]
 		})
 
-
 	def test_1layer_with_ifelse(self):
 		usercode = """a = 4
 while a > 0:
@@ -432,7 +431,7 @@ while a > 0:
 		assert (listoflist == [1, [2, 4, 7], [2, 6, 7], [2, 4, 7], [2, 6, 7]])
 		assert (step_json == {
 		    'd':
-                                                          5,
+		        5,
 		    'list': [{
 		        'type': 'step',
 		        'start': 0,
@@ -517,7 +516,7 @@ print(odd_sum)
 		assert (listoflist == [1, 2, 3, [4, 5, [6, 8, 11], [6, 10, 11], 12], [4, 5, [6, 10, 11], [6, 8, 11], 12], [4, 5, [6, 8, 11], [6, 10, 11], 12], [4, 5, [6, 10, 11], [6, 8, 11], 12], 14, 15])
 		assert (step_json == {
 		    'd':
-                                                          5,
+		        5,
 		    'list': [{
 		        'type': 'step',
 		        'start': 0,
@@ -755,7 +754,7 @@ while i < 1:
 		assert (listoflist == [1, 2, 3, [4, [5, [6, 7, 8], 9, 10], 11, 12]])
 		assert (step_json == {
 		    'd':
-                                                          5,
+		        5,
 		    'list': [{
 		        'type': 'step',
 		        'start': 0,
@@ -867,7 +866,7 @@ print(odd_sum)
 		assert (listoflist == [1, 2, 3, [4, 5, [6, 8, 11], [6, 10, 11], [6, 8, 11], [6, 10, 11], [6, 18], 5, [6, 10, 11], [6, 8, 11], [6, 10, 11], [6, 8, 11], [6, 18], 20], 21])
 		assert (step_json == {
 		    "d":
-                5,
+		        5,
 		    "list": [{
 		        "type": "step",
 		        "start": 0,
@@ -1036,6 +1035,10 @@ print(odd_sum)
 		    }]
 		})
 
+	# TODO: need to be done
+	def test_while_in_ifelse(self):
+		pass
+
 
 class Test_Different_Main():
 
@@ -1060,7 +1063,7 @@ main()"""
 		assert (listoflist == [1, 7, 2, 3, 4, 5])
 		assert (step_json == {
 		    'd':
-                                                          5,
+		        5,
 		    'list': [{
 		        'end': 6,
 		        'start': 0,
@@ -1106,7 +1109,7 @@ if __name__ == "__main__":
 		assert (listoflist == [1, 8, 2, 3, 4, 5])
 		assert (step_json == {
 		    'd':
-                                                          5,
+		        5,
 		    'list': [{
 		        'end': 7,
 		        'start': 0,
@@ -1150,7 +1153,6 @@ print(f"b == {b}")"""
 
 
 class Test_For_Statement():
-	# TODO
 	def test_simple_forloop(self):
 		usercode = """for i in range(5):
 	print("Here")
@@ -1167,7 +1169,7 @@ class Test_For_Statement():
 		assert (listoflist == [[1, 2], [1, 2], [1, 2], [1, 2], [1, 2]])
 		assert (step_json == {
 		    'd':
-                                                          5,
+		        5,
 		    'list': [{
 		        'type': 'step',
 		        'start': 0,
@@ -1290,7 +1292,7 @@ class Test_For_Statement():
 		assert (listoflist == [[1, 3], [1, 5], [1, 3], [1, 5]])
 		assert (step_json == {
 		    'd':
-                                                          5,
+		        5,
 		    'list': [{
 		        'end': 1,
 		        'start': 0,
@@ -1346,7 +1348,6 @@ class Test_For_Statement():
 		    }]
 		})
 
-	# TODO
 	def test_nested_forloop(self):
 		usercode = """even_sum = 0
 odd_sum = 0
@@ -1373,7 +1374,7 @@ print(odd_sum)
 		assert (listoflist == [1, 2, 3, [4, [5, 7], [5, 9], [5, 9], [5, 7], [5, 7], [5, 9], [5, 9], [5, 7], 11], 12])
 		assert (step_json == {
 		    'd':
-                                                          5,
+		        5,
 		    'list': [{
 		        'type': 'step',
 		        'start': 0,
@@ -1479,7 +1480,6 @@ print(odd_sum)
 
 class Test_Function_Calling():
 	# TODO: function loading error??
-	# TODO: also keep 2 new lines between functions?
 	def test_one_function_calling(self):
 		usercode = """def myprint(something):
     print(something)
@@ -1504,7 +1504,7 @@ main()
 		assert (listoflist == [1, 4, 10, 5, 6, 2, 7, 8, 2])
 		assert (step_json == {
 		    'd':
-                                                          5,
+		        5,
 		    'list': [{
 		        'end': 3,
 		        'start': 0,
@@ -1540,8 +1540,7 @@ main()
 		    }]
 		})
 
-		pass
-
+	# TODO: need to be done
 	def test_multi_function_calling(self):
 		pass
 
