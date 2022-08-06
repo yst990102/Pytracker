@@ -8,22 +8,17 @@ app = Flask(__name__)
 def home_page():
     if request.method == "POST":
         # write usercode to backend test_script_file
-        with open("UserCode.py", 'w') as usercode_w:
+        with open("../backend/UserCode.py", 'w') as usercode_w:
             usercode_w.write(request.json)
         usercode_w.close()
 
-        os.system("python Pytracker.py")
-        step_json = eval(open("step_json", 'r').read())
+        os.system("python ../backend/Pytracker.py")
+        step_json = eval(open("../backend/step_json.json", 'r').read())
 
         print(f"step_json from backend == {step_json}")
 
         return step_json
     return render_template('index.html')
-
-
-# @app.route('/')
-# def post_user_code():
-#     text
 
 if __name__ == "__main__":
     app.run(debug=True)

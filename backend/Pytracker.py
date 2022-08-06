@@ -190,20 +190,22 @@ def backend_main(usercode=open(current_absolute_path + "/" + "UserCode.py").read
 	# ===========   Stage 01 : previous_check   ===========
 	# =====================================================
 	# format with yapf3 before create test_script
-	os.system(f"yapf -i {'UserCode.py'}")
+	os.system(f"yapf -i {current_absolute_path}/UserCode.py")
 
 	# clean the execution txt before start a new tracer
-	clean_content_in_file("Pytracker_output")
+	# clean_content_in_file(current_absolute_path + "/" + "Pytracker_output")
+	# clean_content_in_file(current_absolute_path + "/" + "step_json.json")
+	# clean_content_in_file(current_absolute_path + "/" + "listoflist")
 
 	# create tracer
-	tracer = Trace(ignoredirs=[sys.prefix, sys.exec_prefix], trace=1, count=1, outfile="Pytracker_output")
+	tracer = Trace(ignoredirs=[sys.prefix, sys.exec_prefix], trace=1, count=1, outfile=current_absolute_path + "/" + "Pytracker_output")
 	tracer.run(usercode)
 
 	# =====================================================
 	# ============   Stage 02 : main_tracing   ============
 	# =====================================================
 	# trace the whole execution, return a ListOfList
-	listoflist_result, tab_dict, while_lines, if_else_lines = trace_execution_tracking(tracer, "Pytracker_output")
+	listoflist_result, tab_dict, while_lines, if_else_lines = trace_execution_tracking(tracer, current_absolute_path + "/" + "Pytracker_output")
 
 	# remove single_list -> "[0-9]" from the listoflist_result
 	listoflist_result = remove_singlelist_from_listoflist(listoflist_result)
