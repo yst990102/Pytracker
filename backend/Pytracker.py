@@ -193,9 +193,9 @@ def backend_main(usercode=open(current_absolute_path + "/" + "UserCode.py").read
 	os.system(f"yapf -i {current_absolute_path}/UserCode.py")
 
 	# clean the execution txt before start a new tracer
-	# clean_content_in_file(current_absolute_path + "/" + "Pytracker_output")
-	# clean_content_in_file(current_absolute_path + "/" + "step_json.json")
-	# clean_content_in_file(current_absolute_path + "/" + "listoflist")
+	clean_content_in_file(current_absolute_path + "/" + "Pytracker_output")
+	clean_content_in_file(current_absolute_path + "/" + "step_json.json")
+	clean_content_in_file(current_absolute_path + "/" + "listoflist")
 
 	# create tracer
 	tracer = Trace(ignoredirs=[sys.prefix, sys.exec_prefix], trace=1, count=1, outfile=current_absolute_path + "/" + "Pytracker_output")
