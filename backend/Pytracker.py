@@ -6,28 +6,34 @@ from my_trace import Trace
 import re
 import parse
 
-# import helper_functions
+# Pytracker import
 # file_op helpers
-from helper_functions import ListOfList_to_ListOfIntAndTuple, create_test_file, del_line_in_file, delete_file, clean_content_in_file, get_step_json, listoflist_to_json, remove_if_else_lines_from_listoflist, remove_singlelist_from_listoflist, tabdict_to_gridindent, step_list_in_json
+from helper_functions import create_test_file, del_line_in_file, delete_file, clean_content_in_file
+# list of list processors
+from helper_functions import ListOfList_to_ListOfIntAndTuple, remove_if_else_lines_from_listoflist, remove_singlelist_from_listoflist
+# json processors
+from helper_functions import get_step_json, listoflist_to_json
+# other processors
+from helper_functions import tabdict_to_gridindent
 # checkers
 from helper_functions import isBracket_match
 # classes and objects definition
 from parse_classes import Program
 
-# DEBUG_printing
-DEBUG_parse_strListOfList_into_ListOfList = False
+# Pytracker globals
+global Pytracker_locals
+global Pytracker_globals
+Pytracker_locals = locals()
+Pytracker_globals = globals()
 
-# personal defines && globals
+# Pytracker defines
 current_absolute_path = str(pathlib.Path(__file__).parent.resolve())
+
+# DEBUG switches
+DEBUG_parse_strListOfList_into_ListOfList = False
 
 
 def trace_execution_tracking(tracer, result_file):
-	# print(
-	# 	"************************************************************\n" +
-	# 	"*************              trace               *************\n" +
-	# 	"************************************************************"
-	# )
-
 	# steps -- all the execution steps
 	# formate -- [(line_no, local_variables), (..), ...]
 	steps_info = []
@@ -78,15 +84,8 @@ def trace_execution_tracking(tracer, result_file):
 				# STEP 2: grab information for the local_variable line
 				vari_parse = list(parse.parse("local_variables == {0}", exec_content[1]))
 
+				# TODO: 这边的local_variable需要将Pytracker_locals里面对应的东西去除
 				local_variables = vari_parse[0]
-				local_variables = re.sub("<function", "'<function", local_variables)
-				local_variables = re.sub(">", ">'", local_variables)
-
-				if "__loader__" in str(local_variables):
-					local_variables = {}
-				else:
-					# print("not it is not in")
-					local_variables = eval(local_variables)
 
 				steps_info.append((line_no, local_variables))
 
@@ -171,18 +170,11 @@ def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
 		print(f"ERROR: isBracket_match Failed! result == {result}, stack == {stack}")
 		exit(1)
 
-	if DEBUG_parse_strListOfList_into_ListOfList:
-		print("before listoflist evaluated", result)
-	parse_result = eval(result)
-	if DEBUG_parse_strListOfList_into_ListOfList:
-		print("after listoflist evaluated", parse_result)
-
-	return parse_result
+	return eval(result)
 
 
 def parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict: dict, grid_indent: dict):
-	program = Program(TupleOfIntAndTuple, tab_dict, grid_indent)
-	return program
+	return Program(TupleOfIntAndTuple, tab_dict, grid_indent)
 
 
 def backend_main(usercode=open(current_absolute_path + "/" + "UserCode.py").read()):

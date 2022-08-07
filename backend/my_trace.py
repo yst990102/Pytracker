@@ -128,6 +128,10 @@ class Trace:
 		self.runctx(cmd, dict, dict)
 
 	def runctx(self, cmd, globals=None, locals=None):
+		from Pytracker import Pytracker_locals, Pytracker_globals
+		locals_diff = [i for i in Pytracker_locals if i not in locals]
+		globals_diff = [i for i in Pytracker_globals if i not in globals]
+
 		if globals is None:
 			globals = {}
 		if locals is None:
@@ -136,9 +140,6 @@ class Trace:
 			threading.settrace(self.globaltrace)
 			sys.settrace(self.globaltrace)
 		try:
-			# print(f"my_trace.Tracer.exec-globals == {globals}")
-			# print(f"my_trace.Tracer.exec-locals == {locals}")
-			# exec(cmd, {'__name__': '__main__'}, {})
 			exec(cmd, globals, locals)
 		except:
 			raise
