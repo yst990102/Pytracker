@@ -55,12 +55,7 @@ class Iteration(Statement):
 			print(f"---- create {self.__class__.__name__} {steps}")
 		self.general_steps = steps[1]
 		self.steps = []
-		self.while_line_no = self.general_steps[0]
 		self.iteration_num = steps[0]
-
-		# classify iteration to program.while_loops attribute
-		assert (isinstance(self.program, Program))
-		self.program.add_while_loop(self)
 
 	def inner_bi_linklist_set(self) -> None:
 		# set the inner bi-linklist in self.steps
@@ -85,11 +80,11 @@ class Iteration(Statement):
 			return pointer.get_last_inner_step()
 
 	def set_enter_into_point(self):
-		assert(isinstance(self.get_first_inner_step(), Assignment))
+		assert (isinstance(self.get_first_inner_step(), Assignment))
 		self.get_first_inner_step().enter_into_iteration = self
 
 	def set_break_out_point(self):
-		assert(isinstance(self.get_last_inner_step(), Assignment))
+		assert (isinstance(self.get_last_inner_step(), Assignment))
 		self.get_last_inner_step().break_out_iterations += [self]
 
 	def print_info(self) -> None:
@@ -100,10 +95,15 @@ class Iteration(Statement):
 		print(f"path = {self.path}")
 
 
-class Basic_Iteration(Iteration):
+class Basic_While_Iteration(Iteration):
 
 	def __init__(self, steps: tuple, program, path) -> None:
 		super().__init__(steps, program, path)
+		self.while_line_no = self.general_steps[0]
+
+		# classify iteration to program.while_loops attribute
+		assert (isinstance(self.program, Program))
+		self.program.add_while_loop(self)
 
 		self.add_sub_statements(steps)
 		self.inner_bi_linklist_set()
@@ -118,10 +118,15 @@ class Basic_Iteration(Iteration):
 			self.steps.append(new_statement)
 
 
-class Nested_Iteration(Iteration):
+class Nested_While_Iteration(Iteration):
 
 	def __init__(self, steps: tuple, program, path) -> None:
 		super().__init__(steps, program, path)
+		self.while_line_no = self.general_steps[0]
+
+		# classify iteration to program.while_loops attribute
+		assert (isinstance(self.program, Program))
+		self.program.add_while_loop(self)
 
 		self.add_sub_statements(steps)
 		self.inner_bi_linklist_set()
@@ -136,9 +141,9 @@ class Nested_Iteration(Iteration):
 				new_statement = Assignment(step, self.program, self.path + [self])
 			elif isinstance(step, tuple):
 				if all(isinstance(i, int) for i in step):
-					new_statement = Basic_Iteration(step, self.program, self.path + [self])
+					new_statement = Basic_While_Iteration(step, self.program, self.path + [self])
 				else:
-					new_statement = Nested_Iteration(step, self.program, self.path + [self])
+					new_statement = Nested_While_Iteration(step, self.program, self.path + [self])
 			self.steps.append(new_statement)
 
 
@@ -179,9 +184,9 @@ class Program():
 				new_statement = Assignment(self.TupleOfIntAndTuple[1][step_no_index], self, [self])
 			elif isinstance(self.TupleOfIntAndTuple[1][step_no_index], tuple):
 				if all(isinstance(i, int) for i in self.TupleOfIntAndTuple[1][step_no_index]):
-					new_statement = Basic_Iteration(self.TupleOfIntAndTuple[1][step_no_index], self, [self])
+					new_statement = Basic_While_Iteration(self.TupleOfIntAndTuple[1][step_no_index], self, [self])
 				else:
-					new_statement = Nested_Iteration(self.TupleOfIntAndTuple[1][step_no_index], self, [self])
+					new_statement = Nested_While_Iteration(self.TupleOfIntAndTuple[1][step_no_index], self, [self])
 			self.add_statement(new_statement)
 
 	def add_while_loop(self, new_iteration: Iteration):
