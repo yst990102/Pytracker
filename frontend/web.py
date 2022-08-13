@@ -8,13 +8,9 @@ app = Flask(__name__)
 @app.route('/', methods=["GET", "POST"])
 def home_page():
     if request.method == "POST":
-        # write usercode to backend test_script_file
-        with open("../backend/UserCode.py", 'w') as usercode_w:
-            usercode_w.write(request.json)
-        usercode_w.close()
-        
+
         # run backend_main()
-        Pytracker.backend_main()
+        Pytracker.backend_main(usercode=request.json)
         
         # grab the result of listoflist and step_json from global variables
         listoflist = Pytracker.listoflist
