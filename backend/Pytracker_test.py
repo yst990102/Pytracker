@@ -384,6 +384,7 @@ while i < 1:
 		    }]
 		})
 
+	# TODO: need to check the straight line-back issue
 	def test_unused_inner_while_loop(self):
 		usercode = """even_sum = 0
 odd_sum = 0
