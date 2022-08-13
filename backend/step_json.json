@@ -1,1 +1,1 @@
-{"d": 5, "list": [{"type": "step", "start": 1, "end": 2}, {"type": "step", "start": 2, "end": 4}]}
+{"d": 5, "list": [{"type": "step", "start": 1, "end": 4}, {"type": "step", "start": 4, "end": 10}, {"type": "step", "start": 10, "end": 5}, {"type": "step", "start": 5, "end": 6}, {"type": "step", "start": 6, "end": 2}, {"type": "step", "start": 2, "end": 7}, {"type": "step", "start": 7, "end": 8}, {"type": "step", "start": 8, "end": 2}]}

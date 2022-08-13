@@ -53,9 +53,9 @@ class Iteration(Statement):
 
 		if creation_print:
 			print(f"---- create {self.__class__.__name__} {steps}")
-		self.general_steps = steps[1]
-		self.steps = []
-		self.iteration_num = steps[0]
+		self.general_steps = steps[1] # general step list, formed by integer
+		self.steps = [] # list of all Assignment/Iteration Nodes
+		self.iteration_num = steps[0] # integer for iteration number
 
 	def inner_bi_linklist_set(self) -> None:
 		# set the inner bi-linklist in self.steps
@@ -79,21 +79,18 @@ class Iteration(Statement):
 		elif isinstance(pointer, Iteration):
 			return pointer.get_last_inner_step()
 
-	def set_enter_into_point(self):
-		assert (isinstance(self.get_first_inner_step(), Assignment))
-		self.get_first_inner_step().enter_into_iteration = self
+	# def set_enter_into_point(self):
+	# 	assert (isinstance(self.get_first_inner_step(), Assignment))
+	# 	self.get_first_inner_step().enter_into_iteration = self
 
-	def set_break_out_point(self):
-		assert (isinstance(self.get_last_inner_step(), Assignment))
-		self.get_last_inner_step().break_out_iterations += [self]
+	# def set_break_out_point(self):
+	# 	assert (isinstance(self.get_last_inner_step(), Assignment))
+	# 	self.get_last_inner_step().break_out_iterations += [self]
 
 	def print_info(self) -> None:
-		print(f"==== {self.__class__.__name__} {hex(id(self))} =====")
+		print(f"\n==== {self.__class__.__name__} {hex(id(self))} =====")
 		for step in self.steps:
 			step.print_info()
-		print(f"previous = {self.get_previous()}, next = {self.get_next()}")
-		print(f"path = {self.path}")
-
 
 class Basic_While_Iteration(Iteration):
 
@@ -108,8 +105,8 @@ class Basic_While_Iteration(Iteration):
 		self.add_sub_statements(steps)
 		self.inner_bi_linklist_set()
 
-		self.set_enter_into_point()
-		self.set_break_out_point()
+		# self.set_enter_into_point()
+		# self.set_break_out_point()
 
 	def add_sub_statements(self, steps: tuple) -> None:
 		# add statements for self.steps
@@ -131,8 +128,8 @@ class Nested_While_Iteration(Iteration):
 		self.add_sub_statements(steps)
 		self.inner_bi_linklist_set()
 
-		self.set_enter_into_point()
-		self.set_break_out_point()
+		# self.set_enter_into_point()
+		# self.set_break_out_point()
 
 	def add_sub_statements(self, steps: tuple) -> None:
 		# add statements for self.steps
@@ -155,18 +152,21 @@ class Assignment(Statement):
 			print(f"---- create {self.__class__.__name__} {line_no}")
 		self.line_no = line_no
 
-		self.enter_into_iteration = None
-		self.break_out_iterations = []
+		# self.enter_into_iteration = None
+		# self.break_out_iterations = []
 
 	def print_info(self) -> None:
 		print(f"==== {self.__class__.__name__} {hex(id(self))} =====")
 		print(f"line_no == {self.line_no}")
 		print(f"previous = {self.get_previous()}, next = {self.get_next()}")
 		print(f"path = {self.path}")
-		print(f"enter_into_iteration = {self.enter_into_iteration}, break_out_iterations = {self.break_out_iterations}")
+		# print(f"enter_into_iteration = {self.enter_into_iteration}, break_out_iterations = {self.break_out_iterations}")
 
 	def print_val(self) -> None:
-		print(self.line_no, end=" ")
+		if isinstance(self.path[-1], Iteration):
+			print(f"{self.line_no}, itr_num = {self.path[-1].iteration_num}", end=" ")
+		else:
+			print(f"{self.line_no}", end=" ")
 
 
 class Program():
@@ -188,6 +188,9 @@ class Program():
 				else:
 					new_statement = Nested_While_Iteration(self.TupleOfIntAndTuple[1][step_no_index], self, [self])
 			self.add_statement(new_statement)
+		
+		# IMPORTANT: this is implementation for the filter of Pytracker
+		self.filt_algo_implement()
 
 	def add_while_loop(self, new_iteration: Iteration):
 		new_while_line_no = new_iteration.while_line_no
@@ -201,7 +204,19 @@ class Program():
 				break
 		if not refered_found:
 			self.while_loops.append({"while_line_no": new_iteration.while_line_no, "iterations": [new_iteration]})
+	
+	def filt_algo_implement(self):
+		for while_loop_info in self.while_loops:
+			while_line_no, while_iterations = while_loop_info["while_line_no"], while_loop_info["iterations"]
 
+			while_iteration_set = []
+			for while_iteration in while_iterations[:-1]:
+				if while_iteration.general_steps not in while_iteration_set:
+					while_iteration_set.append(while_iteration.general_steps)
+				else:
+					self.move_out_from_linklist(while_iteration)
+
+				
 	def get_first_statement(self) -> Statement:
 		pointer = self.statements[0]
 		if isinstance(pointer, Assignment):
@@ -234,12 +249,29 @@ class Program():
 
 			self.statements.append(statement)
 
-	def remove_statement(self, statement: Statement) -> None:
-		for cur_statement in self.statements:
-			if cur_statement == statement:
-				cur_statement.get_previous().set_next(cur_statement.get_next())
-				cur_statement.get_next().set_previous(cur_statement.get_previous())
-				return
+	def move_out_from_linklist(self, statement: Statement) -> None:
+		if isinstance(statement, Iteration):
+			self.move_out_iteration(statement)
+		elif isinstance(Statement, Assignment):
+			self.move_out_assignment(statement)
+		
+	def move_out_assignment(self, assignment: Assignment) -> None:
+		prev_node = assignment.get_previous()
+		afte_node = assignment.get_next()
+		
+		if prev_node != None:
+			prev_node.set_next(afte_node)
+		if afte_node != None:
+			afte_node.set_previous(prev_node)
+		
+	def move_out_iteration(self, iteration: Iteration) -> None:
+		prev_node = iteration.get_first_inner_step().get_previous()
+		afte_node = iteration.get_last_inner_step().get_next()
+		
+		if prev_node != None:
+			prev_node.set_next(afte_node)
+		if afte_node != None:
+			afte_node.set_previous(prev_node)
 
 	# ============= printing ways of program =============
 	def print_statements(self) -> None:

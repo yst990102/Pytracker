@@ -126,8 +126,8 @@ def TupleOfIntAndTuple_to_ListOfList(TupleOfIntAndTuple):
 # 2022-06-25 使用递归式修改列表
 # change nestedlist_to_listofint&tuple
 def ListOfList_to_ListOfIntAndTuple(item, count_dict={}):
-	print("item == ", item)
-	print("count_dict == ", count_dict)
+	# print("item == ", item)
+	# print("count_dict == ", count_dict)
 	if type(item) == int:
 		return item
 	elif type(item) == list:
@@ -180,20 +180,19 @@ def get_step_json(program: parse_classes.Program):
 		# CASE 01: start a new while-loop
 		if len(end_statement.path) > len(start_statement.path):
 			entered_iteration = end_statement.path[-1]
-
 			step_list.append({"type": "step", "start": start_location, "end": end_location})
 			step_list.append({"type": "circle", "start": end_location, "iteration": entered_iteration.iteration_num})
 			step_list.append({"type": "while_start", "depth": -1})
 		# CASE 02: end a while-loop
 		elif len(end_statement.path) < len(start_statement.path):
 			ended_iteration = start_statement.path[-1]
-
 			step_list.append({"type": "while_end", "start": ended_iteration.get_first_inner_step().line_no, "end": ended_iteration.get_last_inner_step().line_no})
 			step_list.append({"type": "step", "start": start_location, "end": end_location})
 		else:
 			# CASE 03: length equalled, entering a new iteration under same while-loop
 			if start_statement.path != end_statement.path:
-				step_list.append({"type": "circle", "start": end_location})
+				entered_iteration = end_statement.path[-1]
+				step_list.append({"type": "circle", "start": end_location, "iteration": entered_iteration.iteration_num})
 			# CASE 04: normal step
 			else:
 				step_list.append({"type": "step", "start": start_location, "end": end_location})

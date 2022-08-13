@@ -217,8 +217,8 @@ def backend_main(usercode=open(current_absolute_path + "/" + "UserCode.py").read
 
 	# TEST: all available print ways testing for program
 	# program.print_statements()
-	# program.print_linklist(Print_Forward)
-	# program.print_linklist(Print_Backward)
+	# program.print_linklist(parse_classes.Print_Forward)
+	# program.print_linklist(parse_classes.Print_Backward)
 	# program.print_while_loops_inlayer()
 
 	# =====================================================
