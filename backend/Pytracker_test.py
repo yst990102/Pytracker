@@ -25,23 +25,23 @@ b = tmp"""
 
 		assert (listoflist == [1, 2, 3, 4, 5])
 		assert (step_json == {
-		    'd': 5,
-		    'list': [{
-		        'type': 'step',
-		        'start': 0,
-		        'end': 1
+		    "d": 5,
+		    "list": [{
+		        "type": "step",
+		        "start": 1,
+		        "end": 2
 		    }, {
-		        'type': 'step',
-		        'start': 1,
-		        'end': 2
+		        "type": "step",
+		        "start": 2,
+		        "end": 3
 		    }, {
-		        'type': 'step',
-		        'start': 2,
-		        'end': 3
+		        "type": "step",
+		        "start": 3,
+		        "end": 4
 		    }, {
-		        'type': 'step',
-		        'start': 3,
-		        'end': 4
+		        "type": "step",
+		        "start": 4,
+		        "end": 5
 		    }]
 		})
 
@@ -76,76 +76,76 @@ print(a)"""
 
 		assert (listoflist == [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18])
 		assert (step_json == {
-		    'd':
-                                        5,
-		    'list': [{
-		        'type': 'step',
-		        'start': 0,
-		        'end': 1
+		    "d":
+		        5,
+		    "list": [{
+		        "type": "step",
+		        "start": 1,
+		        "end": 2
 		    }, {
-		        'type': 'step',
-		        'start': 1,
-		        'end': 2
+		        "type": "step",
+		        "start": 2,
+		        "end": 3
 		    }, {
-		        'type': 'step',
-		        'start': 2,
-		        'end': 3
+		        "type": "step",
+		        "start": 3,
+		        "end": 4
 		    }, {
-		        'type': 'step',
-		        'start': 3,
-		        'end': 4
+		        "type": "step",
+		        "start": 4,
+		        "end": 5
 		    }, {
-		        'type': 'step',
-		        'start': 4,
-		        'end': 5
+		        "type": "step",
+		        "start": 5,
+		        "end": 6
 		    }, {
-		        'type': 'step',
-		        'start': 5,
-		        'end': 6
+		        "type": "step",
+		        "start": 6,
+		        "end": 7
 		    }, {
-		        'type': 'step',
-		        'start': 6,
-		        'end': 7
+		        "type": "step",
+		        "start": 7,
+		        "end": 8
 		    }, {
-		        'type': 'step',
-		        'start': 7,
-		        'end': 8
+		        "type": "step",
+		        "start": 8,
+		        "end": 9
 		    }, {
-		        'type': 'step',
-		        'start': 8,
-		        'end': 9
+		        "type": "step",
+		        "start": 9,
+		        "end": 10
 		    }, {
-		        'type': 'step',
-		        'start': 9,
-		        'end': 10
+		        "type": "step",
+		        "start": 10,
+		        "end": 11
 		    }, {
-		        'type': 'step',
-		        'start': 10,
-		        'end': 11
+		        "type": "step",
+		        "start": 11,
+		        "end": 12
 		    }, {
-		        'type': 'step',
-		        'start': 11,
-		        'end': 12
+		        "type": "step",
+		        "start": 12,
+		        "end": 13
 		    }, {
-		        'type': 'step',
-		        'start': 12,
-		        'end': 13
+		        "type": "step",
+		        "start": 13,
+		        "end": 14
 		    }, {
-		        'type': 'step',
-		        'start': 13,
-		        'end': 14
+		        "type": "step",
+		        "start": 14,
+		        "end": 15
 		    }, {
-		        'type': 'step',
-		        'start': 14,
-		        'end': 15
+		        "type": "step",
+		        "start": 15,
+		        "end": 16
 		    }, {
-		        'type': 'step',
-		        'start': 15,
-		        'end': 16
+		        "type": "step",
+		        "start": 16,
+		        "end": 17
 		    }, {
-		        'type': 'step',
-		        'start': 16,
-		        'end': 17
+		        "type": "step",
+		        "start": 17,
+		        "end": 18
 		    }]
 		})
 
@@ -168,7 +168,7 @@ if a < b:
 		step_json = eval(open(current_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [1, 2, 4])
-		assert (step_json == {'d': 5, 'list': [{'type': 'step', 'start': 0, 'end': 1}, {'type': 'step', 'start': 1, 'end': 3}]})
+		assert (step_json == {"d": 5, "list": [{"type": "step", "start": 1, "end": 2}, {"type": "step", "start": 2, "end": 4}]})
 
 	def test_ifelse(self):
 		usercode = """a = 10
@@ -188,7 +188,7 @@ else:
 		step_json = eval(open(current_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [1, 2, 6])
-		assert (step_json == {'d': 5, 'list': [{'type': 'step', 'start': 0, 'end': 1}, {'type': 'step', 'start': 1, 'end': 5}]})
+		assert (step_json == {'d': 5, 'list': [{'type': 'step', 'start': 1, 'end': 2}, {'type': 'step', 'start': 2, 'end': 6}]})
 
 
 class Test_While_Statement():
@@ -210,71 +210,71 @@ while i < 5:
 
 		assert (listoflist == [1, [2, 3, 4], [2, 3, 4], [2, 3, 4], [2, 3, 4], [2, 3, 4]])
 		assert (step_json == {
-		    'd':
-                                        5,
-		    'list': [{
-		        'type': 'step',
-		        'start': 0,
-		        'end': 1
+		    "d":
+		        5,
+		    "list": [{
+		        "type": "step",
+		        "start": 1,
+		        "end": 2
 		    }, {
-		        'type': 'circle',
-		        'start': 1,
-		        'iteration': 1
+		        "type": "circle",
+		        "start": 2,
+		        "iteration": 1
 		    }, {
-		        'type': 'while_start',
-		        'depth': -1
+		        "type": "while_start",
+		        "depth": -1
 		    }, {
-		        'type': 'step',
-		        'start': 1,
-		        'end': 2
+		        "type": "step",
+		        "start": 2,
+		        "end": 3
 		    }, {
-		        'type': 'step',
-		        'start': 2,
-		        'end': 3
+		        "type": "step",
+		        "start": 3,
+		        "end": 4
 		    }, {
-		        'type': 'circle',
-		        'start': 1
+		        "type": "circle",
+		        "start": 2
 		    }, {
-		        'type': 'step',
-		        'start': 1,
-		        'end': 2
+		        "type": "step",
+		        "start": 2,
+		        "end": 3
 		    }, {
-		        'type': 'step',
-		        'start': 2,
-		        'end': 3
+		        "type": "step",
+		        "start": 3,
+		        "end": 4
 		    }, {
-		        'type': 'circle',
-		        'start': 1
+		        "type": "circle",
+		        "start": 2
 		    }, {
-		        'type': 'step',
-		        'start': 1,
-		        'end': 2
+		        "type": "step",
+		        "start": 2,
+		        "end": 3
 		    }, {
-		        'type': 'step',
-		        'start': 2,
-		        'end': 3
+		        "type": "step",
+		        "start": 3,
+		        "end": 4
 		    }, {
-		        'type': 'circle',
-		        'start': 1
+		        "type": "circle",
+		        "start": 2
 		    }, {
-		        'type': 'step',
-		        'start': 1,
-		        'end': 2
+		        "type": "step",
+		        "start": 2,
+		        "end": 3
 		    }, {
-		        'type': 'step',
-		        'start': 2,
-		        'end': 3
+		        "type": "step",
+		        "start": 3,
+		        "end": 4
 		    }, {
-		        'type': 'circle',
-		        'start': 1
+		        "type": "circle",
+		        "start": 2
 		    }, {
-		        'type': 'step',
-		        'start': 1,
-		        'end': 2
+		        "type": "step",
+		        "start": 2,
+		        "end": 3
 		    }, {
-		        'type': 'step',
-		        'start': 2,
-		        'end': 3
+		        "type": "step",
+		        "start": 3,
+		        "end": 4
 		    }]
 		})
 
@@ -298,22 +298,11 @@ while i < 6:
 		assert (listoflist == [1, 2, [3, [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], 6], [3, 6], [3, 6], [3, 6], [3, 6], [3, 6]])
 		assert (step_json == {
 		    "d":
-                                        5,
+		        5,
 		    "list": [{
-		        "type": "step",
-		        "start": 0,
-		        "end": 1
-		    }, {
 		        "type": "step",
 		        "start": 1,
 		        "end": 2
-		    }, {
-		        "type": "circle",
-		        "start": 2,
-		        "iteration": 1
-		    }, {
-		        "type": "while_start",
-		        "depth": -1
 		    }, {
 		        "type": "step",
 		        "start": 2,
@@ -331,82 +320,93 @@ while i < 6:
 		        "end": 4
 		    }, {
 		        "type": "circle",
-		        "start": 3
+		        "start": 4,
+		        "iteration": 1
 		    }, {
-		        "type": "step",
-		        "start": 3,
-		        "end": 4
-		    }, {
-		        "type": "circle",
-		        "start": 3
-		    }, {
-		        "type": "step",
-		        "start": 3,
-		        "end": 4
-		    }, {
-		        "type": "circle",
-		        "start": 3
-		    }, {
-		        "type": "step",
-		        "start": 3,
-		        "end": 4
-		    }, {
-		        "type": "circle",
-		        "start": 3
-		    }, {
-		        "type": "step",
-		        "start": 3,
-		        "end": 4
-		    }, {
-		        "type": "circle",
-		        "start": 3
-		    }, {
-		        "type": "step",
-		        "start": 3,
-		        "end": 4
-		    }, {
-		        "type": "while_end",
-		        "start": 3,
-		        "end": 4
+		        "type": "while_start",
+		        "depth": -1
 		    }, {
 		        "type": "step",
 		        "start": 4,
 		        "end": 5
 		    }, {
 		        "type": "circle",
-		        "start": 2
+		        "start": 4
 		    }, {
 		        "type": "step",
-		        "start": 2,
+		        "start": 4,
 		        "end": 5
 		    }, {
 		        "type": "circle",
-		        "start": 2
+		        "start": 4
 		    }, {
 		        "type": "step",
-		        "start": 2,
+		        "start": 4,
 		        "end": 5
 		    }, {
 		        "type": "circle",
-		        "start": 2
+		        "start": 4
 		    }, {
 		        "type": "step",
-		        "start": 2,
+		        "start": 4,
 		        "end": 5
 		    }, {
 		        "type": "circle",
-		        "start": 2
+		        "start": 4
 		    }, {
 		        "type": "step",
-		        "start": 2,
+		        "start": 4,
 		        "end": 5
 		    }, {
 		        "type": "circle",
-		        "start": 2
+		        "start": 4
 		    }, {
 		        "type": "step",
-		        "start": 2,
+		        "start": 4,
 		        "end": 5
+		    }, {
+		        "type": "while_end",
+		        "start": 4,
+		        "end": 5
+		    }, {
+		        "type": "step",
+		        "start": 5,
+		        "end": 6
+		    }, {
+		        "type": "circle",
+		        "start": 3
+		    }, {
+		        "type": "step",
+		        "start": 3,
+		        "end": 6
+		    }, {
+		        "type": "circle",
+		        "start": 3
+		    }, {
+		        "type": "step",
+		        "start": 3,
+		        "end": 6
+		    }, {
+		        "type": "circle",
+		        "start": 3
+		    }, {
+		        "type": "step",
+		        "start": 3,
+		        "end": 6
+		    }, {
+		        "type": "circle",
+		        "start": 3
+		    }, {
+		        "type": "step",
+		        "start": 3,
+		        "end": 6
+		    }, {
+		        "type": "circle",
+		        "start": 3
+		    }, {
+		        "type": "step",
+		        "start": 3,
+		        "end": 6
 		    }]
 		})
 
@@ -430,60 +430,60 @@ while a > 0:
 
 		assert (listoflist == [1, [2, 4, 7], [2, 6, 7], [2, 4, 7], [2, 6, 7]])
 		assert (step_json == {
-		    'd':
-                                        5,
-		    'list': [{
-		        'type': 'step',
-		        'start': 0,
-		        'end': 1
+		    "d":
+		        5,
+		    "list": [{
+		        "type": "step",
+		        "start": 1,
+		        "end": 2
 		    }, {
-		        'type': 'circle',
-		        'start': 1,
-		        'iteration': 1
+		        "type": "circle",
+		        "start": 2,
+		        "iteration": 1
 		    }, {
-		        'type': 'while_start',
-		        'depth': -1
+		        "type": "while_start",
+		        "depth": -1
 		    }, {
-		        'type': 'step',
-		        'start': 1,
-		        'end': 3
+		        "type": "step",
+		        "start": 2,
+		        "end": 4
 		    }, {
-		        'type': 'step',
-		        'start': 3,
-		        'end': 6
+		        "type": "step",
+		        "start": 4,
+		        "end": 7
 		    }, {
-		        'type': 'circle',
-		        'start': 1
+		        "type": "circle",
+		        "start": 2
 		    }, {
-		        'type': 'step',
-		        'start': 1,
-		        'end': 5
+		        "type": "step",
+		        "start": 2,
+		        "end": 6
 		    }, {
-		        'type': 'step',
-		        'start': 5,
-		        'end': 6
+		        "type": "step",
+		        "start": 6,
+		        "end": 7
 		    }, {
-		        'type': 'circle',
-		        'start': 1
+		        "type": "circle",
+		        "start": 2
 		    }, {
-		        'type': 'step',
-		        'start': 1,
-		        'end': 3
+		        "type": "step",
+		        "start": 2,
+		        "end": 4
 		    }, {
-		        'type': 'step',
-		        'start': 3,
-		        'end': 6
+		        "type": "step",
+		        "start": 4,
+		        "end": 7
 		    }, {
-		        'type': 'circle',
-		        'start': 1
+		        "type": "circle",
+		        "start": 2
 		    }, {
-		        'type': 'step',
-		        'start': 1,
-		        'end': 5
+		        "type": "step",
+		        "start": 2,
+		        "end": 6
 		    }, {
-		        'type': 'step',
-		        'start': 5,
-		        'end': 6
+		        "type": "step",
+		        "start": 6,
+		        "end": 7
 		    }]
 		})
 
@@ -515,216 +515,216 @@ print(odd_sum)
 
 		assert (listoflist == [1, 2, 3, [4, 5, [6, 8, 11], [6, 10, 11], 12], [4, 5, [6, 10, 11], [6, 8, 11], 12], [4, 5, [6, 8, 11], [6, 10, 11], 12], [4, 5, [6, 10, 11], [6, 8, 11], 12], 14, 15])
 		assert (step_json == {
-		    'd':
-                                        5,
-		    'list': [{
-		        'type': 'step',
-		        'start': 0,
-		        'end': 1
+		    "d":
+		        5,
+		    "list": [{
+		        "type": "step",
+		        "start": 1,
+		        "end": 2
 		    }, {
-		        'type': 'step',
-		        'start': 1,
-		        'end': 2
+		        "type": "step",
+		        "start": 2,
+		        "end": 3
 		    }, {
-		        'type': 'step',
-		        'start': 2,
-		        'end': 3
+		        "type": "step",
+		        "start": 3,
+		        "end": 4
 		    }, {
-		        'type': 'circle',
-		        'start': 3,
-		        'iteration': 1
+		        "type": "circle",
+		        "start": 4,
+		        "iteration": 1
 		    }, {
-		        'type': 'while_start',
-		        'depth': -1
+		        "type": "while_start",
+		        "depth": -1
 		    }, {
-		        'type': 'step',
-		        'start': 3,
-		        'end': 4
+		        "type": "step",
+		        "start": 4,
+		        "end": 5
 		    }, {
-		        'type': 'step',
-		        'start': 4,
-		        'end': 5
+		        "type": "step",
+		        "start": 5,
+		        "end": 6
 		    }, {
-		        'type': 'circle',
-		        'start': 5,
-		        'iteration': 1
+		        "type": "circle",
+		        "start": 6,
+		        "iteration": 1
 		    }, {
-		        'type': 'while_start',
-		        'depth': -1
+		        "type": "while_start",
+		        "depth": -1
 		    }, {
-		        'type': 'step',
-		        'start': 5,
-		        'end': 7
+		        "type": "step",
+		        "start": 6,
+		        "end": 8
 		    }, {
-		        'type': 'step',
-		        'start': 7,
-		        'end': 10
+		        "type": "step",
+		        "start": 8,
+		        "end": 11
 		    }, {
-		        'type': 'circle',
-		        'start': 5
+		        "type": "circle",
+		        "start": 6
 		    }, {
-		        'type': 'step',
-		        'start': 5,
-		        'end': 9
+		        "type": "step",
+		        "start": 6,
+		        "end": 10
 		    }, {
-		        'type': 'step',
-		        'start': 9,
-		        'end': 10
+		        "type": "step",
+		        "start": 10,
+		        "end": 11
 		    }, {
-		        'type': 'while_end',
-		        'start': 5,
-		        'end': 10
+		        "type": "while_end",
+		        "start": 6,
+		        "end": 11
 		    }, {
-		        'type': 'step',
-		        'start': 10,
-		        'end': 11
+		        "type": "step",
+		        "start": 11,
+		        "end": 12
 		    }, {
-		        'type': 'circle',
-		        'start': 3
+		        "type": "circle",
+		        "start": 4
 		    }, {
-		        'type': 'step',
-		        'start': 3,
-		        'end': 4
+		        "type": "step",
+		        "start": 4,
+		        "end": 5
 		    }, {
-		        'type': 'step',
-		        'start': 4,
-		        'end': 5
+		        "type": "step",
+		        "start": 5,
+		        "end": 6
 		    }, {
-		        'type': 'circle',
-		        'start': 5,
-		        'iteration': 1
+		        "type": "circle",
+		        "start": 6,
+		        "iteration": 1
 		    }, {
-		        'type': 'while_start',
-		        'depth': -1
+		        "type": "while_start",
+		        "depth": -1
 		    }, {
-		        'type': 'step',
-		        'start': 5,
-		        'end': 9
+		        "type": "step",
+		        "start": 6,
+		        "end": 10
 		    }, {
-		        'type': 'step',
-		        'start': 9,
-		        'end': 10
+		        "type": "step",
+		        "start": 10,
+		        "end": 11
 		    }, {
-		        'type': 'circle',
-		        'start': 5
+		        "type": "circle",
+		        "start": 6
 		    }, {
-		        'type': 'step',
-		        'start': 5,
-		        'end': 7
+		        "type": "step",
+		        "start": 6,
+		        "end": 8
 		    }, {
-		        'type': 'step',
-		        'start': 7,
-		        'end': 10
+		        "type": "step",
+		        "start": 8,
+		        "end": 11
 		    }, {
-		        'type': 'while_end',
-		        'start': 5,
-		        'end': 10
+		        "type": "while_end",
+		        "start": 6,
+		        "end": 11
 		    }, {
-		        'type': 'step',
-		        'start': 10,
-		        'end': 11
+		        "type": "step",
+		        "start": 11,
+		        "end": 12
 		    }, {
-		        'type': 'circle',
-		        'start': 3
+		        "type": "circle",
+		        "start": 4
 		    }, {
-		        'type': 'step',
-		        'start': 3,
-		        'end': 4
+		        "type": "step",
+		        "start": 4,
+		        "end": 5
 		    }, {
-		        'type': 'step',
-		        'start': 4,
-		        'end': 5
+		        "type": "step",
+		        "start": 5,
+		        "end": 6
 		    }, {
-		        'type': 'circle',
-		        'start': 5,
-		        'iteration': 1
+		        "type": "circle",
+		        "start": 6,
+		        "iteration": 1
 		    }, {
-		        'type': 'while_start',
-		        'depth': -1
+		        "type": "while_start",
+		        "depth": -1
 		    }, {
-		        'type': 'step',
-		        'start': 5,
-		        'end': 7
+		        "type": "step",
+		        "start": 6,
+		        "end": 8
 		    }, {
-		        'type': 'step',
-		        'start': 7,
-		        'end': 10
+		        "type": "step",
+		        "start": 8,
+		        "end": 11
 		    }, {
-		        'type': 'circle',
-		        'start': 5
+		        "type": "circle",
+		        "start": 6
 		    }, {
-		        'type': 'step',
-		        'start': 5,
-		        'end': 9
+		        "type": "step",
+		        "start": 6,
+		        "end": 10
 		    }, {
-		        'type': 'step',
-		        'start': 9,
-		        'end': 10
+		        "type": "step",
+		        "start": 10,
+		        "end": 11
 		    }, {
-		        'type': 'while_end',
-		        'start': 5,
-		        'end': 10
+		        "type": "while_end",
+		        "start": 6,
+		        "end": 11
 		    }, {
-		        'type': 'step',
-		        'start': 10,
-		        'end': 11
+		        "type": "step",
+		        "start": 11,
+		        "end": 12
 		    }, {
-		        'type': 'circle',
-		        'start': 3
+		        "type": "circle",
+		        "start": 4
 		    }, {
-		        'type': 'step',
-		        'start': 3,
-		        'end': 4
+		        "type": "step",
+		        "start": 4,
+		        "end": 5
 		    }, {
-		        'type': 'step',
-		        'start': 4,
-		        'end': 5
+		        "type": "step",
+		        "start": 5,
+		        "end": 6
 		    }, {
-		        'type': 'circle',
-		        'start': 5,
-		        'iteration': 1
+		        "type": "circle",
+		        "start": 6,
+		        "iteration": 1
 		    }, {
-		        'type': 'while_start',
-		        'depth': -1
+		        "type": "while_start",
+		        "depth": -1
 		    }, {
-		        'type': 'step',
-		        'start': 5,
-		        'end': 9
+		        "type": "step",
+		        "start": 6,
+		        "end": 10
 		    }, {
-		        'type': 'step',
-		        'start': 9,
-		        'end': 10
+		        "type": "step",
+		        "start": 10,
+		        "end": 11
 		    }, {
-		        'type': 'circle',
-		        'start': 5
+		        "type": "circle",
+		        "start": 6
 		    }, {
-		        'type': 'step',
-		        'start': 5,
-		        'end': 7
+		        "type": "step",
+		        "start": 6,
+		        "end": 8
 		    }, {
-		        'type': 'step',
-		        'start': 7,
-		        'end': 10
+		        "type": "step",
+		        "start": 8,
+		        "end": 11
 		    }, {
-		        'type': 'while_end',
-		        'start': 5,
-		        'end': 10
+		        "type": "while_end",
+		        "start": 6,
+		        "end": 11
 		    }, {
-		        'type': 'step',
-		        'start': 10,
-		        'end': 11
+		        "type": "step",
+		        "start": 11,
+		        "end": 12
 		    }, {
-		        'type': 'while_end',
-		        'start': 3,
-		        'end': 11
+		        "type": "while_end",
+		        "start": 4,
+		        "end": 12
 		    }, {
-		        'type': 'step',
-		        'start': 11,
-		        'end': 13
+		        "type": "step",
+		        "start": 12,
+		        "end": 14
 		    }, {
-		        'type': 'step',
-		        'start': 13,
-		        'end': 14
+		        "type": "step",
+		        "start": 14,
+		        "end": 15
 		    }]
 		})
 
@@ -753,81 +753,81 @@ while i < 1:
 
 		assert (listoflist == [1, 2, 3, [4, [5, [6, 7, 8], 9, 10], 11, 12]])
 		assert (step_json == {
-		    'd':
-                                        5,
-		    'list': [{
-		        'type': 'step',
-		        'start': 0,
-		        'end': 1
+		    "d":
+		        5,
+		    "list": [{
+		        "type": "step",
+		        "start": 1,
+		        "end": 2
 		    }, {
-		        'type': 'step',
-		        'start': 1,
-		        'end': 2
+		        "type": "step",
+		        "start": 2,
+		        "end": 3
 		    }, {
-		        'type': 'step',
-		        'start': 2,
-		        'end': 3
+		        "type": "step",
+		        "start": 3,
+		        "end": 4
 		    }, {
-		        'type': 'circle',
-		        'start': 3,
-		        'iteration': 1
+		        "type": "circle",
+		        "start": 4,
+		        "iteration": 1
 		    }, {
-		        'type': 'while_start',
-		        'depth': -1
+		        "type": "while_start",
+		        "depth": -1
 		    }, {
-		        'type': 'step',
-		        'start': 3,
-		        'end': 4
+		        "type": "step",
+		        "start": 4,
+		        "end": 5
 		    }, {
-		        'type': 'circle',
-		        'start': 4,
-		        'iteration': 1
+		        "type": "circle",
+		        "start": 5,
+		        "iteration": 1
 		    }, {
-		        'type': 'while_start',
-		        'depth': -1
+		        "type": "while_start",
+		        "depth": -1
 		    }, {
-		        'type': 'step',
-		        'start': 4,
-		        'end': 5
+		        "type": "step",
+		        "start": 5,
+		        "end": 6
 		    }, {
-		        'type': 'circle',
-		        'start': 5,
-		        'iteration': 1
+		        "type": "circle",
+		        "start": 6,
+		        "iteration": 1
 		    }, {
-		        'type': 'while_start',
-		        'depth': -1
+		        "type": "while_start",
+		        "depth": -1
 		    }, {
-		        'type': 'step',
-		        'start': 5,
-		        'end': 6
+		        "type": "step",
+		        "start": 6,
+		        "end": 7
 		    }, {
-		        'type': 'step',
-		        'start': 6,
-		        'end': 7
+		        "type": "step",
+		        "start": 7,
+		        "end": 8
 		    }, {
-		        'type': 'while_end',
-		        'start': 5,
-		        'end': 7
+		        "type": "while_end",
+		        "start": 6,
+		        "end": 8
 		    }, {
-		        'type': 'step',
-		        'start': 7,
-		        'end': 8
+		        "type": "step",
+		        "start": 8,
+		        "end": 9
 		    }, {
-		        'type': 'step',
-		        'start': 8,
-		        'end': 9
+		        "type": "step",
+		        "start": 9,
+		        "end": 10
 		    }, {
-		        'type': 'while_end',
-		        'start': 4,
-		        'end': 9
+		        "type": "while_end",
+		        "start": 5,
+		        "end": 10
 		    }, {
-		        'type': 'step',
-		        'start': 9,
-		        'end': 10
+		        "type": "step",
+		        "start": 10,
+		        "end": 11
 		    }, {
-		        'type': 'step',
-		        'start': 10,
-		        'end': 11
+		        "type": "step",
+		        "start": 11,
+		        "end": 12
 		    }]
 		})
 
@@ -866,12 +866,8 @@ print(odd_sum)
 		assert (listoflist == [1, 2, 3, [4, 5, [6, 8, 11], [6, 10, 11], [6, 8, 11], [6, 10, 11], [6, 18], 5, [6, 10, 11], [6, 8, 11], [6, 10, 11], [6, 8, 11], [6, 18], 20], 21])
 		assert (step_json == {
 		    "d":
-                                        5,
+		        5,
 		    "list": [{
-		        "type": "step",
-		        "start": 0,
-		        "end": 1
-		    }, {
 		        "type": "step",
 		        "start": 1,
 		        "end": 2
@@ -880,162 +876,165 @@ print(odd_sum)
 		        "start": 2,
 		        "end": 3
 		    }, {
-		        "type": "circle",
+		        "type": "step",
 		        "start": 3,
+		        "end": 4
+		    }, {
+		        "type": "circle",
+		        "start": 4,
 		        "iteration": 1
 		    }, {
 		        "type": "while_start",
 		        "depth": -1
-		    }, {
-		        "type": "step",
-		        "start": 3,
-		        "end": 4
 		    }, {
 		        "type": "step",
 		        "start": 4,
 		        "end": 5
 		    }, {
-		        "type": "circle",
+		        "type": "step",
 		        "start": 5,
+		        "end": 6
+		    }, {
+		        "type": "circle",
+		        "start": 6,
 		        "iteration": 1
 		    }, {
 		        "type": "while_start",
 		        "depth": -1
 		    }, {
 		        "type": "step",
-		        "start": 5,
-		        "end": 7
+		        "start": 6,
+		        "end": 8
 		    }, {
 		        "type": "step",
-		        "start": 7,
-		        "end": 10
+		        "start": 8,
+		        "end": 11
 		    }, {
 		        "type": "circle",
-		        "start": 5
+		        "start": 6
 		    }, {
 		        "type": "step",
-		        "start": 5,
-		        "end": 9
-		    }, {
-		        "type": "step",
-		        "start": 9,
+		        "start": 6,
 		        "end": 10
 		    }, {
+		        "type": "step",
+		        "start": 10,
+		        "end": 11
+		    }, {
 		        "type": "circle",
-		        "start": 5
+		        "start": 6
 		    }, {
 		        "type": "step",
-		        "start": 5,
-		        "end": 7
+		        "start": 6,
+		        "end": 8
 		    }, {
 		        "type": "step",
-		        "start": 7,
+		        "start": 8,
+		        "end": 11
+		    }, {
+		        "type": "circle",
+		        "start": 6
+		    }, {
+		        "type": "step",
+		        "start": 6,
 		        "end": 10
 		    }, {
-		        "type": "circle",
-		        "start": 5
-		    }, {
 		        "type": "step",
-		        "start": 5,
-		        "end": 9
-		    }, {
-		        "type": "step",
-		        "start": 9,
-		        "end": 10
+		        "start": 10,
+		        "end": 11
 		    }, {
 		        "type": "circle",
-		        "start": 5
+		        "start": 6
 		    }, {
 		        "type": "step",
-		        "start": 5,
-		        "end": 17
+		        "start": 6,
+		        "end": 18
 		    }, {
 		        "type": "while_end",
-		        "start": 5,
-		        "end": 17
+		        "start": 6,
+		        "end": 18
 		    }, {
 		        "type": "step",
-		        "start": 17,
-		        "end": 4
-		    }, {
-		        "type": "step",
-		        "start": 4,
+		        "start": 18,
 		        "end": 5
 		    }, {
-		        "type": "circle",
+		        "type": "step",
 		        "start": 5,
+		        "end": 6
+		    }, {
+		        "type": "circle",
+		        "start": 6,
 		        "iteration": 6
 		    }, {
 		        "type": "while_start",
 		        "depth": -1
 		    }, {
 		        "type": "step",
-		        "start": 5,
-		        "end": 9
-		    }, {
-		        "type": "step",
-		        "start": 9,
+		        "start": 6,
 		        "end": 10
 		    }, {
+		        "type": "step",
+		        "start": 10,
+		        "end": 11
+		    }, {
 		        "type": "circle",
-		        "start": 5
+		        "start": 6
 		    }, {
 		        "type": "step",
-		        "start": 5,
-		        "end": 7
+		        "start": 6,
+		        "end": 8
 		    }, {
 		        "type": "step",
-		        "start": 7,
+		        "start": 8,
+		        "end": 11
+		    }, {
+		        "type": "circle",
+		        "start": 6
+		    }, {
+		        "type": "step",
+		        "start": 6,
 		        "end": 10
 		    }, {
-		        "type": "circle",
-		        "start": 5
-		    }, {
 		        "type": "step",
-		        "start": 5,
-		        "end": 9
-		    }, {
-		        "type": "step",
-		        "start": 9,
-		        "end": 10
+		        "start": 10,
+		        "end": 11
 		    }, {
 		        "type": "circle",
-		        "start": 5
+		        "start": 6
 		    }, {
 		        "type": "step",
-		        "start": 5,
-		        "end": 7
+		        "start": 6,
+		        "end": 8
 		    }, {
 		        "type": "step",
-		        "start": 7,
-		        "end": 10
+		        "start": 8,
+		        "end": 11
 		    }, {
 		        "type": "circle",
-		        "start": 5
+		        "start": 6
 		    }, {
 		        "type": "step",
-		        "start": 5,
-		        "end": 17
+		        "start": 6,
+		        "end": 18
 		    }, {
 		        "type": "while_end",
-		        "start": 5,
-		        "end": 17
+		        "start": 6,
+		        "end": 18
 		    }, {
 		        "type": "step",
-		        "start": 17,
-		        "end": 19
-		    }, {
-		        "type": "while_end",
-		        "start": 3,
-		        "end": 19
-		    }, {
-		        "type": "step",
-		        "start": 19,
+		        "start": 18,
 		        "end": 20
+		    }, {
+		        "type": "while_end",
+		        "start": 4,
+		        "end": 20
+		    }, {
+		        "type": "step",
+		        "start": 20,
+		        "end": 21
 		    }]
 		})
 
-	# TODO: need to be done
 	def test_while_in_ifelse(self):
 		usercode = """a = 0
 if a == 0:
@@ -1062,37 +1061,36 @@ else:
 		        5,
 		    "list": [{
 		        "type": "step",
-		        "start": 0,
-		        "end": 2
+		        "start": 1,
+		        "end": 3
 		    }, {
 		        "type": "circle",
-		        "start": 2,
+		        "start": 3,
 		        "iteration": 1
 		    }, {
 		        "type": "while_start",
 		        "depth": -1
 		    }, {
 		        "type": "step",
-		        "start": 2,
-		        "end": 3
-		    }, {
-		        "type": "step",
 		        "start": 3,
 		        "end": 4
+		    }, {
+		        "type": "step",
+		        "start": 4,
+		        "end": 5
 		    }, {
 		        "type": "circle",
-		        "start": 2
-		    }, {
-		        "type": "step",
-		        "start": 2,
-		        "end": 3
+		        "start": 3
 		    }, {
 		        "type": "step",
 		        "start": 3,
 		        "end": 4
+		    }, {
+		        "type": "step",
+		        "start": 4,
+		        "end": 5
 		    }]
 		})
-
 
 
 class Test_Different_Main():
@@ -1117,28 +1115,28 @@ main()"""
 
 		assert (listoflist == [1, 7, 2, 3, 4, 5])
 		assert (step_json == {
-		    'd':
-                                        5,
-		    'list': [{
-		        'end': 6,
-		        'start': 0,
-		        'type': 'step'
+		    "d":
+		        5,
+		    "list": [{
+		        "type": "step",
+		        "start": 1,
+		        "end": 7
 		    }, {
-		        'end': 1,
-		        'start': 6,
-		        'type': 'step'
+		        "type": "step",
+		        "start": 7,
+		        "end": 2
 		    }, {
-		        'end': 2,
-		        'start': 1,
-		        'type': 'step'
+		        "type": "step",
+		        "start": 2,
+		        "end": 3
 		    }, {
-		        'end': 3,
-		        'start': 2,
-		        'type': 'step'
+		        "type": "step",
+		        "start": 3,
+		        "end": 4
 		    }, {
-		        'end': 4,
-		        'start': 3,
-		        'type': 'step'
+		        "type": "step",
+		        "start": 4,
+		        "end": 5
 		    }]
 		})
 
@@ -1163,28 +1161,28 @@ if __name__ == "__main__":
 
 		assert (listoflist == [1, 8, 2, 3, 4, 5])
 		assert (step_json == {
-		    'd':
-                                        5,
-		    'list': [{
-		        'end': 7,
-		        'start': 0,
-		        'type': 'step'
+		    "d":
+		        5,
+		    "list": [{
+		        "type": "step",
+		        "start": 1,
+		        "end": 8
 		    }, {
-		        'end': 1,
-		        'start': 7,
-		        'type': 'step'
+		        "type": "step",
+		        "start": 8,
+		        "end": 2
 		    }, {
-		        'end': 2,
-		        'start': 1,
-		        'type': 'step'
+		        "type": "step",
+		        "start": 2,
+		        "end": 3
 		    }, {
-		        'end': 3,
-		        'start': 2,
-		        'type': 'step'
+		        "type": "step",
+		        "start": 3,
+		        "end": 4
 		    }, {
-		        'end': 4,
-		        'start': 3,
-		        'type': 'step'
+		        "type": "step",
+		        "start": 4,
+		        "end": 5
 		    }]
 		})
 
@@ -1204,10 +1202,11 @@ print(f"b == {b}")"""
 		step_json = eval(open(current_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [1, 2, 3, 4])
-		assert (step_json == {'d': 5, 'list': [{'end': 1, 'start': 0, 'type': 'step'}, {'end': 2, 'start': 1, 'type': 'step'}, {'end': 3, 'start': 2, 'type': 'step'}]})
+		assert (step_json == {"d": 5, "list": [{"type": "step", "start": 1, "end": 2}, {"type": "step", "start": 2, "end": 3}, {"type": "step", "start": 3, "end": 4}]})
 
 
 class Test_For_Statement():
+	# TODO: TypeError: unhashable type: 'list'
 	def test_simple_forloop(self):
 		usercode = """for i in range(5):
 	print("Here")
@@ -1222,110 +1221,7 @@ class Test_For_Statement():
 		step_json = eval(open(current_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [[1, 2], [1, 2], [1, 2], [1, 2], [1, 2]])
-		assert (step_json == {
-		    'd':
-                                        5,
-		    'list': [{
-		        'type': 'step',
-		        'start': 0,
-		        'end': 1
-		    }, {
-		        'type': 'step',
-		        'start': 1,
-		        'end': 2
-		    }, {
-		        'type': 'step',
-		        'start': 2,
-		        'end': 3
-		    }, {
-		        'type': 'circle',
-		        'start': 3,
-		        'iteration': 1
-		    }, {
-		        'type': 'while_start',
-		        'depth': -1
-		    }, {
-		        'type': 'step',
-		        'start': 3,
-		        'end': 4
-		    }, {
-		        'type': 'circle',
-		        'start': 4,
-		        'iteration': 1
-		    }, {
-		        'type': 'while_start',
-		        'depth': -1
-		    }, {
-		        'type': 'step',
-		        'start': 4,
-		        'end': 6
-		    }, {
-		        'type': 'circle',
-		        'start': 4
-		    }, {
-		        'type': 'step',
-		        'start': 4,
-		        'end': 8
-		    }, {
-		        'type': 'circle',
-		        'start': 4
-		    }, {
-		        'type': 'step',
-		        'start': 4,
-		        'end': 8
-		    }, {
-		        'type': 'circle',
-		        'start': 4
-		    }, {
-		        'type': 'step',
-		        'start': 4,
-		        'end': 6
-		    }, {
-		        'type': 'circle',
-		        'start': 4
-		    }, {
-		        'type': 'step',
-		        'start': 4,
-		        'end': 6
-		    }, {
-		        'type': 'circle',
-		        'start': 4
-		    }, {
-		        'type': 'step',
-		        'start': 4,
-		        'end': 8
-		    }, {
-		        'type': 'circle',
-		        'start': 4
-		    }, {
-		        'type': 'step',
-		        'start': 4,
-		        'end': 8
-		    }, {
-		        'type': 'circle',
-		        'start': 4
-		    }, {
-		        'type': 'step',
-		        'start': 4,
-		        'end': 6
-		    }, {
-		        'type': 'while_end',
-		        'start': 4,
-		        'end': 6
-		    }, {
-		        'type': 'step',
-		        'start': 6,
-		        'end': 10
-		    }, {
-		        'type': 'while_end',
-		        'start': 3,
-		        'end': 10
-		    }, {
-		        'type': 'step',
-		        'start': 10,
-		        'end': 11
-		    }]
-		})
+		assert (step_json == {})
 
 	# TODO: TypeError: unhashable type: 'list'
 	def test_complex_forloop(self):
@@ -1347,7 +1243,7 @@ class Test_For_Statement():
 		assert (listoflist == [[1, 3], [1, 5], [1, 3], [1, 5]])
 		assert (step_json == {
 		    'd':
-                                        5,
+		        5,
 		    'list': [{
 		        'end': 1,
 		        'start': 0,
@@ -1428,107 +1324,107 @@ print(odd_sum)
 
 		assert (listoflist == [1, 2, 3, [4, [5, 7], [5, 9], [5, 9], [5, 7], [5, 7], [5, 9], [5, 9], [5, 7], 11], 12])
 		assert (step_json == {
-		    'd':
-                                        5,
-		    'list': [{
-		        'type': 'step',
-		        'start': 0,
-		        'end': 1
+		    "d":
+		        5,
+		    "list": [{
+		        "type": "step",
+		        "start": 1,
+		        "end": 2
 		    }, {
-		        'type': 'step',
-		        'start': 1,
-		        'end': 2
+		        "type": "step",
+		        "start": 2,
+		        "end": 3
 		    }, {
-		        'type': 'step',
-		        'start': 2,
-		        'end': 3
+		        "type": "step",
+		        "start": 3,
+		        "end": 4
 		    }, {
-		        'type': 'circle',
-		        'start': 3,
-		        'iteration': 1
+		        "type": "circle",
+		        "start": 4,
+		        "iteration": 1
 		    }, {
-		        'type': 'while_start',
-		        'depth': -1
+		        "type": "while_start",
+		        "depth": -1
 		    }, {
-		        'type': 'step',
-		        'start': 3,
-		        'end': 4
+		        "type": "step",
+		        "start": 4,
+		        "end": 5
 		    }, {
-		        'type': 'circle',
-		        'start': 4,
-		        'iteration': 1
+		        "type": "circle",
+		        "start": 5,
+		        "iteration": 1
 		    }, {
-		        'type': 'while_start',
-		        'depth': -1
+		        "type": "while_start",
+		        "depth": -1
 		    }, {
-		        'type': 'step',
-		        'start': 4,
-		        'end': 6
+		        "type": "step",
+		        "start": 5,
+		        "end": 7
 		    }, {
-		        'type': 'circle',
-		        'start': 4
+		        "type": "circle",
+		        "start": 5
 		    }, {
-		        'type': 'step',
-		        'start': 4,
-		        'end': 8
+		        "type": "step",
+		        "start": 5,
+		        "end": 9
 		    }, {
-		        'type': 'circle',
-		        'start': 4
+		        "type": "circle",
+		        "start": 5
 		    }, {
-		        'type': 'step',
-		        'start': 4,
-		        'end': 8
+		        "type": "step",
+		        "start": 5,
+		        "end": 9
 		    }, {
-		        'type': 'circle',
-		        'start': 4
+		        "type": "circle",
+		        "start": 5
 		    }, {
-		        'type': 'step',
-		        'start': 4,
-		        'end': 6
+		        "type": "step",
+		        "start": 5,
+		        "end": 7
 		    }, {
-		        'type': 'circle',
-		        'start': 4
+		        "type": "circle",
+		        "start": 5
 		    }, {
-		        'type': 'step',
-		        'start': 4,
-		        'end': 6
+		        "type": "step",
+		        "start": 5,
+		        "end": 7
 		    }, {
-		        'type': 'circle',
-		        'start': 4
+		        "type": "circle",
+		        "start": 5
 		    }, {
-		        'type': 'step',
-		        'start': 4,
-		        'end': 8
+		        "type": "step",
+		        "start": 5,
+		        "end": 9
 		    }, {
-		        'type': 'circle',
-		        'start': 4
+		        "type": "circle",
+		        "start": 5
 		    }, {
-		        'type': 'step',
-		        'start': 4,
-		        'end': 8
+		        "type": "step",
+		        "start": 5,
+		        "end": 9
 		    }, {
-		        'type': 'circle',
-		        'start': 4
+		        "type": "circle",
+		        "start": 5
 		    }, {
-		        'type': 'step',
-		        'start': 4,
-		        'end': 6
+		        "type": "step",
+		        "start": 5,
+		        "end": 7
 		    }, {
-		        'type': 'while_end',
-		        'start': 4,
-		        'end': 6
+		        "type": "while_end",
+		        "start": 5,
+		        "end": 7
 		    }, {
-		        'type': 'step',
-		        'start': 6,
-		        'end': 10
+		        "type": "step",
+		        "start": 7,
+		        "end": 11
 		    }, {
-		        'type': 'while_end',
-		        'start': 3,
-		        'end': 10
+		        "type": "while_end",
+		        "start": 4,
+		        "end": 11
 		    }, {
-		        'type': 'step',
-		        'start': 10,
-		        'end': 11
+		        "type": "step",
+		        "start": 11,
+		        "end": 12
 		    }]
 		})
 
@@ -1558,40 +1454,40 @@ main()
 
 		assert (listoflist == [1, 4, 10, 5, 6, 2, 7, 8, 2])
 		assert (step_json == {
-		    'd':
-                                        5,
-		    'list': [{
-		        'end': 3,
-		        'start': 0,
-		        'type': 'step'
+		    "d":
+		        5,
+		    "list": [{
+		        "type": "step",
+		        "start": 1,
+		        "end": 4
 		    }, {
-		        'end': 9,
-		        'start': 3,
-		        'type': 'step'
+		        "type": "step",
+		        "start": 4,
+		        "end": 10
 		    }, {
-		        'end': 4,
-		        'start': 9,
-		        'type': 'step'
+		        "type": "step",
+		        "start": 10,
+		        "end": 5
 		    }, {
-		        'end': 5,
-		        'start': 4,
-		        'type': 'step'
+		        "type": "step",
+		        "start": 5,
+		        "end": 6
 		    }, {
-		        'end': 1,
-		        'start': 5,
-		        'type': 'step'
+		        "type": "step",
+		        "start": 6,
+		        "end": 2
 		    }, {
-		        'end': 6,
-		        'start': 1,
-		        'type': 'step'
+		        "type": "step",
+		        "start": 2,
+		        "end": 7
 		    }, {
-		        'end': 7,
-		        'start': 6,
-		        'type': 'step'
+		        "type": "step",
+		        "start": 7,
+		        "end": 8
 		    }, {
-		        'end': 1,
-		        'start': 7,
-		        'type': 'step'
+		        "type": "step",
+		        "start": 8,
+		        "end": 2
 		    }]
 		})
 
@@ -1616,4 +1512,4 @@ print(a)
 		step_json = eval(open(current_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [1, 2])
-		assert (step_json == {'d': 5, 'list': [{'end': 1, 'start': 0, 'type': 'step'}]})
+		assert (step_json == {"d": 5, "list": [{"type": "step", "start": 1, "end": 2}]})

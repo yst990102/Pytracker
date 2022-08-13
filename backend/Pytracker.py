@@ -1,24 +1,23 @@
-import json
 import os
 import pathlib
 import sys
-from backend.my_trace import Trace
 import re
 import parse
+import json
+try:
+	import backend.my_trace as my_trace
+except:
+	import my_trace as my_trace
 
-# Pytracker import
-# file_op helpers
-from backend.helper_functions import create_test_file, del_line_in_file, delete_file, clean_content_in_file
-# list of list processors
-from backend.helper_functions import ListOfList_to_ListOfIntAndTuple, remove_if_else_lines_from_listoflist, remove_singlelist_from_listoflist
-# json processors
-from backend.helper_functions import get_step_json, listoflist_to_json
-# other processors
-from backend.helper_functions import tabdict_to_gridindent
-# checkers
-from backend.helper_functions import isBracket_match
-# classes and objects definition
-from backend.parse_classes import Program
+try:
+	import backend.helper_functions as hf
+except:
+	import helper_functions as hf
+
+try:
+	import backend.parse_classes as parse_classes
+except:
+	import parse_classes as parse_classes
 
 # Pytracker globals
 global Pytracker_locals
@@ -42,7 +41,7 @@ def trace_execution_tracking(tracer, result_file):
 	tab_dict = {}
 
 	# delete the initial <string>(1) line in the execution output
-	del_line_in_file(result_file, "<string>")
+	hf.del_line_in_file(result_file, "<string>")
 
 	from itertools import islice
 	with open(result_file, 'r') as exec_result:
@@ -94,8 +93,8 @@ def trace_execution_tracking(tracer, result_file):
 	tab_dict = dict(sorted(tab_dict.items()))
 
 	# parse str_ListOfList into ListOfList
-	listoflist_result = parse_strListOfList_into_ListOfList(all_line_nos, while_lines[:], tab_dict)
-	return listoflist_result, tab_dict, while_lines, if_else_lines
+	listoflist = parse_strListOfList_into_ListOfList(all_line_nos, while_lines[:], tab_dict)
+	return listoflist, tab_dict, while_lines, if_else_lines
 
 
 def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
@@ -165,7 +164,7 @@ def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
 	result = "[" + result + "]"
 
 	try:
-		assert (isBracket_match(result) == True)
+		assert (hf.isBracket_match(result) == True)
 	except:
 		print(f"ERROR: isBracket_match Failed! result == {result}, stack == {stack}")
 		exit(1)
@@ -174,7 +173,7 @@ def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
 
 
 def parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict: dict, grid_indent: dict):
-	return Program(TupleOfIntAndTuple, tab_dict, grid_indent)
+	return parse_classes.Program(TupleOfIntAndTuple, tab_dict, grid_indent)
 
 
 def backend_main(usercode=open(current_absolute_path + "/" + "UserCode.py").read()):
@@ -185,10 +184,10 @@ def backend_main(usercode=open(current_absolute_path + "/" + "UserCode.py").read
 	os.system(f"yapf -i {current_absolute_path}/UserCode.py")
 
 	# clean the execution txt before start a new tracer
-	clean_content_in_file(current_absolute_path + "/" + "Pytracker_output")
+	hf.clean_content_in_file(current_absolute_path + "/" + "Pytracker_output")
 
 	# create tracer
-	tracer = Trace(ignoredirs=[sys.prefix, sys.exec_prefix], trace=1, count=1, outfile=current_absolute_path + "/" + "Pytracker_output")
+	tracer = my_trace.Trace(ignoredirs=[sys.prefix, sys.exec_prefix], trace=1, count=1, outfile=current_absolute_path + "/" + "Pytracker_output")
 	tracer.run(usercode)
 
 	# =====================================================
@@ -198,16 +197,21 @@ def backend_main(usercode=open(current_absolute_path + "/" + "UserCode.py").read
 	global listoflist
 	listoflist, tab_dict, while_lines, if_else_lines = trace_execution_tracking(tracer, current_absolute_path + "/" + "Pytracker_output")
 
-	# remove single_list -> "[0-9]" from the listoflist_result
-	listoflist = remove_singlelist_from_listoflist(listoflist)
-	listoflist = remove_if_else_lines_from_listoflist(if_else_lines, listoflist)
+	# remove single_list -> "[0-9]" from the listoflist
+	listoflist = hf.remove_singlelist_from_listoflist(listoflist)
+	listoflist = hf.remove_if_else_lines_from_listoflist(if_else_lines, listoflist)
+
+	# write listoflist into "listoflist"
+	with open(current_absolute_path + "/" + "listoflist", 'w') as listoflist_out:
+		listoflist_out.write(str(listoflist))
+	listoflist_out.close()
 
 	# =====================================================
 	# =========   Stage 03 : convert_to_program   =========
 	# =====================================================
 	# convert ListOfList into TupleOfIntAndTuple
-	TupleOfIntAndTuple = ListOfList_to_ListOfIntAndTuple(listoflist)
-	grid_indent = tabdict_to_gridindent(tab_dict, while_lines)
+	TupleOfIntAndTuple = hf.ListOfList_to_ListOfIntAndTuple(listoflist)
+	grid_indent = hf.tabdict_to_gridindent(tab_dict, while_lines)
 	# then convert into Program
 	program = parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict, grid_indent)
 
@@ -222,10 +226,15 @@ def backend_main(usercode=open(current_absolute_path + "/" + "UserCode.py").read
 	# =====================================================
 	# method 01 : get json from program
 	global step_json
-	step_json = get_step_json(program)
+	step_json = hf.get_step_json(program)
 	# method 02 : get json from listoflist
-	# listoflist_to_json(0, listoflist_result, [])
+	# hf.listoflist_to_json(0, listoflist, [])
 	# step_json = {"d": 5, "list": step_list_in_json}
+
+	# write step_json into "step_json"
+	with open(current_absolute_path + "/" + "step_json.json", "w") as step_json_file_write:
+		json.dump(step_json, step_json_file_write)
+	step_json_file_write.close()
 
 
 if __name__ == "__main__":

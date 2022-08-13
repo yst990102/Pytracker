@@ -1,7 +1,10 @@
 import os
 import re
 
-from backend.parse_classes import Iteration, Program
+try:
+	import backend.parse_classes as parse_classes
+except:
+	import parse_classes as parse_classes
 
 DEBUG_listoflist_to_json = False
 DEBUG_get_step_json = True
@@ -123,8 +126,8 @@ def TupleOfIntAndTuple_to_ListOfList(TupleOfIntAndTuple):
 # 2022-06-25 使用递归式修改列表
 # change nestedlist_to_listofint&tuple
 def ListOfList_to_ListOfIntAndTuple(item, count_dict={}):
-	# print("item == ", item)
-	# print("count_dict == ", count_dict)
+	print("item == ", item)
+	print("count_dict == ", count_dict)
 	if type(item) == int:
 		return item
 	elif type(item) == list:
@@ -164,7 +167,7 @@ def tabdict_to_gridindent(tab_dict: dict, while_lines: list) -> dict:
 	return grid_indent
 
 
-def get_step_json(program: Program):
+def get_step_json(program: parse_classes.Program):
 	start_statement = program.get_first_statement()
 	end_statement = start_statement.get_next()
 
