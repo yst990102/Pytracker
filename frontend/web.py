@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 import os
+import backend.Pytracker as Pytracker
 
 app = Flask(__name__)
 
@@ -11,11 +12,13 @@ def home_page():
         with open("../backend/UserCode.py", 'w') as usercode_w:
             usercode_w.write(request.json)
         usercode_w.close()
-
-        os.system("python ../backend/Pytracker.py")
-        step_json = eval(open("../backend/step_json.json", 'r').read())
-
-        print(f"step_json from backend == {step_json}")
+        
+        # run backend_main()
+        Pytracker.backend_main()
+        
+        # grab the result of listoflist and step_json from global variables
+        listoflist = Pytracker.listoflist
+        step_json = Pytracker.step_json
 
         return step_json
     return render_template('index.html')

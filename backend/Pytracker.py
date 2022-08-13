@@ -2,23 +2,23 @@ import json
 import os
 import pathlib
 import sys
-from my_trace import Trace
+from backend.my_trace import Trace
 import re
 import parse
 
 # Pytracker import
 # file_op helpers
-from helper_functions import create_test_file, del_line_in_file, delete_file, clean_content_in_file
+from backend.helper_functions import create_test_file, del_line_in_file, delete_file, clean_content_in_file
 # list of list processors
-from helper_functions import ListOfList_to_ListOfIntAndTuple, remove_if_else_lines_from_listoflist, remove_singlelist_from_listoflist
+from backend.helper_functions import ListOfList_to_ListOfIntAndTuple, remove_if_else_lines_from_listoflist, remove_singlelist_from_listoflist
 # json processors
-from helper_functions import get_step_json, listoflist_to_json
+from backend.helper_functions import get_step_json, listoflist_to_json
 # other processors
-from helper_functions import tabdict_to_gridindent
+from backend.helper_functions import tabdict_to_gridindent
 # checkers
-from helper_functions import isBracket_match
+from backend.helper_functions import isBracket_match
 # classes and objects definition
-from parse_classes import Program
+from backend.parse_classes import Program
 
 # Pytracker globals
 global Pytracker_locals
@@ -186,8 +186,6 @@ def backend_main(usercode=open(current_absolute_path + "/" + "UserCode.py").read
 
 	# clean the execution txt before start a new tracer
 	clean_content_in_file(current_absolute_path + "/" + "Pytracker_output")
-	clean_content_in_file(current_absolute_path + "/" + "step_json.json")
-	clean_content_in_file(current_absolute_path + "/" + "listoflist")
 
 	# create tracer
 	tracer = Trace(ignoredirs=[sys.prefix, sys.exec_prefix], trace=1, count=1, outfile=current_absolute_path + "/" + "Pytracker_output")
@@ -197,22 +195,18 @@ def backend_main(usercode=open(current_absolute_path + "/" + "UserCode.py").read
 	# ============   Stage 02 : main_tracing   ============
 	# =====================================================
 	# trace the whole execution, return a ListOfList
-	listoflist_result, tab_dict, while_lines, if_else_lines = trace_execution_tracking(tracer, current_absolute_path + "/" + "Pytracker_output")
+	global listoflist
+	listoflist, tab_dict, while_lines, if_else_lines = trace_execution_tracking(tracer, current_absolute_path + "/" + "Pytracker_output")
 
 	# remove single_list -> "[0-9]" from the listoflist_result
-	listoflist_result = remove_singlelist_from_listoflist(listoflist_result)
-	listoflist_result = remove_if_else_lines_from_listoflist(if_else_lines, listoflist_result)
-
-	# write listoflist_result into "listoflist"
-	with open(current_absolute_path + "/" + "listoflist", 'w') as listoflist_out:
-		listoflist_out.write(str(listoflist_result))
-	listoflist_out.close()
+	listoflist = remove_singlelist_from_listoflist(listoflist)
+	listoflist = remove_if_else_lines_from_listoflist(if_else_lines, listoflist)
 
 	# =====================================================
 	# =========   Stage 03 : convert_to_program   =========
 	# =====================================================
 	# convert ListOfList into TupleOfIntAndTuple
-	TupleOfIntAndTuple = ListOfList_to_ListOfIntAndTuple(listoflist_result)
+	TupleOfIntAndTuple = ListOfList_to_ListOfIntAndTuple(listoflist)
 	grid_indent = tabdict_to_gridindent(tab_dict, while_lines)
 	# then convert into Program
 	program = parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict, grid_indent)
@@ -227,15 +221,11 @@ def backend_main(usercode=open(current_absolute_path + "/" + "UserCode.py").read
 	# ===========   Stage 03 : get_step_json   ============
 	# =====================================================
 	# method 01 : get json from program
+	global step_json
 	step_json = get_step_json(program)
 	# method 02 : get json from listoflist
 	# listoflist_to_json(0, listoflist_result, [])
 	# step_json = {"d": 5, "list": step_list_in_json}
-
-	# write step_json into "step_json"
-	with open(current_absolute_path + "/" + "step_json.json", "w") as step_json_file_write:
-		json.dump(step_json, step_json_file_write)
-	step_json_file_write.close()
 
 
 if __name__ == "__main__":

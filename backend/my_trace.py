@@ -128,7 +128,7 @@ class Trace:
 		self.runctx(cmd, dict, dict)
 
 	def runctx(self, cmd, globals=None, locals=None):
-		from Pytracker import Pytracker_locals, Pytracker_globals
+		from backend.Pytracker import Pytracker_locals, Pytracker_globals
 		locals_diff = [i for i in Pytracker_locals if i not in locals]
 		globals_diff = [i for i in Pytracker_globals if i not in globals]
 

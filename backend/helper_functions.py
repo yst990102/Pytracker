@@ -1,7 +1,7 @@
 import os
 import re
 
-from parse_classes import Iteration, Program
+from backend.parse_classes import Iteration, Program
 
 DEBUG_listoflist_to_json = False
 DEBUG_get_step_json = True
@@ -173,65 +173,7 @@ def get_step_json(program: Program):
 	while end_statement:
 		start_location = start_statement.line_no
 		end_location = end_statement.line_no
-		'''
-		method 01: not fully worked
-		entered_iteration = end_statement.enter_into_iteration
-		breaked_iterations = start_statement.break_out_iterations
-		exiting_iterations = end_statement.break_out_iterations
-		enter_iteration_under_same_while_loop = False
-		try:
-			for breaked_iteration in breaked_iterations:
-				if breaked_iteration.while_line_no == entered_iteration.while_line_no:
-					enter_iteration_under_same_while_loop = True
-		except:
-			pass
-		finally:
-			# case 1: simply enter into a loop
-			# need: step, circle, while_start
-			if entered_iteration and not breaked_iterations:
-				if DEBUG_get_step_json:
-					print("========== case 01 ==========")
-				start_of_entered_iteration = entered_iteration.while_line_no
-				step_list.append({"type": "step", "start": start_location, "end": end_location})
-				step_list.append({"type": "circle", "start": start_of_entered_iteration})
-				step_list.append({"type": "while_start", "depth": -1})
-			# case 2: from iteration_1 to iteration_2, which belongs to same while-loop
-			# need: step, circle
-			elif entered_iteration and breaked_iterations and enter_iteration_under_same_while_loop:
-				if DEBUG_get_step_json:
-					print("========== case 02 ==========")
-				start_of_entered_iteration = entered_iteration.while_line_no
-				step_list.append({"type": "circle", "start": start_of_entered_iteration})
-			# case 3: break from a while-loop, get into a normal step
-			# need: step, while_end
-			elif not entered_iteration and breaked_iterations:
-				if DEBUG_get_step_json:
-					print("========== case 03 ==========")
-				step_list.append({"type": "step", "start": start_location, "end": end_location})
-				for breaked_iteration in breaked_iterations:
-					start_of_breaked_iteration = breaked_iteration.while_line_no
-					end_of_breaked_iteration = breaked_iteration.get_last_inner_step().line_no
-					step_list.append({"type": "while_end", "start": start_of_breaked_iteration, "end": end_of_breaked_iteration})
-			# case 4: break from a while-loop, get into another while-loop
-			# need: step, while_end, circle, while_start
-			elif entered_iteration and breaked_iterations and not enter_iteration_under_same_while_loop:
-				if DEBUG_get_step_json:
-					print("========== case 04 ==========")
-				step_list.append({"type": "step", "start": start_location, "end": end_location})
-				for breaked_iteration in breaked_iterations:
-					start_of_breaked_iteration = breaked_iteration.while_line_no
-					end_of_breaked_iteration = breaked_iteration.get_last_inner_step().line_no
-					step_list.append({"type": "while_end", "start": start_of_breaked_iteration, "end": end_of_breaked_iteration})
-				start_of_entered_iteration = entered_iteration.while_line_no
-				step_list.append({"type": "circle", "start": start_of_entered_iteration})
-				step_list.append({"type": "while_start", "depth": -1})
-			elif not entered_iteration and not breaked_iterations:
-				if DEBUG_get_step_json:
-					print("========== case 05 ==========")
-				step_list.append({"type": "step", "start": start_location, "end": end_location})
-			'''
-
-		# method 02: use path to judge
+		# use path to judge
 		# CASE 01: start a new while-loop
 		if len(end_statement.path) > len(start_statement.path):
 			entered_iteration = end_statement.path[-1]
