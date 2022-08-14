@@ -64,12 +64,7 @@ from time import monotonic as _time
 import threading
 
 # personal import
-import copy
 from trace import CoverageResults, _Ignore, _modname
-try:
-	import backend.Pytracker as Pytracker
-except:
-	import Pytracker as Pytracker
 
 class Trace:
 
@@ -130,6 +125,8 @@ class Trace:
 		dict = __main__.__dict__
 		self.initial_locals_keys = list(dict.keys())
 		self.initial_globals_keys =  list(dict.keys())
+		global stored_local_variables
+		stored_local_variables = []
 		self.runctx(cmd, dict, dict)
 
 	def runctx(self, cmd, globals=None, locals=None):
@@ -241,6 +238,7 @@ class Trace:
 
 			frame_locals = frame.f_locals
 			frame_globals = frame.f_globals
+			
 			local_variables = {}
 			for key,value in frame_locals.items():
 				if key not in self.initial_locals_keys:
@@ -254,6 +252,7 @@ class Trace:
 					# print("(%d): %s" % (lineno, linecache.getline(self.usercode_file, lineno)), end='', file=open(self.outfile, "a"))
 					print("(%d): %s" % (lineno, self.usercode.splitlines()[lineno - 1]), end='\n', file=open(self.outfile, "a"))
 					print(f"local_variables == {local_variables}", file=open(self.outfile, "a"))
+					stored_local_variables.append(local_variables)
 				except OSError as err:
 					print("Can't save localtrace_trace_and_count output because %s" % err, file=sys.stderr)
 			else:

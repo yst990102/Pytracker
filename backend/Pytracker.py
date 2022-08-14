@@ -19,13 +19,6 @@ try:
 except:
 	import parse_classes as parse_classes
 
-# Pytracker globals
-global Pytracker_locals
-global Pytracker_globals
-Pytracker_locals = locals()
-Pytracker_globals = globals()
-
-# Pytracker defines
 current_absolute_path = str(pathlib.Path(__file__).parent.resolve())
 
 # DEBUG switches
@@ -83,13 +76,14 @@ def trace_execution_tracking(result_file):
 				# STEP 2: grab information for the local_variable line
 				vari_parse = list(parse.parse("local_variables == {0}", exec_content[1]))
 
-				# TODO: 这边的local_variable需要将Pytracker_locals里面对应的东西去除
 				local_variables = vari_parse[0]
 
 				steps_info.append((line_no, local_variables))
 
 	exec_result.close()
+	
 	all_line_nos = [line_no for (line_no, _) in steps_info]
+	all_local_variables = [local_variables for (_, local_variables) in steps_info]
 	tab_dict = dict(sorted(tab_dict.items()))
 
 	# parse str_ListOfList into ListOfList
