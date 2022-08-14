@@ -176,6 +176,8 @@ def get_step_json(program: parse_classes.Program):
 	while end_statement:
 		start_location = start_statement.line_no
 		end_location = end_statement.line_no
+		if step_list == []:
+			step_list.append({"type": "step", "start": 0, "end": start_location})
 		# use path to judge
 		# CASE 01: start a new while-loop
 		if len(end_statement.path) > len(start_statement.path):
