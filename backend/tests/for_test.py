@@ -4,7 +4,8 @@ import pathlib
 current_absolute_path = str(pathlib.Path(__file__).parent.resolve())
 
 class Test_For_Statement():
-	# TODO: TypeError: unhashable type: "list"
+	# DONE: TypeError: unhashable type: "list" --- fixed by 2022-08-15
+	# TODO: Iteration Number Error
 	def test_simple_forloop(self):
 		usercode = """for i in range(5):
 	print("Here")
@@ -21,7 +22,8 @@ class Test_For_Statement():
 		assert (listoflist == [[1, 2], [1, 2], [1, 2], [1, 2], [1, 2]])
 		assert (step_json == {})
 
-	# TODO: TypeError: unhashable type: "list"
+	# DONE: TypeError: unhashable type: "list" --- fixed by 2022-08-15
+	# TODO: Iteration Number Error
 	def test_complex_forloop(self):
 		usercode = """for a in range(4):
 	if a % 2 == 0:
@@ -100,7 +102,9 @@ class Test_For_Statement():
 		        'type': 'step'
 		    }]
 		})
-
+	
+	# DONE: TypeError: unhashable type: "list" --- fixed by 2022-08-15
+	# TODO: Iteration Number Error
 	def test_nested_forloop(self):
 		usercode = """even_sum = 0
 odd_sum = 0

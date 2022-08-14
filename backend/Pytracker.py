@@ -219,12 +219,17 @@ def backend_main(usercode=open(current_absolute_path + "/" + "UserCode.py").read
 	# =====================================================
 	# convert ListOfList into TupleOfIntAndTuple
 	TupleOfIntAndTuple = hf.ListOfList_to_ListOfIntAndTuple(listoflist)
+	# write listoflist into "listoflist"
+	with open(current_absolute_path + "/" + "TupleOfIntAndTuple", 'w') as TupleOfIntAndTuple_out:
+		TupleOfIntAndTuple_out.write(str(TupleOfIntAndTuple))
+	TupleOfIntAndTuple_out.close()
+	
 	grid_indent = hf.tabdict_to_gridindent(tab_dict, while_lines)
 	# then convert into Program
 	program = parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict, grid_indent)
 
 	# TEST: all available print ways testing for program
-	# program.print_statements()
+	program.print_statements()
 	# program.print_linklist(parse_classes.Print_Forward)
 	# program.print_linklist(parse_classes.Print_Backward)
 	# program.print_while_loops_inlayer()

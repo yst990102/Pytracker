@@ -54,6 +54,7 @@ class Iteration(Statement):
 		if creation_print:
 			print(f"---- create {self.__class__.__name__} {steps}")
 		self.general_steps = steps[1] # general step list, formed by integer
+		self.while_line_no = self.general_steps[0]
 		self.steps = [] # list of all Assignment/Iteration Nodes
 		self.iteration_num = steps[0] # integer for iteration number
 
@@ -89,6 +90,7 @@ class Iteration(Statement):
 
 	def print_info(self) -> None:
 		print(f"\n==== {self.__class__.__name__} {hex(id(self))} =====")
+		print(f"iteration_num == {self.iteration_num}, while_line_no = {self.while_line_no}")
 		for step in self.steps:
 			step.print_info()
 
@@ -96,7 +98,6 @@ class Basic_While_Iteration(Iteration):
 
 	def __init__(self, steps: tuple, program, path) -> None:
 		super().__init__(steps, program, path)
-		self.while_line_no = self.general_steps[0]
 
 		# classify iteration to program.while_loops attribute
 		assert (isinstance(self.program, Program))
@@ -119,7 +120,6 @@ class Nested_While_Iteration(Iteration):
 
 	def __init__(self, steps: tuple, program, path) -> None:
 		super().__init__(steps, program, path)
-		self.while_line_no = self.general_steps[0]
 
 		# classify iteration to program.while_loops attribute
 		assert (isinstance(self.program, Program))
