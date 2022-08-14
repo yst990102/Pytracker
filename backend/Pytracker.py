@@ -32,7 +32,7 @@ current_absolute_path = str(pathlib.Path(__file__).parent.resolve())
 DEBUG_parse_strListOfList_into_ListOfList = False
 
 
-def trace_execution_tracking(tracer, result_file):
+def trace_execution_tracking(result_file):
 	# steps -- all the execution steps
 	# formate -- [(line_no, local_variables), (..), ...]
 	steps_info = []
@@ -209,7 +209,7 @@ def backend_main(usercode=open(current_absolute_path + "/" + "UserCode.py").read
 	# =====================================================
 	# trace the whole execution, return a ListOfList
 	global listoflist
-	listoflist, tab_dict, while_lines, if_else_lines = trace_execution_tracking(tracer, current_absolute_path + "/" + "Pytracker_output")
+	listoflist, tab_dict, while_lines, if_else_lines = trace_execution_tracking(current_absolute_path + "/" + "Pytracker_output")
 
 	# remove single_list -> "[0-9]" from the listoflist
 	listoflist = hf.remove_singlelist_from_listoflist(listoflist)
