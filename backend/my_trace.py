@@ -64,8 +64,12 @@ from time import monotonic as _time
 import threading
 
 # personal import
+import copy
 from trace import CoverageResults, _Ignore, _modname
-
+try:
+	import backend.Pytracker as Pytracker
+except:
+	import Pytracker as Pytracker
 
 class Trace:
 
@@ -124,16 +128,12 @@ class Trace:
 	def run(self, cmd):
 		import __main__
 		dict = __main__.__dict__
+		self.initial_locals_keys = list(dict.keys())
+		self.initial_globals_keys =  list(dict.keys())
 		self.runctx(cmd, dict, dict)
 
 	def runctx(self, cmd, globals=None, locals=None):
 		self.usercode = cmd
-		try:
-			import backend.Pytracker as Pytracker
-		except:
-			import Pytracker as Pytracker
-		locals_diff = [i for i in Pytracker.Pytracker_locals if i not in locals]
-		globals_diff = [i for i in Pytracker.Pytracker_globals if i not in globals]
 
 		if globals is None:
 			globals = {}
@@ -239,8 +239,12 @@ class Trace:
 			key = self.usercode_file, lineno
 			self.counts[key] = self.counts.get(key, 0) + 1
 
-			local_variables = frame.f_locals
-			global_variables = frame.f_globals
+			frame_locals = frame.f_locals
+			frame_globals = frame.f_globals
+			local_variables = {}
+			for key,value in frame_locals.items():
+				if key not in self.initial_locals_keys:
+					local_variables.update({key:value})
 
 			if self.start_time:
 				print('%.2f' % (_time() - self.start_time), end=' ')
