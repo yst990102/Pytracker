@@ -124,10 +124,10 @@ class Trace:
 	def run(self, cmd):
 		import __main__
 		dict = __main__.__dict__
-		self.usercode = cmd
 		self.runctx(cmd, dict, dict)
 
 	def runctx(self, cmd, globals=None, locals=None):
+		self.usercode = cmd
 		try:
 			import backend.Pytracker as Pytracker
 		except:
@@ -401,8 +401,11 @@ def main():
 			sys.argv = [opts.progname, *opts.arguments]
 			sys.path[0] = os.path.dirname(opts.progname)
 
-			with open(opts.progname, 'rb') as fp:
-				code = compile(fp.read(), opts.progname, 'exec')
+			# 2022-08-14这边不用compile的，不然runctx里面self.usercode不是用户输入代码的字符串
+			# with open(opts.progname, 'rb') as fp:
+			# 	code = compile(fp.read(), opts.progname, 'exec')
+			code = open(opts.progname, 'r').read()
+			
 			# try to emulate __main__ namespace as much as possible
 			globs = {
 			    '__file__': opts.progname,
