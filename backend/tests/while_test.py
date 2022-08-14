@@ -3,6 +3,7 @@ import pathlib
 
 current_absolute_path = str(pathlib.Path(__file__).parent.resolve())
 
+
 class Test_While_Statement():
 
 	def test_simplest(self):
@@ -251,136 +252,7 @@ print(odd_sum)
 		step_json = eval(open(current_absolute_path + "/../" + "step_json.json", 'r').read())
 
 		assert (listoflist == [1, 2, 3, [4, 5, [6, 8, 11], [6, 10, 11], 12], [4, 5, [6, 10, 11], [6, 8, 11], 12], [4, 5, [6, 8, 11], [6, 10, 11], 12], [4, 5, [6, 10, 11], [6, 8, 11], 12], 14, 15])
-		assert (step_json == {
-		    "d":
-		        5,
-		    "list": [{
-		        "type": "step",
-		        "start": 0,
-		        "end": 1
-		    }, {
-		        "type": "step",
-		        "start": 1,
-		        "end": 2
-		    }, {
-		        "type": "step",
-		        "start": 2,
-		        "end": 3
-		    }, {
-		        "type": "step",
-		        "start": 3,
-		        "end": 4
-		    }, {
-		        "type": "circle",
-		        "start": 4,
-		        "iteration": 1
-		    }, {
-		        "type": "while_start",
-		        "depth": -1
-		    }, {
-		        "type": "step",
-		        "start": 4,
-		        "end": 5
-		    }, {
-		        "type": "step",
-		        "start": 5,
-		        "end": 6
-		    }, {
-		        "type": "circle",
-		        "start": 6,
-		        "iteration": 1
-		    }, {
-		        "type": "while_start",
-		        "depth": -1
-		    }, {
-		        "type": "step",
-		        "start": 6,
-		        "end": 8
-		    }, {
-		        "type": "step",
-		        "start": 8,
-		        "end": 11
-		    }, {
-		        "type": "circle",
-		        "start": 6,
-		        "iteration": 2
-		    }, {
-		        "type": "step",
-		        "start": 6,
-		        "end": 10
-		    }, {
-		        "type": "step",
-		        "start": 10,
-		        "end": 11
-		    }, {
-		        "type": "while_end",
-		        "start": 6,
-		        "end": 11
-		    }, {
-		        "type": "step",
-		        "start": 11,
-		        "end": 12
-		    }, {
-		        "type": "circle",
-		        "start": 4,
-		        "iteration": 2
-		    }, {
-		        "type": "step",
-		        "start": 4,
-		        "end": 5
-		    }, {
-		        "type": "step",
-		        "start": 5,
-		        "end": 12
-		    }, {
-		        "type": "circle",
-		        "start": 4,
-		        "iteration": 4
-		    }, {
-		        "type": "step",
-		        "start": 4,
-		        "end": 5
-		    }, {
-		        "type": "step",
-		        "start": 5,
-		        "end": 6
-		    }, {
-		        "type": "circle",
-		        "start": 6,
-		        "iteration": 2
-		    }, {
-		        "type": "while_start",
-		        "depth": -1
-		    }, {
-		        "type": "step",
-		        "start": 6,
-		        "end": 8
-		    }, {
-		        "type": "step",
-		        "start": 8,
-		        "end": 11
-		    }, {
-		        "type": "while_end",
-		        "start": 6,
-		        "end": 11
-		    }, {
-		        "type": "step",
-		        "start": 11,
-		        "end": 12
-		    }, {
-		        "type": "while_end",
-		        "start": 4,
-		        "end": 12
-		    }, {
-		        "type": "step",
-		        "start": 12,
-		        "end": 14
-		    }, {
-		        "type": "step",
-		        "start": 14,
-		        "end": 15
-		    }]
-		})
+		assert (step_json == {"d": 5, "list": [{"type": "step", "start": 0, "end": 1}, {"type": "step", "start": 1, "end": 2}, {"type": "step", "start": 2, "end": 3}, {"type": "step", "start": 3, "end": 4}, {"type": "circle", "start": 4, "iteration": 1}, {"type": "while_start", "depth": -1}, {"type": "step", "start": 4, "end": 5}, {"type": "step", "start": 5, "end": 6}, {"type": "circle", "start": 6, "iteration": 1}, {"type": "while_start", "depth": -1}, {"type": "step", "start": 6, "end": 8}, {"type": "step", "start": 8, "end": 11}, {"type": "circle", "start": 6, "iteration": 2}, {"type": "step", "start": 6, "end": 10}, {"type": "step", "start": 10, "end": 11}, {"type": "while_end", "start": 6, "end": 11}, {"type": "step", "start": 11, "end": 12}, {"type": "circle", "start": 4, "iteration": 2}, {"type": "step", "start": 4, "end": 5}, {"type": "step", "start": 5, "end": 6}, {"type": "circle", "start": 6, "iteration": 1}, {"type": "while_start", "depth": -1}, {"type": "step", "start": 6, "end": 10}, {"type": "step", "start": 10, "end": 11}, {"type": "circle", "start": 6, "iteration": 2}, {"type": "step", "start": 6, "end": 8}, {"type": "step", "start": 8, "end": 11}, {"type": "while_end", "start": 6, "end": 11}, {"type": "step", "start": 11, "end": 12}, {"type": "circle", "start": 4, "iteration": 4}, {"type": "step", "start": 4, "end": 5}, {"type": "step", "start": 5, "end": 6}, {"type": "circle", "start": 6, "iteration": 1}, {"type": "while_start", "depth": -1}, {"type": "step", "start": 6, "end": 10}, {"type": "step", "start": 10, "end": 11}, {"type": "circle", "start": 6, "iteration": 2}, {"type": "step", "start": 6, "end": 8}, {"type": "step", "start": 8, "end": 11}, {"type": "while_end", "start": 6, "end": 11}, {"type": "step", "start": 11, "end": 12}, {"type": "while_end", "start": 4, "end": 12}, {"type": "step", "start": 12, "end": 14}, {"type": "step", "start": 14, "end": 15}]})
 
 	def test_3layer(self):
 		usercode = """i = 0
@@ -522,7 +394,7 @@ print(odd_sum)
 		listoflist = eval(open(current_absolute_path + "/../" + "listoflist", 'r').read())
 		step_json = eval(open(current_absolute_path + "/../" + "step_json.json", 'r').read())
 
-		assert (listoflist == [1, 2, 3, [4, 5, [6, 8, 11], [6, 10, 11], [6, 8, 11], [6, 10, 11], [6, 18], 5, [6, 10, 11], [6, 8, 11], [6, 10, 11], [6, 8, 11], [6, 18], 20], 21])
+		assert (listoflist == [1, 2, 3, [4, 5, [6, 8, 11], [6, 10, 11], [6, 8, 11], [6, 10, 11], 18], [4, 5, [6, 10, 11], [6, 8, 11], [6, 10, 11], [6, 8, 11], 18], 20, 21])
 		assert (step_json == {
 		    "d":
 		        5,
@@ -587,18 +459,30 @@ print(odd_sum)
 		    }, {
 		        "type": "circle",
 		        "start": 6,
-		        "iteration": 5
+		        "iteration": 4
 		    }, {
 		        "type": "step",
 		        "start": 6,
-		        "end": 18
+		        "end": 10
+		    }, {
+		        "type": "step",
+		        "start": 10,
+		        "end": 11
 		    }, {
 		        "type": "while_end",
 		        "start": 6,
-		        "end": 18
+		        "end": 11
 		    }, {
 		        "type": "step",
-		        "start": 18,
+		        "start": 11,
+		        "end": 18
+		    }, {
+		        "type": "circle",
+		        "start": 4,
+		        "iteration": 2
+		    }, {
+		        "type": "step",
+		        "start": 4,
 		        "end": 5
 		    }, {
 		        "type": "step",
@@ -607,25 +491,57 @@ print(odd_sum)
 		    }, {
 		        "type": "circle",
 		        "start": 6,
-		        "iteration": 10
+		        "iteration": 1
 		    }, {
 		        "type": "while_start",
 		        "depth": -1
 		    }, {
 		        "type": "step",
 		        "start": 6,
-		        "end": 18
+		        "end": 10
+		    }, {
+		        "type": "step",
+		        "start": 10,
+		        "end": 11
+		    }, {
+		        "type": "circle",
+		        "start": 6,
+		        "iteration": 2
+		    }, {
+		        "type": "step",
+		        "start": 6,
+		        "end": 8
+		    }, {
+		        "type": "step",
+		        "start": 8,
+		        "end": 11
+		    }, {
+		        "type": "circle",
+		        "start": 6,
+		        "iteration": 4
+		    }, {
+		        "type": "step",
+		        "start": 6,
+		        "end": 8
+		    }, {
+		        "type": "step",
+		        "start": 8,
+		        "end": 11
 		    }, {
 		        "type": "while_end",
 		        "start": 6,
+		        "end": 11
+		    }, {
+		        "type": "step",
+		        "start": 11,
+		        "end": 18
+		    }, {
+		        "type": "while_end",
+		        "start": 4,
 		        "end": 18
 		    }, {
 		        "type": "step",
 		        "start": 18,
-		        "end": 20
-		    }, {
-		        "type": "while_end",
-		        "start": 4,
 		        "end": 20
 		    }, {
 		        "type": "step",
@@ -695,4 +611,3 @@ else:
 		        "end": 5
 		    }]
 		})
-

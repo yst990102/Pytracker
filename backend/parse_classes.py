@@ -193,21 +193,21 @@ class Program():
 		self.filt_algo_implement()
 
 	def add_while_loop(self, new_iteration: Iteration):
-		new_while_line_no = new_iteration.while_line_no
+		new_while_path = new_iteration.path
 
 		refered_found = False
 		for while_loop_info in self.while_loops:
-			cur_while_line_no, cur_while_iterations = while_loop_info["while_line_no"], while_loop_info["iterations"]
-			if new_while_line_no == cur_while_line_no:
+			cur_while_path, cur_while_iterations = while_loop_info["path"], while_loop_info["iterations"]
+			if new_while_path == cur_while_path:
 				cur_while_iterations.append(new_iteration)
 				refered_found = True
 				break
 		if not refered_found:
-			self.while_loops.append({"while_line_no": new_iteration.while_line_no, "iterations": [new_iteration]})
+			self.while_loops.append({"path": new_while_path, "iterations": [new_iteration]})
 	
 	def filt_algo_implement(self):
 		for while_loop_info in self.while_loops:
-			while_line_no, while_iterations = while_loop_info["while_line_no"], while_loop_info["iterations"]
+			while_path, while_iterations = while_loop_info["path"], while_loop_info["iterations"]
 
 			while_iteration_set = []
 			for while_iteration in while_iterations[:-1]:

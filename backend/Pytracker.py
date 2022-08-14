@@ -130,11 +130,25 @@ def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
 				if DEBUG_parse_strListOfList_into_ListOfList:
 					print(f"{line_no}\t next round loop, loop statement\t {stack}\t {result}")
 			else:
-				stack.append(while_lines[0])
-				result = result + "[" + str(line_no)
-				result = result.replace(",]", "],")
-				if DEBUG_parse_strListOfList_into_ListOfList:
-					print(f"{line_no}\t new loop statement\t {stack}\t {result}")
+				if stack == []:
+					stack.append(while_lines[0])
+					result = result + "[" + str(line_no)
+					result = result.replace(",]", "],")
+					if DEBUG_parse_strListOfList_into_ListOfList:
+						print(f"{line_no}\t new loop statement_1\t {stack}\t {result}")
+				elif tab_dict[stack[-1]] < tab_dict[line_no]:
+					stack.append(while_lines[0])
+					result = result + "[" + str(line_no)
+					result = result.replace(",]", "],")
+					if DEBUG_parse_strListOfList_into_ListOfList:
+						print(f"{line_no}\t new loop statement_2\t {stack}\t {result}")
+				elif tab_dict[stack[-1]] == tab_dict[line_no]:
+					del stack[-1]
+					stack.append(while_lines[0])
+					result = result + "][" + str(line_no)
+					result = result.replace(",]", "],")
+					if DEBUG_parse_strListOfList_into_ListOfList:
+						print(f"{line_no}\t new loop statement_3\t {stack}\t {result}")
 			del while_lines[0]
 		else:
 			if stack == []:
