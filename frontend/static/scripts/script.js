@@ -261,9 +261,7 @@ function get_next() {
                 count + 1 < res["list"].length - 1 &&
                 res["list"][count + 1]["type"] == "circle" &&
                 count + 2 < res["list"].length - 1 &&
-                res["list"][count + 2]["type"] == "while_start" &&
-                count + 4 < res["list"].length - 1 &&
-                res["list"][count + 4]["type"] == "circle"
+                res["list"][count + 2]["type"] == "while_start"
             ) {
                 get_next();
             }
