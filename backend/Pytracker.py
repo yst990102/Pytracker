@@ -192,6 +192,7 @@ def backend_main(usercode=None):
 	# =====================================================
 	# ===========   Stage 01 : previous_check   ===========
 	# =====================================================
+	global reformatted_code
 	if usercode == None:
 		usercode=open(current_absolute_path + "/" + "UserCode.py", 'r').read()
 		# format with yapf3 before create test_script
