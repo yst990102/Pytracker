@@ -3,6 +3,7 @@ import pathlib
 
 backend_absolute_path = str(pathlib.Path(__file__).parent.parent.resolve())
 
+
 class Test_Different_Main():
 
 	def test_call_by_main_method(self):
@@ -140,4 +141,3 @@ print(f"b == {b}")"""
 		        "end": 4
 		    }]
 		})
-

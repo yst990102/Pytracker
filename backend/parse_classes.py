@@ -53,10 +53,10 @@ class Iteration(Statement):
 
 		if creation_print:
 			print(f"---- create {self.__class__.__name__} {steps}")
-		self.general_steps = steps[1] # general step list, formed by integer
+		self.general_steps = steps[1]  # general step list, formed by integer
 		self.while_line_no = self.general_steps[0]
-		self.steps = [] # list of all Assignment/Iteration Nodes
-		self.iteration_num = steps[0] # integer for iteration number
+		self.steps = []  # list of all Assignment/Iteration Nodes
+		self.iteration_num = steps[0]  # integer for iteration number
 
 	def inner_bi_linklist_set(self) -> None:
 		# set the inner bi-linklist in self.steps
@@ -93,6 +93,7 @@ class Iteration(Statement):
 		print(f"iteration_num == {self.iteration_num}, while_line_no = {self.while_line_no}")
 		for step in self.steps:
 			step.print_info()
+
 
 class Basic_While_Iteration(Iteration):
 
@@ -188,7 +189,7 @@ class Program():
 				else:
 					new_statement = Nested_While_Iteration(self.TupleOfIntAndTuple[1][step_no_index], self, [self])
 			self.add_statement(new_statement)
-		
+
 		# IMPORTANT: this is implementation for the filter of Pytracker
 		self.filt_algo_implement()
 
@@ -204,19 +205,18 @@ class Program():
 				break
 		if not refered_found:
 			self.while_loops.append({"path": new_while_path, "iterations": [new_iteration]})
-	
+
 	def filt_algo_implement(self):
 		for while_loop_info in self.while_loops:
 			while_path, while_iterations = while_loop_info["path"], while_loop_info["iterations"]
 
-			while_iteration_set = []
-			for while_iteration in while_iterations[:-1]:
+			while_iteration_set = [while_iterations[0], while_iterations[-1]]
+			for while_iteration in while_iterations:
 				if while_iteration.general_steps not in while_iteration_set:
 					while_iteration_set.append(while_iteration.general_steps)
 				else:
 					self.move_out_from_linklist(while_iteration)
 
-				
 	def get_first_statement(self) -> Statement:
 		pointer = self.statements[0]
 		if isinstance(pointer, Assignment):
@@ -254,20 +254,20 @@ class Program():
 			self.move_out_iteration(statement)
 		elif isinstance(Statement, Assignment):
 			self.move_out_assignment(statement)
-		
+
 	def move_out_assignment(self, assignment: Assignment) -> None:
 		prev_node = assignment.get_previous()
 		afte_node = assignment.get_next()
-		
+
 		if prev_node != None:
 			prev_node.set_next(afte_node)
 		if afte_node != None:
 			afte_node.set_previous(prev_node)
-		
+
 	def move_out_iteration(self, iteration: Iteration) -> None:
 		prev_node = iteration.get_first_inner_step().get_previous()
 		afte_node = iteration.get_last_inner_step().get_next()
-		
+
 		if prev_node != None:
 			prev_node.set_next(afte_node)
 		if afte_node != None:

@@ -3,6 +3,7 @@ import pathlib
 
 backend_absolute_path = str(pathlib.Path(__file__).parent.parent.resolve())
 
+
 class Test_Assignment():
 
 	def test_simple_assignment(self):
@@ -155,4 +156,3 @@ print(a)"""
 		        "end": 18
 		    }]
 		})
-

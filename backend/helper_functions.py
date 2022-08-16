@@ -144,11 +144,14 @@ def ListOfList_to_ListOfIntAndTuple(item, count_dict={}):
 		for i in item:
 			list_in_tuple.append(ListOfList_to_ListOfIntAndTuple(i, count_dict))
 		return (count_dict[while_line], list_in_tuple)
+
+
 def get_first_item(item):
 	if isinstance(item, int):
 		return item
 	elif isinstance(item, list):
 		return get_first_item(item[0])
+
 
 def tabdict_to_gridindent(tab_dict: dict, while_lines: list) -> dict:
 	if while_lines == []:

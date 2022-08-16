@@ -48,18 +48,6 @@ while i < 5:
 		        "type": "step",
 		        "start": 3,
 		        "end": 4
-		    }, {
-		        "type": "circle",
-		        "start": 2,
-		        "iteration": 5
-		    }, {
-		        "type": "step",
-		        "start": 2,
-		        "end": 3
-		    }, {
-		        "type": "step",
-		        "start": 3,
-		        "end": 4
 		    }]
 		})
 
@@ -119,14 +107,6 @@ while i < 6:
 		        "start": 4,
 		        "end": 5
 		    }, {
-		        "type": "circle",
-		        "start": 4,
-		        "iteration": 6
-		    }, {
-		        "type": "step",
-		        "start": 4,
-		        "end": 5
-		    }, {
 		        "type": "while_end",
 		        "start": 4,
 		        "end": 5
@@ -138,14 +118,6 @@ while i < 6:
 		        "type": "circle",
 		        "start": 3,
 		        "iteration": 2
-		    }, {
-		        "type": "step",
-		        "start": 3,
-		        "end": 6
-		    }, {
-		        "type": "circle",
-		        "start": 3,
-		        "iteration": 6
 		    }, {
 		        "type": "step",
 		        "start": 3,
@@ -210,18 +182,6 @@ while a > 0:
 		        "type": "step",
 		        "start": 6,
 		        "end": 7
-		    }, {
-		        "type": "circle",
-		        "start": 2,
-		        "iteration": 4
-		    }, {
-		        "type": "step",
-		        "start": 2,
-		        "end": 6
-		    }, {
-		        "type": "step",
-		        "start": 6,
-		        "end": 7
 		    }]
 		})
 
@@ -252,7 +212,136 @@ print(odd_sum)
 		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [1, 2, 3, [4, 5, [6, 8, 11], [6, 10, 11], 12], [4, 5, [6, 10, 11], [6, 8, 11], 12], [4, 5, [6, 8, 11], [6, 10, 11], 12], [4, 5, [6, 10, 11], [6, 8, 11], 12], 14, 15])
-		assert (step_json == {"d": 5, "list": [{"type": "step", "start": 0, "end": 1}, {"type": "step", "start": 1, "end": 2}, {"type": "step", "start": 2, "end": 3}, {"type": "step", "start": 3, "end": 4}, {"type": "circle", "start": 4, "iteration": 1}, {"type": "while_start", "depth": -1}, {"type": "step", "start": 4, "end": 5}, {"type": "step", "start": 5, "end": 6}, {"type": "circle", "start": 6, "iteration": 1}, {"type": "while_start", "depth": -1}, {"type": "step", "start": 6, "end": 8}, {"type": "step", "start": 8, "end": 11}, {"type": "circle", "start": 6, "iteration": 2}, {"type": "step", "start": 6, "end": 10}, {"type": "step", "start": 10, "end": 11}, {"type": "while_end", "start": 6, "end": 11}, {"type": "step", "start": 11, "end": 12}, {"type": "circle", "start": 4, "iteration": 2}, {"type": "step", "start": 4, "end": 5}, {"type": "step", "start": 5, "end": 6}, {"type": "circle", "start": 6, "iteration": 1}, {"type": "while_start", "depth": -1}, {"type": "step", "start": 6, "end": 10}, {"type": "step", "start": 10, "end": 11}, {"type": "circle", "start": 6, "iteration": 2}, {"type": "step", "start": 6, "end": 8}, {"type": "step", "start": 8, "end": 11}, {"type": "while_end", "start": 6, "end": 11}, {"type": "step", "start": 11, "end": 12}, {"type": "circle", "start": 4, "iteration": 4}, {"type": "step", "start": 4, "end": 5}, {"type": "step", "start": 5, "end": 6}, {"type": "circle", "start": 6, "iteration": 1}, {"type": "while_start", "depth": -1}, {"type": "step", "start": 6, "end": 10}, {"type": "step", "start": 10, "end": 11}, {"type": "circle", "start": 6, "iteration": 2}, {"type": "step", "start": 6, "end": 8}, {"type": "step", "start": 8, "end": 11}, {"type": "while_end", "start": 6, "end": 11}, {"type": "step", "start": 11, "end": 12}, {"type": "while_end", "start": 4, "end": 12}, {"type": "step", "start": 12, "end": 14}, {"type": "step", "start": 14, "end": 15}]})
+		assert (step_json == {
+		    "d":
+		        5,
+		    "list": [{
+		        "type": "step",
+		        "start": 0,
+		        "end": 1
+		    }, {
+		        "type": "step",
+		        "start": 1,
+		        "end": 2
+		    }, {
+		        "type": "step",
+		        "start": 2,
+		        "end": 3
+		    }, {
+		        "type": "step",
+		        "start": 3,
+		        "end": 4
+		    }, {
+		        "type": "circle",
+		        "start": 4,
+		        "iteration": 1
+		    }, {
+		        "type": "while_start",
+		        "depth": -1
+		    }, {
+		        "type": "step",
+		        "start": 4,
+		        "end": 5
+		    }, {
+		        "type": "step",
+		        "start": 5,
+		        "end": 6
+		    }, {
+		        "type": "circle",
+		        "start": 6,
+		        "iteration": 1
+		    }, {
+		        "type": "while_start",
+		        "depth": -1
+		    }, {
+		        "type": "step",
+		        "start": 6,
+		        "end": 8
+		    }, {
+		        "type": "step",
+		        "start": 8,
+		        "end": 11
+		    }, {
+		        "type": "circle",
+		        "start": 6,
+		        "iteration": 2
+		    }, {
+		        "type": "step",
+		        "start": 6,
+		        "end": 10
+		    }, {
+		        "type": "step",
+		        "start": 10,
+		        "end": 11
+		    }, {
+		        "type": "while_end",
+		        "start": 6,
+		        "end": 11
+		    }, {
+		        "type": "step",
+		        "start": 11,
+		        "end": 12
+		    }, {
+		        "type": "circle",
+		        "start": 4,
+		        "iteration": 2
+		    }, {
+		        "type": "step",
+		        "start": 4,
+		        "end": 5
+		    }, {
+		        "type": "step",
+		        "start": 5,
+		        "end": 6
+		    }, {
+		        "type": "circle",
+		        "start": 6,
+		        "iteration": 1
+		    }, {
+		        "type": "while_start",
+		        "depth": -1
+		    }, {
+		        "type": "step",
+		        "start": 6,
+		        "end": 10
+		    }, {
+		        "type": "step",
+		        "start": 10,
+		        "end": 11
+		    }, {
+		        "type": "circle",
+		        "start": 6,
+		        "iteration": 2
+		    }, {
+		        "type": "step",
+		        "start": 6,
+		        "end": 8
+		    }, {
+		        "type": "step",
+		        "start": 8,
+		        "end": 11
+		    }, {
+		        "type": "while_end",
+		        "start": 6,
+		        "end": 11
+		    }, {
+		        "type": "step",
+		        "start": 11,
+		        "end": 12
+		    }, {
+		        "type": "while_end",
+		        "start": 4,
+		        "end": 12
+		    }, {
+		        "type": "step",
+		        "start": 12,
+		        "end": 14
+		    }, {
+		        "type": "step",
+		        "start": 14,
+		        "end": 15
+		    }]
+		})
 
 	def test_3layer(self):
 		usercode = """i = 0
@@ -361,7 +450,6 @@ while i < 1:
 		    }]
 		})
 
-	# TODO: need to check the straight line-back issue
 	def test_unused_inner_while_loop(self):
 		usercode = """even_sum = 0
 odd_sum = 0
@@ -457,18 +545,6 @@ print(odd_sum)
 		        "start": 10,
 		        "end": 11
 		    }, {
-		        "type": "circle",
-		        "start": 6,
-		        "iteration": 4
-		    }, {
-		        "type": "step",
-		        "start": 6,
-		        "end": 10
-		    }, {
-		        "type": "step",
-		        "start": 10,
-		        "end": 11
-		    }, {
 		        "type": "while_end",
 		        "start": 6,
 		        "end": 11
@@ -507,18 +583,6 @@ print(odd_sum)
 		        "type": "circle",
 		        "start": 6,
 		        "iteration": 2
-		    }, {
-		        "type": "step",
-		        "start": 6,
-		        "end": 8
-		    }, {
-		        "type": "step",
-		        "start": 8,
-		        "end": 11
-		    }, {
-		        "type": "circle",
-		        "start": 6,
-		        "iteration": 4
 		    }, {
 		        "type": "step",
 		        "start": 6,
@@ -589,18 +653,6 @@ else:
 		    }, {
 		        "type": "while_start",
 		        "depth": -1
-		    }, {
-		        "type": "step",
-		        "start": 3,
-		        "end": 4
-		    }, {
-		        "type": "step",
-		        "start": 4,
-		        "end": 5
-		    }, {
-		        "type": "circle",
-		        "start": 3,
-		        "iteration": 2
 		    }, {
 		        "type": "step",
 		        "start": 3,

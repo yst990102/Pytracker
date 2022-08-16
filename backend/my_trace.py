@@ -66,6 +66,7 @@ import threading
 # personal import
 from trace import CoverageResults, _Ignore, _modname
 
+
 class Trace:
 
 	def __init__(self, count=1, trace=1, countfuncs=0, countcallers=0, ignoremods=(), ignoredirs=(), infile=None, outfile=None, usercode_file="UserCode.py", timing=False):
@@ -124,7 +125,7 @@ class Trace:
 		import __main__
 		dict = __main__.__dict__
 		self.initial_locals_keys = list(dict.keys())
-		self.initial_globals_keys =  list(dict.keys())
+		self.initial_globals_keys = list(dict.keys())
 		global stored_local_variables
 		stored_local_variables = []
 		self.runctx(cmd, dict, dict)
@@ -238,11 +239,11 @@ class Trace:
 
 			frame_locals = frame.f_locals
 			frame_globals = frame.f_globals
-			
+
 			local_variables = {}
-			for key,value in frame_locals.items():
+			for key, value in frame_locals.items():
 				if key not in self.initial_locals_keys:
-					local_variables.update({key:value})
+					local_variables.update({key: value})
 
 			if self.start_time:
 				print('%.2f' % (_time() - self.start_time), end=' ')
@@ -408,7 +409,7 @@ def main():
 			# with open(opts.progname, 'rb') as fp:
 			# 	code = compile(fp.read(), opts.progname, 'exec')
 			code = open(opts.progname, 'r').read()
-			
+
 			# try to emulate __main__ namespace as much as possible
 			globs = {
 			    '__file__': opts.progname,

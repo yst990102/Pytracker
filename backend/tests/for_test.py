@@ -3,6 +3,7 @@ import pathlib
 
 backend_absolute_path = str(pathlib.Path(__file__).parent.parent.resolve())
 
+
 class Test_For_Statement():
 	# DONE: TypeError: unhashable type: "list" --- fixed by 2022-08-15
 	# TODO: Iteration Number Error
@@ -102,7 +103,7 @@ class Test_For_Statement():
 		        'type': 'step'
 		    }]
 		})
-	
+
 	# DONE: TypeError: unhashable type: "list" --- fixed by 2022-08-15
 	# TODO: Iteration Number Error
 	def test_nested_forloop(self):
@@ -237,4 +238,3 @@ print(odd_sum)
 		        "end": 12
 		    }]
 		})
-

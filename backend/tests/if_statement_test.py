@@ -3,7 +3,9 @@ import pathlib
 
 backend_absolute_path = str(pathlib.Path(__file__).parent.parent.resolve())
 
+
 class Test_IF_Statement():
+
 	def test_simplest(self):
 		usercode = """a = 10
 b = 20
@@ -12,7 +14,7 @@ if a < b:
 		with open(backend_absolute_path + "/" + "UserCode.py", 'w') as f_w:
 			f_w.write(usercode)
 		f_w.close()
-		
+
 		os.system("python " + backend_absolute_path + "/" + "Pytracker.py")
 
 		listoflist = eval(open(backend_absolute_path + "/" + "listoflist", 'r').read())
@@ -20,7 +22,7 @@ if a < b:
 
 		assert (listoflist == [1, 2, 4])
 		assert (step_json == {"d": 5, "list": [{"type": "step", "start": 0, "end": 1}, {"type": "step", "start": 1, "end": 2}, {"type": "step", "start": 2, "end": 4}]})
-	
+
 	def test_nested(self):
 		usercode = """a = 10
 b = 20
@@ -40,8 +42,27 @@ if a < b:
 		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [1, 2, 7, 8])
-		assert (step_json == {"d": 5, "list": [{"type": "step", "start": 0, "end": 1}, {"type": "step", "start": 1, "end": 2}, {"type": "step", "start": 2, "end": 7}, {"type": "step", "start": 7, "end": 8}]})
-	
+		assert (step_json == {
+		    "d": 5,
+		    "list": [{
+		        "type": "step",
+		        "start": 0,
+		        "end": 1
+		    }, {
+		        "type": "step",
+		        "start": 1,
+		        "end": 2
+		    }, {
+		        "type": "step",
+		        "start": 2,
+		        "end": 7
+		    }, {
+		        "type": "step",
+		        "start": 7,
+		        "end": 8
+		    }]
+		})
+
 	def test_with_while(self):
 		usercode = """a = 10
 b = 20
@@ -64,14 +85,76 @@ if a < b:
 		with open(backend_absolute_path + "/" + "UserCode.py", 'w') as f_w:
 			f_w.write(usercode)
 		f_w.close()
-		
+
 		os.system("python " + backend_absolute_path + "/" + "Pytracker.py")
 
 		listoflist = eval(open(backend_absolute_path + "/" + "listoflist", 'r').read())
 		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [1, 2, [4, 6, 7], [4, 6, 7], [8, 9, 10, [15, 17, 18], [15, 17, 18], [15, 17, 18], [15, 17, 18]]])
-		assert (step_json == {"d": 5, "list": [{"type": "step", "start": 0, "end": 1}, {"type": "step", "start": 1, "end": 2}, {"type": "step", "start": 2, "end": 4}, {"type": "circle", "start": 4, "iteration": 1}, {"type": "while_start", "depth": -1}, {"type": "step", "start": 4, "end": 6}, {"type": "step", "start": 6, "end": 7}, {"type": "circle", "start": 8, "iteration": 1}, {"type": "step", "start": 8, "end": 9}, {"type": "step", "start": 9, "end": 10}, {"type": "step", "start": 10, "end": 15}, {"type": "circle", "start": 15, "iteration": 1}, {"type": "while_start", "depth": -1}, {"type": "step", "start": 15, "end": 17}, {"type": "step", "start": 17, "end": 18}, {"type": "circle", "start": 15, "iteration": 4}, {"type": "step", "start": 15, "end": 17}, {"type": "step", "start": 17, "end": 18}]})
+		assert (step_json == {
+		    "d":
+		        5,
+		    "list": [{
+		        "type": "step",
+		        "start": 0,
+		        "end": 1
+		    }, {
+		        "type": "step",
+		        "start": 1,
+		        "end": 2
+		    }, {
+		        "type": "step",
+		        "start": 2,
+		        "end": 4
+		    }, {
+		        "type": "circle",
+		        "start": 4,
+		        "iteration": 1
+		    }, {
+		        "type": "while_start",
+		        "depth": -1
+		    }, {
+		        "type": "step",
+		        "start": 4,
+		        "end": 6
+		    }, {
+		        "type": "step",
+		        "start": 6,
+		        "end": 7
+		    }, {
+		        "type": "circle",
+		        "start": 8,
+		        "iteration": 1
+		    }, {
+		        "type": "step",
+		        "start": 8,
+		        "end": 9
+		    }, {
+		        "type": "step",
+		        "start": 9,
+		        "end": 10
+		    }, {
+		        "type": "step",
+		        "start": 10,
+		        "end": 15
+		    }, {
+		        "type": "circle",
+		        "start": 15,
+		        "iteration": 1
+		    }, {
+		        "type": "while_start",
+		        "depth": -1
+		    }, {
+		        "type": "step",
+		        "start": 15,
+		        "end": 17
+		    }, {
+		        "type": "step",
+		        "start": 17,
+		        "end": 18
+		    }]
+		})
 
 	def test_true_or_false(self):
 		usercode = """a = 10
@@ -86,17 +169,37 @@ print("HELLO WORLD")"""
 		with open(backend_absolute_path + "/" + "UserCode.py", 'w') as f_w:
 			f_w.write(usercode)
 		f_w.close()
-		
+
 		os.system("python " + backend_absolute_path + "/" + "Pytracker.py")
 
 		listoflist = eval(open(backend_absolute_path + "/" + "listoflist", 'r').read())
 		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [1, 2, 4, 9])
-		assert (step_json == {"d": 5, "list": [{"type": "step", "start": 0, "end": 1}, {"type": "step", "start": 1, "end": 2}, {"type": "step", "start": 2, "end": 4}, {"type": "step", "start": 4, "end": 9}]})
+		assert (step_json == {
+		    "d": 5,
+		    "list": [{
+		        "type": "step",
+		        "start": 0,
+		        "end": 1
+		    }, {
+		        "type": "step",
+		        "start": 1,
+		        "end": 2
+		    }, {
+		        "type": "step",
+		        "start": 2,
+		        "end": 4
+		    }, {
+		        "type": "step",
+		        "start": 4,
+		        "end": 9
+		    }]
+		})
 
 
 class Test_IF_Else_Statement():
+
 	def test_simplest(self):
 		usercode = """a = 10
 b = 20
@@ -115,7 +218,7 @@ else:
 
 		assert (listoflist == [1, 2, 6])
 		assert (step_json == {"d": 5, "list": [{"type": "step", "start": 0, "end": 1}, {'type': 'step', 'start': 1, 'end': 2}, {'type': 'step', 'start': 2, 'end': 6}]})
-	
+
 	def test_nested(self):
 		usercode = """a = 10
 b = 20
@@ -175,14 +278,68 @@ else:
 		with open(backend_absolute_path + "/" + "UserCode.py", 'w') as f_w:
 			f_w.write(usercode)
 		f_w.close()
-		
+
 		os.system("python " + backend_absolute_path + "/" + "Pytracker.py")
 
 		listoflist = eval(open(backend_absolute_path + "/" + "listoflist", 'r').read())
 		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [1, 2, [11, 12, [21, 23, 26], [21, 23, 26], [21, 23, 26], [21, 23, 26], [21, 23, 26], 27]])
-		assert (step_json == {"d": 5, "list": [{"type": "step", "start": 0, "end": 1}, {"type": "step", "start": 1, "end": 2}, {"type": "step", "start": 2, "end": 11}, {"type": "circle", "start": 11, "iteration": 1}, {"type": "while_start", "depth": -1}, {"type": "step", "start": 11, "end": 12}, {"type": "step", "start": 12, "end": 21}, {"type": "circle", "start": 21, "iteration": 1}, {"type": "while_start", "depth": -1}, {"type": "step", "start": 21, "end": 23}, {"type": "step", "start": 23, "end": 26}, {"type": "circle", "start": 21, "iteration": 5}, {"type": "step", "start": 21, "end": 23}, {"type": "step", "start": 23, "end": 26}, {"type": "while_end", "start": 21, "end": 26}, {"type": "step", "start": 26, "end": 27}]})
+		assert (step_json == {
+		    "d":
+		        5,
+		    "list": [{
+		        "type": "step",
+		        "start": 0,
+		        "end": 1
+		    }, {
+		        "type": "step",
+		        "start": 1,
+		        "end": 2
+		    }, {
+		        "type": "step",
+		        "start": 2,
+		        "end": 11
+		    }, {
+		        "type": "circle",
+		        "start": 11,
+		        "iteration": 1
+		    }, {
+		        "type": "while_start",
+		        "depth": -1
+		    }, {
+		        "type": "step",
+		        "start": 11,
+		        "end": 12
+		    }, {
+		        "type": "step",
+		        "start": 12,
+		        "end": 21
+		    }, {
+		        "type": "circle",
+		        "start": 21,
+		        "iteration": 1
+		    }, {
+		        "type": "while_start",
+		        "depth": -1
+		    }, {
+		        "type": "step",
+		        "start": 21,
+		        "end": 23
+		    }, {
+		        "type": "step",
+		        "start": 23,
+		        "end": 26
+		    }, {
+		        "type": "while_end",
+		        "start": 21,
+		        "end": 26
+		    }, {
+		        "type": "step",
+		        "start": 26,
+		        "end": 27
+		    }]
+		})
 
 	def test_true_or_false(self):
 		usercode = """a = 10
@@ -202,17 +359,37 @@ print("HELLO WORLD finall")"""
 		with open(backend_absolute_path + "/" + "UserCode.py", 'w') as f_w:
 			f_w.write(usercode)
 		f_w.close()
-		
+
 		os.system("python " + backend_absolute_path + "/" + "Pytracker.py")
 
 		listoflist = eval(open(backend_absolute_path + "/" + "listoflist", 'r').read())
 		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [1, 2, 4, 14])
-		assert (step_json == {"d": 5, "list": [{"type": "step", "start": 0, "end": 1}, {"type": "step", "start": 1, "end": 2}, {"type": "step", "start": 2, "end": 4}, {"type": "step", "start": 4, "end": 14}]})
+		assert (step_json == {
+		    "d": 5,
+		    "list": [{
+		        "type": "step",
+		        "start": 0,
+		        "end": 1
+		    }, {
+		        "type": "step",
+		        "start": 1,
+		        "end": 2
+		    }, {
+		        "type": "step",
+		        "start": 2,
+		        "end": 4
+		    }, {
+		        "type": "step",
+		        "start": 4,
+		        "end": 14
+		    }]
+		})
 
 
 class Test_IF_Elif_Statement():
+
 	def test_simplest(self):
 		usercode = """a = 10
 b = 20
@@ -231,7 +408,7 @@ elif b == 20:
 
 		assert (listoflist == [1, 2, 6])
 		assert (step_json == {"d": 5, "list": [{"type": "step", "start": 0, "end": 1}, {'type': 'step', 'start': 1, 'end': 2}, {'type': 'step', 'start': 2, 'end': 6}]})
-	
+
 	def test_nested(self):
 		usercode = """a = 10
 b = 20
@@ -257,7 +434,31 @@ elif a <= b:
 		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [1, 2, 6, 10, 14])
-		assert (step_json == {"d": 5, "list": [{"type": "step", "start": 0, "end": 1}, {"type": "step", "start": 1, "end": 2}, {"type": "step", "start": 2, "end": 6}, {"type": "step", "start": 6, "end": 10}, {"type": "step", "start": 10, "end": 14}]})
+		assert (step_json == {
+		    "d":
+		        5,
+		    "list": [{
+		        "type": "step",
+		        "start": 0,
+		        "end": 1
+		    }, {
+		        "type": "step",
+		        "start": 1,
+		        "end": 2
+		    }, {
+		        "type": "step",
+		        "start": 2,
+		        "end": 6
+		    }, {
+		        "type": "step",
+		        "start": 6,
+		        "end": 10
+		    }, {
+		        "type": "step",
+		        "start": 10,
+		        "end": 14
+		    }]
+		})
 
 	def test_with_while(self):
 		pass
@@ -283,11 +484,35 @@ print("HELLO WORLD finall")"""
 		with open(backend_absolute_path + "/" + "UserCode.py", 'w') as f_w:
 			f_w.write(usercode)
 		f_w.close()
-		
+
 		os.system("python " + backend_absolute_path + "/" + "Pytracker.py")
 
 		listoflist = eval(open(backend_absolute_path + "/" + "listoflist", 'r').read())
 		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [1, 2, 4, 6, 17])
-		assert (step_json == {"d": 5, "list": [{"type": "step", "start": 0, "end": 1}, {"type": "step", "start": 1, "end": 2}, {"type": "step", "start": 2, "end": 4}, {"type": "step", "start": 4, "end": 6}, {"type": "step", "start": 6, "end": 17}]})
+		assert (step_json == {
+		    "d":
+		        5,
+		    "list": [{
+		        "type": "step",
+		        "start": 0,
+		        "end": 1
+		    }, {
+		        "type": "step",
+		        "start": 1,
+		        "end": 2
+		    }, {
+		        "type": "step",
+		        "start": 2,
+		        "end": 4
+		    }, {
+		        "type": "step",
+		        "start": 4,
+		        "end": 6
+		    }, {
+		        "type": "step",
+		        "start": 6,
+		        "end": 17
+		    }]
+		})

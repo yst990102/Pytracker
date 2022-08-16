@@ -87,7 +87,7 @@ def trace_execution_tracking(result_file):
 
 	# parse str_ListOfList into ListOfList
 	listoflist = parse_strListOfList_into_ListOfList(all_line_nos, while_lines[:], tab_dict)
-	
+
 	print(f"trace_execution_tracking : listoflist == {listoflist}")
 	print(f"trace_execution_tracking : tab_dict == {tab_dict}")
 	print(f"trace_execution_tracking : while_lines == {while_lines}")
@@ -194,7 +194,7 @@ def backend_main(usercode=None):
 	# =====================================================
 	global reformatted_code
 	if usercode == None:
-		usercode=open(current_absolute_path + "/" + "UserCode.py", 'r').read()
+		usercode = open(current_absolute_path + "/" + "UserCode.py", 'r').read()
 		# format with yapf3 before create test_script
 		reformatted_code, encoding, changed = FormatFile(filename=f"{current_absolute_path}/UserCode.py", style_config=f"{current_absolute_path}/.style.yapf")
 	else:

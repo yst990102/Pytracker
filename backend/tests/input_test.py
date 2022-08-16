@@ -3,6 +3,7 @@ import pathlib
 
 backend_absolute_path = str(pathlib.Path(__file__).parent.parent.resolve())
 
+
 class Test_Input():
 
 	def test_simple_input(self):
