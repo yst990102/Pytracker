@@ -1,7 +1,7 @@
 import os
 import pathlib
 
-current_absolute_path = str(pathlib.Path(__file__).parent.resolve())
+backend_absolute_path = str(pathlib.Path(__file__).parent.parent.resolve())
 
 
 class Test_While_Statement():
@@ -12,14 +12,14 @@ while i < 5:
 	print("Here")
 	i += 1
 """
-		with open(current_absolute_path + "/../" + "UserCode.py", 'w') as f_w:
+		with open(backend_absolute_path + "/" + "UserCode.py", 'w') as f_w:
 			f_w.write(usercode)
 		f_w.close()
 
-		os.system("python " + current_absolute_path + "/../" + "Pytracker.py")
+		os.system("python " + backend_absolute_path + "/" + "Pytracker.py")
 
-		listoflist = eval(open(current_absolute_path + "/../" + "listoflist", 'r').read())
-		step_json = eval(open(current_absolute_path + "/../" + "step_json.json", 'r').read())
+		listoflist = eval(open(backend_absolute_path + "/" + "listoflist", 'r').read())
+		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [1, [2, 3, 4], [2, 3, 4], [2, 3, 4], [2, 3, 4], [2, 3, 4]])
 		assert (step_json == {
@@ -71,14 +71,14 @@ while i < 6:
 		j +=1
 	i += 1
 """
-		with open(current_absolute_path + "/../" + "UserCode.py", 'w') as f_w:
+		with open(backend_absolute_path + "/" + "UserCode.py", 'w') as f_w:
 			f_w.write(usercode)
 		f_w.close()
 
-		os.system("python " + current_absolute_path + "/../" + "Pytracker.py")
+		os.system("python " + backend_absolute_path + "/" + "Pytracker.py")
 
-		listoflist = eval(open(current_absolute_path + "/../" + "listoflist", 'r').read())
-		step_json = eval(open(current_absolute_path + "/../" + "step_json.json", 'r').read())
+		listoflist = eval(open(backend_absolute_path + "/" + "listoflist", 'r').read())
+		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [1, 2, [3, [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], 6], [3, 6], [3, 6], [3, 6], [3, 6], [3, 6]])
 		assert (step_json == {
@@ -162,14 +162,14 @@ while a > 0:
 		print("ODD")
 	a -= 1
 """
-		with open(current_absolute_path + "/../" + "UserCode.py", 'w') as f_w:
+		with open(backend_absolute_path + "/" + "UserCode.py", 'w') as f_w:
 			f_w.write(usercode)
 		f_w.close()
 
-		os.system("python " + current_absolute_path + "/../" + "Pytracker.py")
+		os.system("python " + backend_absolute_path + "/" + "Pytracker.py")
 
-		listoflist = eval(open(current_absolute_path + "/../" + "listoflist", 'r').read())
-		step_json = eval(open(current_absolute_path + "/../" + "step_json.json", 'r').read())
+		listoflist = eval(open(backend_absolute_path + "/" + "listoflist", 'r').read())
+		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [1, [2, 4, 7], [2, 6, 7], [2, 4, 7], [2, 6, 7]])
 		assert (step_json == {
@@ -242,14 +242,14 @@ while i < 4:
 print(even_sum)
 print(odd_sum)
 """
-		with open(current_absolute_path + "/../" + "UserCode.py", 'w') as f_w:
+		with open(backend_absolute_path + "/" + "UserCode.py", 'w') as f_w:
 			f_w.write(usercode)
 		f_w.close()
 
-		os.system("python " + current_absolute_path + "/../" + "Pytracker.py")
+		os.system("python " + backend_absolute_path + "/" + "Pytracker.py")
 
-		listoflist = eval(open(current_absolute_path + "/../" + "listoflist", 'r').read())
-		step_json = eval(open(current_absolute_path + "/../" + "step_json.json", 'r').read())
+		listoflist = eval(open(backend_absolute_path + "/" + "listoflist", 'r').read())
+		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [1, 2, 3, [4, 5, [6, 8, 11], [6, 10, 11], 12], [4, 5, [6, 10, 11], [6, 8, 11], 12], [4, 5, [6, 8, 11], [6, 10, 11], 12], [4, 5, [6, 10, 11], [6, 8, 11], 12], 14, 15])
 		assert (step_json == {"d": 5, "list": [{"type": "step", "start": 0, "end": 1}, {"type": "step", "start": 1, "end": 2}, {"type": "step", "start": 2, "end": 3}, {"type": "step", "start": 3, "end": 4}, {"type": "circle", "start": 4, "iteration": 1}, {"type": "while_start", "depth": -1}, {"type": "step", "start": 4, "end": 5}, {"type": "step", "start": 5, "end": 6}, {"type": "circle", "start": 6, "iteration": 1}, {"type": "while_start", "depth": -1}, {"type": "step", "start": 6, "end": 8}, {"type": "step", "start": 8, "end": 11}, {"type": "circle", "start": 6, "iteration": 2}, {"type": "step", "start": 6, "end": 10}, {"type": "step", "start": 10, "end": 11}, {"type": "while_end", "start": 6, "end": 11}, {"type": "step", "start": 11, "end": 12}, {"type": "circle", "start": 4, "iteration": 2}, {"type": "step", "start": 4, "end": 5}, {"type": "step", "start": 5, "end": 6}, {"type": "circle", "start": 6, "iteration": 1}, {"type": "while_start", "depth": -1}, {"type": "step", "start": 6, "end": 10}, {"type": "step", "start": 10, "end": 11}, {"type": "circle", "start": 6, "iteration": 2}, {"type": "step", "start": 6, "end": 8}, {"type": "step", "start": 8, "end": 11}, {"type": "while_end", "start": 6, "end": 11}, {"type": "step", "start": 11, "end": 12}, {"type": "circle", "start": 4, "iteration": 4}, {"type": "step", "start": 4, "end": 5}, {"type": "step", "start": 5, "end": 6}, {"type": "circle", "start": 6, "iteration": 1}, {"type": "while_start", "depth": -1}, {"type": "step", "start": 6, "end": 10}, {"type": "step", "start": 10, "end": 11}, {"type": "circle", "start": 6, "iteration": 2}, {"type": "step", "start": 6, "end": 8}, {"type": "step", "start": 8, "end": 11}, {"type": "while_end", "start": 6, "end": 11}, {"type": "step", "start": 11, "end": 12}, {"type": "while_end", "start": 4, "end": 12}, {"type": "step", "start": 12, "end": 14}, {"type": "step", "start": 14, "end": 15}]})
@@ -268,14 +268,14 @@ while i < 1:
 	print(i)
 	i += 1
 """
-		with open(current_absolute_path + "/../" + "UserCode.py", 'w') as f_w:
+		with open(backend_absolute_path + "/" + "UserCode.py", 'w') as f_w:
 			f_w.write(usercode)
 		f_w.close()
 
-		os.system("python " + current_absolute_path + "/../" + "Pytracker.py")
+		os.system("python " + backend_absolute_path + "/" + "Pytracker.py")
 
-		listoflist = eval(open(current_absolute_path + "/../" + "listoflist", 'r').read())
-		step_json = eval(open(current_absolute_path + "/../" + "step_json.json", 'r').read())
+		listoflist = eval(open(backend_absolute_path + "/" + "listoflist", 'r').read())
+		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [1, 2, 3, [4, [5, [6, 7, 8], 9, 10], 11, 12]])
 		assert (step_json == {
@@ -385,14 +385,14 @@ while i < 2:
 print(even_sum)
 print(odd_sum)
 """
-		with open(current_absolute_path + "/../" + "UserCode.py", 'w') as f_w:
+		with open(backend_absolute_path + "/" + "UserCode.py", 'w') as f_w:
 			f_w.write(usercode)
 		f_w.close()
 
-		os.system("python " + current_absolute_path + "/../" + "Pytracker.py")
+		os.system("python " + backend_absolute_path + "/" + "Pytracker.py")
 
-		listoflist = eval(open(current_absolute_path + "/../" + "listoflist", 'r').read())
-		step_json = eval(open(current_absolute_path + "/../" + "step_json.json", 'r').read())
+		listoflist = eval(open(backend_absolute_path + "/" + "listoflist", 'r').read())
+		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [1, 2, 3, [4, 5, [6, 8, 11], [6, 10, 11], [6, 8, 11], [6, 10, 11], 18], [4, 5, [6, 10, 11], [6, 8, 11], [6, 10, 11], [6, 8, 11], 18], 20, 21])
 		assert (step_json == {
@@ -561,14 +561,14 @@ else:
 		print(2)
 		a += 1
 """
-		with open(current_absolute_path + "/../" + "UserCode.py", 'w') as f_w:
+		with open(backend_absolute_path + "/" + "UserCode.py", 'w') as f_w:
 			f_w.write(usercode)
 		f_w.close()
 
-		os.system("python " + current_absolute_path + "/../" + "Pytracker.py")
+		os.system("python " + backend_absolute_path + "/" + "Pytracker.py")
 
-		listoflist = eval(open(current_absolute_path + "/../" + "listoflist", 'r').read())
-		step_json = eval(open(current_absolute_path + "/../" + "step_json.json", 'r').read())
+		listoflist = eval(open(backend_absolute_path + "/" + "listoflist", 'r').read())
+		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [1, [3, 4, 5], [3, 4, 5]])
 		assert (step_json == {

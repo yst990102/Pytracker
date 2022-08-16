@@ -33,33 +33,33 @@ $("#codeSubmit").click(() => {
     const txt = editor.getValue();
     var usercode = txt.trim();
     var lines = usercode.split("\n");
-    parselist = [];
-    parselist.push({
-        num: "Program Start",
-        content: "",
-    })
-    for (var i = 1; i <= lines.length; i++) {
-        parselist.push({
-            num: i,
-            content: lines[i - 1],
-        });
-    }
-    console.log(parselist);
+    // parselist = [];
+    // parselist.push({
+    //     num: "Program Start",
+    //     content: "",
+    // })
+    // for (var i = 1; i <= lines.length; i++) {
+    //     parselist.push({
+    //         num: i,
+    //         content: lines[i - 1],
+    //     });
+    // }
+    // console.log(parselist);
 
-    var table = $("#code_output");
-    parselist.forEach((dt) => {
-        line_num = dt["num"];
-        line_content = dt["content"];
-        console.log(line_num);
-        console.log(line_content);
-        markup =
-            '<tr><td class="line_num" style="white-space: pre;">' +
-            line_num +
-            '</td><td class="line_content" style="white-space: pre;">' +
-            line_content +
-            "</td></tr>";
-        table.append(markup);
-    });
+    // var table = $("#code_output");
+    // parselist.forEach((dt) => {
+    //     line_num = dt["num"];
+    //     line_content = dt["content"];
+    //     console.log(line_num);
+    //     console.log(line_content);
+    //     markup =
+    //         '<tr><td class="line_num" style="white-space: pre;">' +
+    //         line_num +
+    //         '</td><td class="line_content" style="white-space: pre;">' +
+    //         line_content +
+    //         "</td></tr>";
+    //     table.append(markup);
+    // });
 
     var buttons = $("#stepbtns");
     buttons.append(
@@ -75,8 +75,38 @@ $("#codeSubmit").click(() => {
         data: JSON.stringify(usercode),
         contentType: "application/json",
         success: function (data) {
-            console.log(data);
-            res = data;
+            code = data['code'].split('\n')
+            console.log(code)
+
+            parselist = [];
+            parselist.push({
+                num: "Program Start",
+                content: "",
+            })
+
+            for (var i = 1; i < code.length; i++) {
+                parselist.push({
+                    num: i,
+                    content: code[i - 1],
+                });
+            }
+            var table = $("#code_output");
+            parselist.forEach((dt) => {
+                line_num = dt["num"];
+                line_content = dt["content"];
+                console.log(line_num);
+                console.log(line_content);
+                markup =
+                    '<tr><td class="line_num" style="white-space: pre;">' +
+                    line_num +
+                    '</td><td class="line_content" style="white-space: pre;">' +
+                    line_content +
+                    "</td></tr>";
+                table.append(markup);
+            });
+
+            console.log(data['step_json']);
+            res = data['step_json'];
             var grid = $("#graph");
             markup = "";
             for (var i = 0; i <= parselist.length; i++) {

@@ -1,7 +1,8 @@
 import os
 import pathlib
 
-current_absolute_path = str(pathlib.Path(__file__).parent.resolve())
+backend_absolute_path = str(pathlib.Path(__file__).parent.parent.resolve())
+
 
 class Test_Function_Calling():
 	# TODO: function loading error??
@@ -17,16 +18,16 @@ def main():
 
 main()
 	"""
-		with open(current_absolute_path + "/../" + "UserCode.py", 'w') as f_w:
+		with open(backend_absolute_path + "/" + "UserCode.py", 'w') as f_w:
 			f_w.write(usercode)
 		f_w.close()
 
-		os.system("python " + current_absolute_path + "/../" + "Pytracker.py")
+		os.system("python " + backend_absolute_path + "/" + "Pytracker.py")
 
-		listoflist = eval(open(current_absolute_path + "/../" + "listoflist", 'r').read())
-		step_json = eval(open(current_absolute_path + "/../" + "step_json.json", 'r').read())
+		listoflist = eval(open(backend_absolute_path + "/" + "listoflist", 'r').read())
+		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
-		assert (listoflist == [1, 4, 10, 5, 6, 2, 7, 8, 2])
+		assert (listoflist == [1, 5, 12, 6, 7, 2, 8, 9, 2])
 		assert (step_json == {
 		    "d":
 		        5,
@@ -37,34 +38,34 @@ main()
 		    }, {
 		        "type": "step",
 		        "start": 1,
-		        "end": 4
-		    }, {
-		        "type": "step",
-		        "start": 4,
-		        "end": 10
-		    }, {
-		        "type": "step",
-		        "start": 10,
 		        "end": 5
 		    }, {
 		        "type": "step",
 		        "start": 5,
+		        "end": 12
+		    }, {
+		        "type": "step",
+		        "start": 12,
 		        "end": 6
 		    }, {
 		        "type": "step",
 		        "start": 6,
-		        "end": 2
-		    }, {
-		        "type": "step",
-		        "start": 2,
 		        "end": 7
 		    }, {
 		        "type": "step",
 		        "start": 7,
+		        "end": 2
+		    }, {
+		        "type": "step",
+		        "start": 2,
 		        "end": 8
 		    }, {
 		        "type": "step",
 		        "start": 8,
+		        "end": 9
+		    }, {
+		        "type": "step",
+		        "start": 9,
 		        "end": 2
 		    }]
 		})
@@ -72,4 +73,3 @@ main()
 	# TODO: need to be done
 	def test_multi_function_calling(self):
 		pass
-
