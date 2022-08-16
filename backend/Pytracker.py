@@ -1,11 +1,9 @@
-import os
 import pathlib
 import sys
 import re
-from time import sleep
 import parse
 import json
-from yapf.yapflib.yapf_api import FormatFile, FormatCode  # reformat a file
+from yapf.yapflib.yapf_api import FormatFile  # reformat a file
 
 try:
 	import backend.my_trace as my_trace
@@ -82,18 +80,13 @@ def trace_execution_tracking(result_file):
 				steps_info.append((line_no, local_variables))
 
 	exec_result.close()
-	
+
 	all_line_nos = [line_no for (line_no, _) in steps_info]
 	all_local_variables = [local_variables for (_, local_variables) in steps_info]
 	tab_dict = dict(sorted(tab_dict.items()))
 
 	# parse str_ListOfList into ListOfList
 	listoflist = parse_strListOfList_into_ListOfList(all_line_nos, while_lines[:], tab_dict)
-	
-	print(f"trace_execution_tracking : listoflist == {listoflist}")
-	print(f"trace_execution_tracking : tab_dict == {tab_dict}")
-	print(f"trace_execution_tracking : while_lines == {while_lines}")
-	print(f"trace_execution_tracking : if_else_lines == {if_else_lines}\n")
 	return listoflist, tab_dict, while_lines, if_else_lines
 
 
@@ -196,7 +189,7 @@ def backend_main(usercode=open(current_absolute_path + "/" + "UserCode.py", 'r')
 	# =====================================================
 	# format with yapf3 before create test_script
 	reformatted_code, encoding, changed = FormatFile(filename=f"{current_absolute_path}/UserCode.py", style_config=f"{current_absolute_path}/.style.yapf")
-	
+
 	# clean the execution txt before start a new tracer
 	hf.clean_content_in_file(current_absolute_path + "/" + "Pytracker_output")
 
@@ -229,7 +222,7 @@ def backend_main(usercode=open(current_absolute_path + "/" + "UserCode.py", 'r')
 	with open(current_absolute_path + "/" + "TupleOfIntAndTuple", 'w') as TupleOfIntAndTuple_out:
 		TupleOfIntAndTuple_out.write(str(TupleOfIntAndTuple))
 	TupleOfIntAndTuple_out.close()
-	
+
 	grid_indent = hf.tabdict_to_gridindent(tab_dict, while_lines)
 	# then convert into Program
 	program = parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict, grid_indent)
