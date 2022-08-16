@@ -1,7 +1,7 @@
 import os
 import pathlib
 
-current_absolute_path = str(pathlib.Path(__file__).parent.resolve())
+backend_absolute_path = str(pathlib.Path(__file__).parent.parent.resolve())
 
 class Test_Assignment():
 
@@ -12,14 +12,14 @@ tmp = a
 a = b
 b = tmp"""
 
-		with open(current_absolute_path + "/../" + "UserCode.py", 'w') as f_w:
+		with open(backend_absolute_path + "/" + "UserCode.py", 'w') as f_w:
 			f_w.write(usercode)
 		f_w.close()
 
-		os.system("python " + current_absolute_path + "/../" + "Pytracker.py")
+		os.system("python " + backend_absolute_path + "/" + "Pytracker.py")
 
-		listoflist = eval(open(current_absolute_path + "/../" + "listoflist", 'r').read())
-		step_json = eval(open(current_absolute_path + "/../" + "step_json.json", 'r').read())
+		listoflist = eval(open(backend_absolute_path + "/" + "listoflist", 'r').read())
+		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [1, 2, 3, 4, 5])
 		assert (step_json == {
@@ -68,14 +68,14 @@ print(a)
 a /= 1
 print(a)"""
 
-		with open(current_absolute_path + "/../" + "UserCode.py", 'w') as f_w:
+		with open(backend_absolute_path + "/" + "UserCode.py", 'w') as f_w:
 			f_w.write(usercode)
 		f_w.close()
 
-		os.system("python " + current_absolute_path + "/../" + "Pytracker.py")
+		os.system("python " + backend_absolute_path + "/" + "Pytracker.py")
 
-		listoflist = eval(open(current_absolute_path + "/../" + "listoflist", 'r').read())
-		step_json = eval(open(current_absolute_path + "/../" + "step_json.json", 'r').read())
+		listoflist = eval(open(backend_absolute_path + "/" + "listoflist", 'r').read())
+		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18])
 		assert (step_json == {

@@ -1,7 +1,7 @@
 import os
 import pathlib
 
-current_absolute_path = str(pathlib.Path(__file__).parent.resolve())
+backend_absolute_path = str(pathlib.Path(__file__).parent.parent.resolve())
 
 class Test_For_Statement():
 	# DONE: TypeError: unhashable type: "list" --- fixed by 2022-08-15
@@ -10,14 +10,14 @@ class Test_For_Statement():
 		usercode = """for i in range(5):
 	print("Here")
 """
-		with open(current_absolute_path + "/../" + "UserCode.py", 'w') as f_w:
+		with open(backend_absolute_path + "/" + "UserCode.py", 'w') as f_w:
 			f_w.write(usercode)
 		f_w.close()
 
-		os.system("python " + current_absolute_path + "/../" + "Pytracker.py")
+		os.system("python " + backend_absolute_path + "/" + "Pytracker.py")
 
-		listoflist = eval(open(current_absolute_path + "/../" + "listoflist", 'r').read())
-		step_json = eval(open(current_absolute_path + "/../" + "step_json.json", 'r').read())
+		listoflist = eval(open(backend_absolute_path + "/" + "listoflist", 'r').read())
+		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [[1, 2], [1, 2], [1, 2], [1, 2], [1, 2]])
 		assert (step_json == {})
@@ -31,14 +31,14 @@ class Test_For_Statement():
 	else:
 		print("ODD")
 """
-		with open(current_absolute_path + "/../" + "UserCode.py", 'w') as f_w:
+		with open(backend_absolute_path + "/" + "UserCode.py", 'w') as f_w:
 			f_w.write(usercode)
 		f_w.close()
 
-		os.system("python " + current_absolute_path + "/../" + "Pytracker.py")
+		os.system("python " + backend_absolute_path + "/" + "Pytracker.py")
 
-		listoflist = eval(open(current_absolute_path + "/../" + "listoflist", 'r').read())
-		step_json = eval(open(current_absolute_path + "/../" + "step_json.json", 'r').read())
+		listoflist = eval(open(backend_absolute_path + "/" + "listoflist", 'r').read())
+		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [[1, 3], [1, 5], [1, 3], [1, 5]])
 		assert (step_json == {
@@ -119,14 +119,14 @@ for i in range(4):
 print(even_sum)
 print(odd_sum)
 """
-		with open(current_absolute_path + "/../" + "UserCode.py", 'w') as f_w:
+		with open(backend_absolute_path + "/" + "UserCode.py", 'w') as f_w:
 			f_w.write(usercode)
 		f_w.close()
 
-		os.system("python " + current_absolute_path + "/../" + "Pytracker.py")
+		os.system("python " + backend_absolute_path + "/" + "Pytracker.py")
 
-		listoflist = eval(open(current_absolute_path + "/../" + "listoflist", 'r').read())
-		step_json = eval(open(current_absolute_path + "/../" + "step_json.json", 'r').read())
+		listoflist = eval(open(backend_absolute_path + "/" + "listoflist", 'r').read())
+		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [1, 2, 3, [4, [5, 7], [5, 9], [5, 9], [5, 7], [5, 7], [5, 9], [5, 9], [5, 7], 11], 12])
 		assert (step_json == {

@@ -1,7 +1,7 @@
 import os
 import pathlib
 
-current_absolute_path = str(pathlib.Path(__file__).parent.resolve())
+backend_absolute_path = str(pathlib.Path(__file__).parent.parent.resolve())
 
 
 class Test_Function_Calling():
@@ -18,14 +18,14 @@ def main():
 
 main()
 	"""
-		with open(current_absolute_path + "/../" + "UserCode.py", 'w') as f_w:
+		with open(backend_absolute_path + "/" + "UserCode.py", 'w') as f_w:
 			f_w.write(usercode)
 		f_w.close()
 
-		os.system("python " + current_absolute_path + "/../" + "Pytracker.py")
+		os.system("python " + backend_absolute_path + "/" + "Pytracker.py")
 
-		listoflist = eval(open(current_absolute_path + "/../" + "listoflist", 'r').read())
-		step_json = eval(open(current_absolute_path + "/../" + "step_json.json", 'r').read())
+		listoflist = eval(open(backend_absolute_path + "/" + "listoflist", 'r').read())
+		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [1, 5, 12, 6, 7, 2, 8, 9, 2])
 		assert (step_json == {
