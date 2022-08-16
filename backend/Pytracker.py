@@ -3,7 +3,7 @@ import sys
 import re
 import parse
 import json
-from yapf.yapflib.yapf_api import FormatFile  # reformat a file
+from yapf.yapflib.yapf_api import FormatFile, FormatCode
 
 try:
 	import backend.my_trace as my_trace
@@ -188,12 +188,16 @@ def parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict: dic
 	return parse_classes.Program(TupleOfIntAndTuple, tab_dict, grid_indent)
 
 
-def backend_main(usercode=open(current_absolute_path + "/" + "UserCode.py", 'r').read()):
+def backend_main(usercode=None):
 	# =====================================================
 	# ===========   Stage 01 : previous_check   ===========
 	# =====================================================
-	# format with yapf3 before create test_script
-	reformatted_code, encoding, changed = FormatFile(filename=f"{current_absolute_path}/UserCode.py", style_config=f"{current_absolute_path}/.style.yapf")
+	if usercode == None:
+		usercode=open(current_absolute_path + "/" + "UserCode.py", 'r').read()
+		# format with yapf3 before create test_script
+		reformatted_code, encoding, changed = FormatFile(filename=f"{current_absolute_path}/UserCode.py", style_config=f"{current_absolute_path}/.style.yapf")
+	else:
+		reformatted_code, changed = FormatCode(unformatted_source=usercode, style_config=f"{current_absolute_path}/.style.yapf")
 
 	# clean the execution txt before start a new tracer
 	hf.clean_content_in_file(current_absolute_path + "/" + "Pytracker_output")
