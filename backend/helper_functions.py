@@ -71,43 +71,6 @@ def clean_content_in_file(filename):
 		return
 
 
-def create_test_file(user_code_filename, test_script_filename):
-	def_main_str = "def main():\n"
-	if_NameEqMain_str = "\nif __name__ == \"__main__\":\n\tmain()"
-
-	# ADD: 2022-06-25 return a signal variable to tell parse_test if usercode have main()
-	do_main_contain = False
-
-	try:
-		with open(user_code_filename, 'r') as user_code:
-			# nothing need to add, just create by read()
-			if NameEqMain_check(user_code_filename):
-				testing_user_code = user_code.read()
-				do_main_contain = True
-			# add main() and "if __name__ == ..."
-			else:
-				testing_user_code = def_main_str + "".join(["\t" + i for i in user_code.readlines()]) + if_NameEqMain_str
-				do_main_contain = False
-		user_code.close()
-	except FileNotFoundError:
-		raise FileNotFoundError("InputFile Not Found")
-
-	# write to the test_script_file
-	with open(test_script_filename, 'w') as user_code_output:
-		user_code_output.write(testing_user_code)
-	user_code_output.close()
-
-	return do_main_contain
-
-
-def NameEqMain_check(filename):
-	with open(filename, 'r') as f:
-		file_content = f.read()
-		if re.search("if[ ]*__name__[ ]*==[ ]*\"__main__\"[ ]*:", file_content) and re.search("def[ ]*main[ ]*\([ ]*\)[ ]*:", file_content):
-			return True
-	return False
-
-
 def TupleOfIntAndTuple_to_ListOfList(TupleOfIntAndTuple):
 	if isinstance(TupleOfIntAndTuple, int):
 		return TupleOfIntAndTuple
@@ -179,8 +142,10 @@ def get_step_json(program: parse_classes.Program):
 	start_statement = program.get_first_statement()
 	end_statement = start_statement.get_next()
 
+	cur_max = 0
+	depths = []
+
 	step_list = []
-	while_stack = []
 	while end_statement:
 		start_location = start_statement.line_no
 		end_location = end_statement.line_no
@@ -192,17 +157,21 @@ def get_step_json(program: parse_classes.Program):
 			entered_iteration = end_statement.path[-1]
 			step_list.append({"type": "step", "start": start_location, "end": end_location})
 			step_list.append({"type": "circle", "start": end_location, "iteration": entered_iteration.iteration_num})
+			cur_max += 1
 			step_list.append({"type": "while_start", "depth": -1})
 		# CASE 02: end a while-loop
 		elif len(end_statement.path) < len(start_statement.path):
 			ended_iteration = start_statement.path[-1]
 			step_list.append({"type": "while_end", "start": ended_iteration.get_first_inner_step().line_no, "end": ended_iteration.get_last_inner_step().line_no})
+			depths.append(cur_max)
+			cur_max = 0
 			step_list.append({"type": "step", "start": start_location, "end": end_location})
 		else:
 			# CASE 03: length equalled, entering a new iteration under same while-loop
 			if start_statement.path != end_statement.path:
 				entered_iteration = end_statement.path[-1]
 				step_list.append({"type": "circle", "start": end_location, "iteration": entered_iteration.iteration_num})
+				cur_max += 1
 			# CASE 04: normal step
 			else:
 				step_list.append({"type": "step", "start": start_location, "end": end_location})
@@ -210,8 +179,9 @@ def get_step_json(program: parse_classes.Program):
 		start_statement = start_statement.get_next()
 		end_statement = end_statement.get_next()
 
+	depths.append(cur_max)
 	# TODO: need to find a way to calculate the maximum depth
-	max_depth = 5
+	max_depth = 0 if depths == [] else max(depths)
 	return {"d": max_depth, "list": step_list}
 
 

@@ -27,7 +27,7 @@ main()"""
 		assert (listoflist == [1, 8, 2, 3, 4, 5])
 		assert (step_json == {
 		    "d":
-		        5,
+		        0,
 		    "list": [{
 		        "type": "step",
 		        "start": 0,
@@ -77,7 +77,7 @@ if __name__ == "__main__":
 		assert (listoflist == [1, 9, 2, 3, 4, 5])
 		assert (step_json == {
 		    "d":
-		        5,
+		        0,
 		    "list": [{
 		        "type": "step",
 		        "start": 0,
@@ -122,7 +122,7 @@ print(f"b == {b}")"""
 
 		assert (listoflist == [1, 2, 3, 4])
 		assert (step_json == {
-		    "d": 5,
+		    "d": 0,
 		    "list": [{
 		        "type": "step",
 		        "start": 0,

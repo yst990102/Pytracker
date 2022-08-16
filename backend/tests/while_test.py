@@ -24,7 +24,7 @@ while i < 5:
 		assert (listoflist == [1, [2, 3, 4], [2, 3, 4], [2, 3, 4], [2, 3, 4], [2, 3, 4]])
 		assert (step_json == {
 		    "d":
-		        5,
+		        1,
 		    "list": [{
 		        "type": "step",
 		        "start": 0,
@@ -71,7 +71,7 @@ while i < 6:
 		assert (listoflist == [1, 2, [3, [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], 6], [3, 6], [3, 6], [3, 6], [3, 6], [3, 6]])
 		assert (step_json == {
 		    "d":
-		        5,
+		        2,
 		    "list": [{
 		        "type": "step",
 		        "start": 0,
@@ -146,7 +146,7 @@ while a > 0:
 		assert (listoflist == [1, [2, 4, 7], [2, 6, 7], [2, 4, 7], [2, 6, 7]])
 		assert (step_json == {
 		    "d":
-		        5,
+		        2,
 		    "list": [{
 		        "type": "step",
 		        "start": 0,
@@ -214,7 +214,7 @@ print(odd_sum)
 		assert (listoflist == [1, 2, 3, [4, 5, [6, 8, 11], [6, 10, 11], 12], [4, 5, [6, 10, 11], [6, 8, 11], 12], [4, 5, [6, 8, 11], [6, 10, 11], 12], [4, 5, [6, 10, 11], [6, 8, 11], 12], 14, 15])
 		assert (step_json == {
 		    "d":
-		        5,
+		        3,
 		    "list": [{
 		        "type": "step",
 		        "start": 0,
@@ -369,7 +369,7 @@ while i < 1:
 		assert (listoflist == [1, 2, 3, [4, [5, [6, 7, 8], 9, 10], 11, 12]])
 		assert (step_json == {
 		    "d":
-		        5,
+		        3,
 		    "list": [{
 		        "type": "step",
 		        "start": 0,
@@ -485,7 +485,7 @@ print(odd_sum)
 		assert (listoflist == [1, 2, 3, [4, 5, [6, 8, 11], [6, 10, 11], [6, 8, 11], [6, 10, 11], 18], [4, 5, [6, 10, 11], [6, 8, 11], [6, 10, 11], [6, 8, 11], 18], 20, 21])
 		assert (step_json == {
 		    "d":
-		        5,
+		        3,
 		    "list": [{
 		        "type": "step",
 		        "start": 0,
@@ -637,7 +637,7 @@ else:
 		assert (listoflist == [1, [3, 4, 5], [3, 4, 5]])
 		assert (step_json == {
 		    "d":
-		        5,
+		        1,
 		    "list": [{
 		        "type": "step",
 		        "start": 0,

@@ -25,7 +25,7 @@ b = tmp"""
 		assert (listoflist == [1, 2, 3, 4, 5])
 		assert (step_json == {
 		    "d":
-		        5,
+		        0,
 		    "list": [{
 		        "type": "step",
 		        "start": 0,
@@ -81,7 +81,7 @@ print(a)"""
 		assert (listoflist == [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18])
 		assert (step_json == {
 		    "d":
-		        5,
+		        0,
 		    "list": [{
 		        "type": "step",
 		        "start": 0,
