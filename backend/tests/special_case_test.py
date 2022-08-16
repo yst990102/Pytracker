@@ -23,7 +23,7 @@ main()"""
 		listoflist = eval(open(current_absolute_path + "/../" + "listoflist", 'r').read())
 		step_json = eval(open(current_absolute_path + "/../" + "step_json.json", 'r').read())
 
-		assert (listoflist == [1, 7, 2, 3, 4, 5])
+		assert (listoflist == [1, 8, 2, 3, 4, 5])
 		assert (step_json == {
 		    "d":
 		        5,
@@ -34,10 +34,10 @@ main()"""
 		    }, {
 		        "type": "step",
 		        "start": 1,
-		        "end": 7
+		        "end": 8
 		    }, {
 		        "type": "step",
-		        "start": 7,
+		        "start": 8,
 		        "end": 2
 		    }, {
 		        "type": "step",
@@ -73,7 +73,7 @@ if __name__ == "__main__":
 		listoflist = eval(open(current_absolute_path + "/../" + "listoflist", 'r').read())
 		step_json = eval(open(current_absolute_path + "/../" + "step_json.json", 'r').read())
 
-		assert (listoflist == [1, 8, 2, 3, 4, 5])
+		assert (listoflist == [1, 9, 2, 3, 4, 5])
 		assert (step_json == {
 		    "d":
 		        5,
@@ -84,10 +84,10 @@ if __name__ == "__main__":
 		    }, {
 		        "type": "step",
 		        "start": 1,
-		        "end": 8
+		        "end": 9
 		    }, {
 		        "type": "step",
-		        "start": 8,
+		        "start": 9,
 		        "end": 2
 		    }, {
 		        "type": "step",
