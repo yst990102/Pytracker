@@ -2,18 +2,19 @@ import os
 import pathlib
 import sys
 import re
+from time import sleep
 import parse
 import json
+from yapf.yapflib.yapf_api import FormatFile, FormatCode  # reformat a file
+
 try:
 	import backend.my_trace as my_trace
 except:
 	import my_trace as my_trace
-
 try:
 	import backend.helper_functions as hf
 except:
 	import helper_functions as hf
-
 try:
 	import backend.parse_classes as parse_classes
 except:
@@ -88,6 +89,11 @@ def trace_execution_tracking(result_file):
 
 	# parse str_ListOfList into ListOfList
 	listoflist = parse_strListOfList_into_ListOfList(all_line_nos, while_lines[:], tab_dict)
+	
+	print(f"trace_execution_tracking : listoflist == {listoflist}")
+	print(f"trace_execution_tracking : tab_dict == {tab_dict}")
+	print(f"trace_execution_tracking : while_lines == {while_lines}")
+	print(f"trace_execution_tracking : if_else_lines == {if_else_lines}\n")
 	return listoflist, tab_dict, while_lines, if_else_lines
 
 
@@ -184,19 +190,19 @@ def parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict: dic
 	return parse_classes.Program(TupleOfIntAndTuple, tab_dict, grid_indent)
 
 
-def backend_main(usercode=open(current_absolute_path + "/" + "UserCode.py").read()):
+def backend_main(usercode=open(current_absolute_path + "/" + "UserCode.py", 'r').read()):
 	# =====================================================
 	# ===========   Stage 01 : previous_check   ===========
 	# =====================================================
 	# format with yapf3 before create test_script
-	os.system(f"yapf -i {current_absolute_path}/UserCode.py")
-
+	reformatted_code, encoding, changed = FormatFile(filename=f"{current_absolute_path}/UserCode.py", style_config=f"{current_absolute_path}/.style.yapf")
+	
 	# clean the execution txt before start a new tracer
 	hf.clean_content_in_file(current_absolute_path + "/" + "Pytracker_output")
 
 	# create tracer
 	tracer = my_trace.Trace(ignoredirs=[sys.prefix, sys.exec_prefix], trace=1, count=1, outfile=current_absolute_path + "/" + "Pytracker_output")
-	tracer.run(usercode)
+	tracer.run(reformatted_code)
 
 	# =====================================================
 	# ============   Stage 02 : main_tracing   ============
@@ -229,7 +235,7 @@ def backend_main(usercode=open(current_absolute_path + "/" + "UserCode.py").read
 	program = parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict, grid_indent)
 
 	# TEST: all available print ways testing for program
-	program.print_statements()
+	# program.print_statements()
 	# program.print_linklist(parse_classes.Print_Forward)
 	# program.print_linklist(parse_classes.Print_Backward)
 	# program.print_while_loops_inlayer()
