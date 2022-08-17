@@ -120,7 +120,7 @@ $("#codeSubmit").click(() => {
             markup = "";
             for (var i = 0; i <= parselist.length; i++) {
                 markup += '<div class="row">';
-                for (var j = 0; j < code['d']; j++) {
+                for (var j = 0; j < res['d']; j++) {
                     id = "r" + i + "c" + j;
                     markup += '<div id ="' + id + '" class="col"></div>';
                 }
