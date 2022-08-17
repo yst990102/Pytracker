@@ -10,3 +10,9 @@ Week 06:
 Week08:
 1. special case: purely if-else case.
 2. special case: parallelled inner-while-loops
+
+
+Week11:
+1. fix bugs recorded in messenger
+2. [try] try to speed up
+3. 

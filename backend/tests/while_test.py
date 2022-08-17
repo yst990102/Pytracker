@@ -347,9 +347,9 @@ print(odd_sum)
 		usercode = """i = 0
 j = 0
 k = 0
-while i < 1:
-	while j < 1:
-		while k < 1:
+while i < 3:
+	while j < 3:
+		while k < 3:
 			print(k)
 			k += 1
 		print(j)
