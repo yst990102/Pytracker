@@ -88,10 +88,10 @@ def trace_execution_tracking(result_file):
 	# parse str_ListOfList into ListOfList
 	listoflist = parse_strListOfList_into_ListOfList(all_line_nos, while_lines[:], tab_dict)
 
-	print(f"trace_execution_tracking : listoflist == {listoflist}")
-	print(f"trace_execution_tracking : tab_dict == {tab_dict}")
-	print(f"trace_execution_tracking : while_lines == {while_lines}")
-	print(f"trace_execution_tracking : if_else_lines == {if_else_lines}\n")
+	# print(f"trace_execution_tracking : listoflist == {listoflist}")
+	# print(f"trace_execution_tracking : tab_dict == {tab_dict}")
+	# print(f"trace_execution_tracking : while_lines == {while_lines}")
+	# print(f"trace_execution_tracking : if_else_lines == {if_else_lines}\n")
 	return listoflist, tab_dict, while_lines, if_else_lines
 
 
