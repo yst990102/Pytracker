@@ -24,7 +24,7 @@ while i < 5:
 		assert (listoflist == [1, [2, 3, 4], [2, 3, 4], [2, 3, 4], [2, 3, 4], [2, 3, 4]])
 		assert (step_json == {
 		    "d":
-		        1,
+		        3,
 		    "list": [{
 		        "type": "step",
 		        "start": 0,
@@ -40,6 +40,18 @@ while i < 5:
 		    }, {
 		        "type": "while_start",
 		        "depth": -1
+		    }, {
+		        "type": "step",
+		        "start": 2,
+		        "end": 3
+		    }, {
+		        "type": "step",
+		        "start": 3,
+		        "end": 4
+		    }, {
+		        "type": "circle",
+		        "start": 2,
+		        "iteration": 5
 		    }, {
 		        "type": "step",
 		        "start": 2,
@@ -71,7 +83,7 @@ while i < 6:
 		assert (listoflist == [1, 2, [3, [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], 6], [3, 6], [3, 6], [3, 6], [3, 6], [3, 6]])
 		assert (step_json == {
 		    "d":
-		        2,
+		        5,
 		    "list": [{
 		        "type": "step",
 		        "start": 0,
@@ -107,6 +119,14 @@ while i < 6:
 		        "start": 4,
 		        "end": 5
 		    }, {
+		        "type": "circle",
+		        "start": 4,
+		        "iteration": 6
+		    }, {
+		        "type": "step",
+		        "start": 4,
+		        "end": 5
+		    }, {
 		        "type": "while_end",
 		        "start": 4,
 		        "end": 5
@@ -117,7 +137,7 @@ while i < 6:
 		    }, {
 		        "type": "circle",
 		        "start": 3,
-		        "iteration": 2
+		        "iteration": 6
 		    }, {
 		        "type": "step",
 		        "start": 3,
@@ -146,7 +166,7 @@ while a > 0:
 		assert (listoflist == [1, [2, 4, 7], [2, 6, 7], [2, 4, 7], [2, 6, 7]])
 		assert (step_json == {
 		    "d":
-		        2,
+		        3,
 		    "list": [{
 		        "type": "step",
 		        "start": 0,
@@ -173,7 +193,7 @@ while a > 0:
 		    }, {
 		        "type": "circle",
 		        "start": 2,
-		        "iteration": 2
+		        "iteration": 4
 		    }, {
 		        "type": "step",
 		        "start": 2,
@@ -214,7 +234,7 @@ print(odd_sum)
 		assert (listoflist == [1, 2, 3, [4, 5, [6, 8, 11], [6, 10, 11], 12], [4, 5, [6, 10, 11], [6, 8, 11], 12], [4, 5, [6, 8, 11], [6, 10, 11], 12], [4, 5, [6, 10, 11], [6, 8, 11], 12], 14, 15])
 		assert (step_json == {
 		    "d":
-		        3,
+		        7,
 		    "list": [{
 		        "type": "step",
 		        "start": 0,
@@ -284,7 +304,7 @@ print(odd_sum)
 		    }, {
 		        "type": "circle",
 		        "start": 4,
-		        "iteration": 2
+		        "iteration": 4
 		    }, {
 		        "type": "step",
 		        "start": 4,
@@ -366,10 +386,10 @@ while i < 3:
 		listoflist = eval(open(backend_absolute_path + "/" + "listoflist", 'r').read())
 		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
-		assert (listoflist == [1, 2, 3, [4, [5, [6, 7, 8], 9, 10], 11, 12]])
+		assert (listoflist == [1, 2, 3, [4, [5, [6, 7, 8], [6, 7, 8], [6, 7, 8], 9, 10], [5, 9, 10], [5, 9, 10], 11, 12], [4, 11, 12], [4, 11, 12]])
 		assert (step_json == {
 		    "d":
-		        3,
+		        7,
 		    "list": [{
 		        "type": "step",
 		        "start": 0,
@@ -424,6 +444,18 @@ while i < 3:
 		        "start": 7,
 		        "end": 8
 		    }, {
+		        "type": "circle",
+		        "start": 6,
+		        "iteration": 3
+		    }, {
+		        "type": "step",
+		        "start": 6,
+		        "end": 7
+		    }, {
+		        "type": "step",
+		        "start": 7,
+		        "end": 8
+		    }, {
 		        "type": "while_end",
 		        "start": 6,
 		        "end": 8
@@ -436,12 +468,36 @@ while i < 3:
 		        "start": 9,
 		        "end": 10
 		    }, {
+		        "type": "circle",
+		        "start": 5,
+		        "iteration": 3
+		    }, {
+		        "type": "step",
+		        "start": 5,
+		        "end": 9
+		    }, {
+		        "type": "step",
+		        "start": 9,
+		        "end": 10
+		    }, {
 		        "type": "while_end",
 		        "start": 5,
 		        "end": 10
 		    }, {
 		        "type": "step",
 		        "start": 10,
+		        "end": 11
+		    }, {
+		        "type": "step",
+		        "start": 11,
+		        "end": 12
+		    }, {
+		        "type": "circle",
+		        "start": 4,
+		        "iteration": 3
+		    }, {
+		        "type": "step",
+		        "start": 4,
 		        "end": 11
 		    }, {
 		        "type": "step",
@@ -482,10 +538,10 @@ print(odd_sum)
 		listoflist = eval(open(backend_absolute_path + "/" + "listoflist", 'r').read())
 		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
-		assert (listoflist == [1, 2, 3, [4, 5, [6, 8, 11], [6, 10, 11], [6, 8, 11], [6, 10, 11], 18], [4, 5, [6, 10, 11], [6, 8, 11], [6, 10, 11], [6, 8, 11], 18], 20, 21])
+		assert (listoflist == [1, 2, [4, 6, 7], [4, 6, 7], [8, 9, 10, [15, 17, 18], [15, 17, 18], [15, 17, 18], [15, 17, 18]]])
 		assert (step_json == {
 		    "d":
-		        3,
+		        7,
 		    "list": [{
 		        "type": "step",
 		        "start": 0,
@@ -535,7 +591,7 @@ print(odd_sum)
 		    }, {
 		        "type": "circle",
 		        "start": 6,
-		        "iteration": 2
+		        "iteration": 4
 		    }, {
 		        "type": "step",
 		        "start": 6,
@@ -582,7 +638,7 @@ print(odd_sum)
 		    }, {
 		        "type": "circle",
 		        "start": 6,
-		        "iteration": 2
+		        "iteration": 4
 		    }, {
 		        "type": "step",
 		        "start": 6,
@@ -637,7 +693,7 @@ else:
 		assert (listoflist == [1, [3, 4, 5], [3, 4, 5]])
 		assert (step_json == {
 		    "d":
-		        1,
+		        3,
 		    "list": [{
 		        "type": "step",
 		        "start": 0,
@@ -653,6 +709,18 @@ else:
 		    }, {
 		        "type": "while_start",
 		        "depth": -1
+		    }, {
+		        "type": "step",
+		        "start": 3,
+		        "end": 4
+		    }, {
+		        "type": "step",
+		        "start": 4,
+		        "end": 5
+		    }, {
+		        "type": "circle",
+		        "start": 3,
+		        "iteration": 2
 		    }, {
 		        "type": "step",
 		        "start": 3,

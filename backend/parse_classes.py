@@ -3,7 +3,6 @@ try:
 except:
 	import backend.helper_functions as hf
 
-
 Print_Forward = 0
 Print_Backward = 1
 
@@ -59,11 +58,11 @@ class Iteration(Statement):
 
 		if creation_print:
 			print(f"---- create {self.__class__.__name__} {steps}")
-		
+
 		self.general_steps = steps[1]  # general step list, formed by integer
 		# self.general_steps = hf.TupleOfIntAndTuple_to_ListOfList(steps)
 		# print(f"self.general_steps == {self.general_steps}")
-		
+
 		self.while_line_no = self.general_steps[0]
 		self.steps = []  # list of all Assignment/Iteration Nodes
 		self.iteration_num = steps[0]  # integer for iteration number
@@ -215,17 +214,17 @@ class Program():
 				refered_found = True
 				break
 		if not refered_found:
-			self.while_loops.append({"path": new_while_path, "while_line_no" :new_while_line_no, "iterations": [new_iteration]})
+			self.while_loops.append({"path": new_while_path, "while_line_no": new_while_line_no, "iterations": [new_iteration]})
 
 	def filt_algo_implement(self):
 		for while_loop_info in self.while_loops:
 			while_path, while_line_no, while_iterations = while_loop_info["path"], while_loop_info["while_line_no"], while_loop_info["iterations"]
 
 			while_iteration_set = [while_iterations[0].general_steps, while_iterations[-1].general_steps]
-			print(f"iteration_set first = itr_num = {while_iterations[0].iteration_num}, steps = {while_iterations[0].general_steps}")
-			print(f"iteration_set last = itr_num = {while_iterations[-1].iteration_num}, steps = {while_iterations[-1].general_steps}")
+			# print(f"iteration_set first = itr_num = {while_iterations[0].iteration_num}, steps = {while_iterations[0].general_steps}")
+			# print(f"iteration_set last = itr_num = {while_iterations[-1].iteration_num}, steps = {while_iterations[-1].general_steps}")
 			for index, while_iteration in enumerate(while_iterations):
-				print(f"itr_num = {while_iteration.iteration_num}, steps = {while_iteration.general_steps}")
+				# print(f"itr_num = {while_iteration.iteration_num}, steps = {while_iteration.general_steps}")
 				if index == 0 or index == len(while_iterations) - 1:
 					continue
 				if while_iteration.general_steps not in while_iteration_set:

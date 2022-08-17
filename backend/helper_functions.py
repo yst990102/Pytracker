@@ -142,8 +142,10 @@ def get_step_json(program: parse_classes.Program):
 	start_statement = program.get_first_statement()
 	end_statement = start_statement.get_next()
 
-	cur_max = 0
-	depths = []
+	cur_max = 1
+	max_max = 1
+	cur_or_max = False
+	stack = []
 
 	step_list = []
 	while end_statement:
@@ -154,34 +156,41 @@ def get_step_json(program: parse_classes.Program):
 		# use path to judge
 		# CASE 01: start a new while-loop
 		if len(end_statement.path) > len(start_statement.path):
+			if stack != []:
+				cur_or_max = True
 			entered_iteration = end_statement.path[-1]
 			step_list.append({"type": "step", "start": start_location, "end": end_location})
 			step_list.append({"type": "circle", "start": end_location, "iteration": entered_iteration.iteration_num})
-			cur_max += 1
 			step_list.append({"type": "while_start", "depth": -1})
+			stack.append(cur_max)
+			cur_max += 1
+			# print("CASE 1 hit")
 		# CASE 02: end a while-loop
 		elif len(end_statement.path) < len(start_statement.path):
 			ended_iteration = start_statement.path[-1]
 			step_list.append({"type": "while_end", "start": ended_iteration.get_first_inner_step().line_no, "end": ended_iteration.get_last_inner_step().line_no})
-			depths.append(cur_max)
-			cur_max = 0
 			step_list.append({"type": "step", "start": start_location, "end": end_location})
+			cur_max = stack.pop()
+			cur_or_max = False
+			# print("CASE 2 hit")
 		else:
 			# CASE 03: length equalled, entering a new iteration under same while-loop
 			if start_statement.path != end_statement.path:
 				entered_iteration = end_statement.path[-1]
 				step_list.append({"type": "circle", "start": end_location, "iteration": entered_iteration.iteration_num})
-				cur_max += 1
+				cur_max = (cur_max + 1) if cur_or_max == True else (max_max + 1)
+				# print("CASE 3 hit")
 			# CASE 04: normal step
 			else:
 				step_list.append({"type": "step", "start": start_location, "end": end_location})
-
+				# print("CASE 4 hit")
+		max_max = max(cur_max, max_max)
+		# print(f"cur_max == {cur_max}, max_max == {max_max}, stack == {stack}\n")
 		start_statement = start_statement.get_next()
 		end_statement = end_statement.get_next()
 
-	depths.append(cur_max)
-
-	max_depth = 0 if depths == [] else max(depths)
+	max_depth = max_max
+	# print(f"max_depth == {max_depth}")
 	return {"d": max_depth, "list": step_list}
 
 

@@ -30,7 +30,7 @@ main()
 		assert (listoflist == [1, 5, 12, 6, 7, 2, 8, 9, 2])
 		assert (step_json == {
 		    "d":
-		        0,
+		        1,
 		    "list": [{
 		        "type": "step",
 		        "start": 0,
