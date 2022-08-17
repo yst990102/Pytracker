@@ -63,3 +63,135 @@ if odd_sum > even_sum:
     print(odd_sum)
 else:
     print(even_sum)
+
+#Unused while loop
+even_sum = 0
+odd_sum = 0
+i = 2
+j = 0
+while j < 4:
+	if (i + j) % 2 == 0:
+		even_sum += (i + j)
+	else:
+		odd_sum += (i + j)
+	j += 1
+	
+while j < 4:
+	if (i + j) % 2 == 0:
+		even_sum += (i + j)
+	else:
+		odd_sum += (i + j)
+	j += 1
+i += 1
+
+print(even_sum)
+print(odd_sum)
+
+# Nested while loop (simple)
+i = 0
+j = 0
+while i < 6:
+	while j < 6:
+		j +=1
+	i += 1
+
+# Nested while loop with conditional
+even_sum = 0
+odd_sum = 0
+i = 0
+while i < 4:
+	j = 4
+	while j < 6:
+		if (i + j) % 2 == 0:
+			even_sum += (i + j)
+		else:
+			odd_sum += (i + j)
+		j += 1
+	i += 1
+
+print(even_sum)
+print(odd_sum)
+
+# Nested while loop that is unused
+even_sum = 0
+odd_sum = 0
+i = 0
+while i < 2:
+	j = 0
+	while j < 4:
+		if (i + j) % 2 == 0:
+			even_sum += (i + j)
+		else:
+			odd_sum += (i + j)
+		j += 1
+
+	while j < 4:
+		if (i + j) % 2 == 0:
+			even_sum += (i + j)
+		else:
+			odd_sum += (i + j)
+		j += 1
+	i += 1
+
+print(even_sum)
+print(odd_sum)
+
+# Nested while loop that is same depth
+even_sum = 0
+odd_sum = 0
+i = 0
+while i < 2:
+	j = 0
+	while j < 4:
+		if (i + j) % 2 == 0:
+			even_sum += (i + j)
+		else:
+			odd_sum += (i + j)
+		j += 1
+
+	j = 0
+	while j < 4:
+		if (i + j) % 2 == 0:
+			even_sum += (i + j)
+		else:
+			odd_sum += (i + j)
+		j += 1
+	i += 1
+
+print(even_sum)
+print(odd_sum)
+
+# Quadruple nested while loop
+i = 0
+j = 0
+k = 0
+l = 0
+while i < 3:
+    while j < 3:
+        while k < 3:
+            while l < 3:
+                print(l)
+                l += 1
+            print(k)
+            k += 1
+        print(j)
+        j += 1
+    print(i)
+    i += 1
+
+# 3 unique execution paths
+sum = 0
+i = 0
+while i < 2:
+    j = 0
+    while j < 4:
+        if (i + j) % 2 == 0:
+            sum += (i + j)
+        elif (i + j) % 3 == 0:
+            sum += (i + j)
+        else:
+            sum -= (i + j)
+        j += 1
+    i += 1
+
+print(sum)

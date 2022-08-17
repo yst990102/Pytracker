@@ -210,8 +210,10 @@ class Program():
 		for while_loop_info in self.while_loops:
 			while_path, while_iterations = while_loop_info["path"], while_loop_info["iterations"]
 
-			while_iteration_set = [while_iterations[0], while_iterations[-1]]
-			for while_iteration in while_iterations:
+			while_iteration_set = [while_iterations[0].general_steps, while_iterations[-1].general_steps]
+			for index, while_iteration in enumerate(while_iterations):
+				if index == 0 or index == len(while_iterations) - 1:
+					continue
 				if while_iteration.general_steps not in while_iteration_set:
 					while_iteration_set.append(while_iteration.general_steps)
 				else:

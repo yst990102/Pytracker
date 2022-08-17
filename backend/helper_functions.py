@@ -180,7 +180,7 @@ def get_step_json(program: parse_classes.Program):
 		end_statement = end_statement.get_next()
 
 	depths.append(cur_max)
-	# TODO: need to find a way to calculate the maximum depth
+
 	max_depth = 0 if depths == [] else max(depths)
 	return {"d": max_depth, "list": step_list}
 
