@@ -61,13 +61,13 @@ $("#codeSubmit").click(() => {
     //     table.append(markup);
     // });
 
-    var buttons = $("#stepbtns");
-    buttons.append(
-        '<button id="next" type="submit" class="editor_btn_next">Next</button>'
-    );
-    buttons.append(
-        '<button id="prev" type="submit" class="editor_btn_prev">Prev</button>'
-    );
+    // var buttons = $("#stepbtns");
+    // buttons.append(
+    //     '<button id="next" type="submit" class="editor_btn_next">Next</button>'
+    // );
+    // buttons.append(
+    //     '<button id="prev" type="submit" class="editor_btn_prev">Prev</button>'
+    // );
 
     $.ajax({
         type: "POST",
@@ -104,6 +104,15 @@ $("#codeSubmit").click(() => {
                     "</td></tr>";
                 table.append(markup);
             });
+
+            var buttons = $("#stepbtns");
+            buttons.append(
+                '<button id="next" type="submit" class="editor_btn_next">Next</button>'
+            );
+            buttons.append(
+                '<button id="prev" type="submit" class="editor_btn_prev">Prev</button>'
+            );
+        
 
             console.log(data['step_json']);
             res = data['step_json'];
