@@ -195,3 +195,26 @@ while i < 2:
     i += 1
 
 print(sum)
+
+# Arbitrary number of nested
+a = 0
+if a == 0:
+    sum = 0
+    i = 0
+    while i < 2:
+        j = 0
+        while j < 4:
+            if (i + j) % 2 == 0:
+                sum += (i + j)
+            elif (i + j) % 3 == 0:
+                sum += (i + j)
+            else:
+                sum -= (i + j)
+            j += 1
+        i += 1
+else:
+	while a < 2:
+		print(2)
+		a += 1
+
+print(sum)
