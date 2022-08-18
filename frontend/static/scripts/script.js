@@ -127,6 +127,14 @@ $("#codeSubmit").click(() => {
                 markup += "</div>";
             }
             grid.append(markup);
+            console.log("HERE")
+            const height = $(window).height();
+            const width = $(window).width();
+            console.log(height, width)
+            document.body.style.width = width;
+            document.body.style.height = height;
+
+
         },
         error: function (err) {
             console.log(err);
@@ -139,6 +147,11 @@ $(document).on("click", "#stepbtns .editor_btn_next", function () {
     console.log("Instructions = ", instructions);
     get_next();
     console.log("DEPTH = ", depth)
+    const height = $(window).height();
+    const width = $(window).width();
+    document.getElementById('__arrowLineInternal-svg-canvas').style.width = width
+    document.getElementById('__arrowLineInternal-svg-canvas').style.height = height
+    document.getElementById('__arrowLineInternal-svg-canvas').style.overflow = "visible"
 });
 
 $(document).on("click", "#stepbtns .editor_btn_prev", function () {
@@ -485,6 +498,7 @@ function get_next() {
 }
 
 $(window).resize(function () {
+    console.log("HERE")
     const height = $(window).height();
     const width = $(window).width();
     const svgParent = recent[recent.length - 1].getParentSvgId();
