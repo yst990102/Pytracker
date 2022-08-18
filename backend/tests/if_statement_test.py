@@ -63,6 +63,7 @@ if a < b:
 		    }]
 		})
 
+	# TODO: max_depth should be 3
 	def test_with_while(self):
 		usercode = """a = 10
 b = 20
@@ -92,93 +93,7 @@ if a < b:
 		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [1, 2, [4, 6, 7], [4, 6, 7], [8, 9, 10, [15, 17, 18], [15, 17, 18], [15, 17, 18], [15, 17, 18]]])
-		assert (step_json == {
-		    "d":
-		        6,
-		    "list": [{
-		        "type": "step",
-		        "start": 0,
-		        "end": 1
-		    }, {
-		        "type": "step",
-		        "start": 1,
-		        "end": 2
-		    }, {
-		        "type": "step",
-		        "start": 2,
-		        "end": 4
-		    }, {
-		        "type": "circle",
-		        "start": 4,
-		        "iteration": 1
-		    }, {
-		        "type": "while_start",
-		        "depth": -1
-		    }, {
-		        "type": "step",
-		        "start": 4,
-		        "end": 6
-		    }, {
-		        "type": "step",
-		        "start": 6,
-		        "end": 7
-		    }, {
-		        "type": "circle",
-		        "start": 4,
-		        "iteration": 2
-		    }, {
-		        "type": "step",
-		        "start": 4,
-		        "end": 6
-		    }, {
-		        "type": "step",
-		        "start": 6,
-		        "end": 7
-		    }, {
-		        "type": "circle",
-		        "start": 8,
-		        "iteration": 1
-		    }, {
-		        "type": "step",
-		        "start": 8,
-		        "end": 9
-		    }, {
-		        "type": "step",
-		        "start": 9,
-		        "end": 10
-		    }, {
-		        "type": "step",
-		        "start": 10,
-		        "end": 15
-		    }, {
-		        "type": "circle",
-		        "start": 15,
-		        "iteration": 1
-		    }, {
-		        "type": "while_start",
-		        "depth": -1
-		    }, {
-		        "type": "step",
-		        "start": 15,
-		        "end": 17
-		    }, {
-		        "type": "step",
-		        "start": 17,
-		        "end": 18
-		    }, {
-		        "type": "circle",
-		        "start": 15,
-		        "iteration": 4
-		    }, {
-		        "type": "step",
-		        "start": 15,
-		        "end": 17
-		    }, {
-		        "type": "step",
-		        "start": 17,
-		        "end": 18
-		    }]
-		})
+		assert (step_json == {"d": 3, "list": [{"type": "step", "start": 0, "end": 1}, {"type": "step", "start": 1, "end": 2}, {"type": "step", "start": 2, "end": 4}, {"type": "circle", "start": 4, "iteration": 1}, {"type": "while_start", "depth": -1}, {"type": "step", "start": 4, "end": 6}, {"type": "step", "start": 6, "end": 7}, {"type": "circle", "start": 4, "iteration": 2}, {"type": "step", "start": 4, "end": 6}, {"type": "step", "start": 6, "end": 7}, {"type": "while_end", "start": 4, "end": 7}, {"type": "step", "start": 7, "end": 8}, {"type": "step", "start": 8, "end": 9}, {"type": "step", "start": 9, "end": 10}, {"type": "step", "start": 10, "end": 15}, {"type": "circle", "start": 15, "iteration": 1}, {"type": "while_start", "depth": -1}, {"type": "step", "start": 15, "end": 17}, {"type": "step", "start": 17, "end": 18}, {"type": "circle", "start": 15, "iteration": 4}, {"type": "step", "start": 15, "end": 17}, {"type": "step", "start": 17, "end": 18}]})
 
 	def test_true_or_false(self):
 		usercode = """a = 10

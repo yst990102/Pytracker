@@ -164,28 +164,42 @@ def get_step_json(program: parse_classes.Program):
 			step_list.append({"type": "while_start", "depth": -1})
 			stack.append(cur_max)
 			cur_max += 1
-			# print("CASE 1 hit")
-		# CASE 02: end a while-loop
+			print("CASE 1 hit")
+		# CASE 02: end a while-loop and indent backward
 		elif len(end_statement.path) < len(start_statement.path):
 			ended_iteration = start_statement.path[-1]
 			step_list.append({"type": "while_end", "start": ended_iteration.get_first_inner_step().line_no, "end": ended_iteration.get_last_inner_step().line_no})
 			step_list.append({"type": "step", "start": start_location, "end": end_location})
 			cur_max = stack.pop()
 			cur_or_max = False
-			# print("CASE 2 hit")
+			print("CASE 2 hit")
 		else:
-			# CASE 03: length equalled, entering a new iteration under same while-loop
 			if start_statement.path != end_statement.path:
-				entered_iteration = end_statement.path[-1]
-				step_list.append({"type": "circle", "start": end_location, "iteration": entered_iteration.iteration_num})
-				cur_max = (cur_max + 1) if cur_or_max == True else (max_max + 1)
-				# print("CASE 3 hit")
-			# CASE 04: normal step
+				start_while_line_no = start_statement.path[-1].while_line_no
+				end_while_line_no = end_statement.path[-1].while_line_no
+				if start_while_line_no == end_while_line_no:
+					# CASE 03: enter a new iteration which from same while-loop
+					entered_iteration = end_statement.path[-1]
+					step_list.append({"type": "circle", "start": end_location, "iteration": entered_iteration.iteration_num})
+					cur_max = (cur_max + 1) if cur_or_max == True else (max_max + 1)
+					print(f"CASE 3 hit, start_location == {start_location}, end_location == {end_location}")
+				else:
+					# CASE 04: end current while-loop, then start and enter a parallel while-loop,
+					ended_iteration = start_statement.path[-1]
+					step_list.append({"type": "while_end", "start": ended_iteration.get_first_inner_step().line_no, "end": ended_iteration.get_last_inner_step().line_no})
+					step_list.append({"type": "step", "start": start_location, "end": end_location})
+					entered_iteration = end_statement.path[-1]
+					step_list.append({"type": "circle", "start": end_location, "iteration": entered_iteration.iteration_num})
+					step_list.append({"type": "while_start", "depth": -1})
+					cur_max = stack.pop()
+					cur_or_max = False
+					print("CASE 4 hit")
+			# CASE 05: normal step
 			else:
 				step_list.append({"type": "step", "start": start_location, "end": end_location})
-				# print("CASE 4 hit")
+				print("CASE 5 hit")
 		max_max = max(cur_max, max_max)
-		# print(f"cur_max == {cur_max}, max_max == {max_max}, stack == {stack}\n")
+		print(f"cur_max == {cur_max}, max_max == {max_max}, stack == {stack}\n")
 		start_statement = start_statement.get_next()
 		end_statement = end_statement.get_next()
 

@@ -16,3 +16,21 @@ Week11:
 1. fix bugs recorded in messenger
 2. [try] try to speed up
 3. 
+a = 10
+b = 20
+if a < b:
+	while a < 12:
+		if a == a:
+			print("HELLO")
+		a += 1
+	while b == 20:
+		print("WORLD")
+		b += 1
+		while b < 12:
+			if b > 16:
+				print("this is b")
+			break
+		while b < 25:
+			if b > a:
+				print("this is not b")
+			b += 1
