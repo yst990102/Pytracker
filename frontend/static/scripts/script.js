@@ -273,6 +273,25 @@ $(document).on("click", "#stepbtns .editor_btn_prev", function () {
                 recent[recent.length - 1].remove();
                 recent.pop();
                 instructions.pop();
+
+                if (instructions.length - 2 >= 0 && instructions[instructions.length - 2]["type"] == "while_end") {
+                    prev_end = instructions[instructions.length - 1]["start"];
+                    recent[recent.length - 1].remove();
+                    recent.pop();
+                    instructions.pop();
+
+                    if (instructions[instructions.length - 1]['type'] == "while_end") {
+                        inner_while = null;
+                    }
+                    const pdepth = instructions[instructions.length - 1]["depth"];
+                    console.log(pdepth)
+                    depth = pdepth;
+                    depth_stack.push(instructions[instructions.length - 1]["wdepth"]);
+                    console.log(depth_stack)
+                    instructions.pop();
+                    count -= 1;
+                }
+
                 count -= 3;
             } else {
                 count -= 2;
