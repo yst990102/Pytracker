@@ -57,7 +57,7 @@ def trace_execution_tracking(result_file):
 					while_lines.append(line_no)
 
 				# CASE 3: FOR_LOOP
-				for_loop_search = re.search(r"for(.*)in(.*):", line_content)
+				for_loop_search = re.search(r"for\s*(.*)\s*:", line_content)
 				if (for_loop_search):
 					while_lines.append(line_no)
 
@@ -193,6 +193,9 @@ def backend_main(usercode=None):
 		reformatted_code, changed = FormatCode(unformatted_source=usercode, style_config=f"{current_absolute_path}/.style.yapf")
 
 	# clean the execution txt before start a new tracer
+	hf.clean_content_in_file(current_absolute_path + "/" + "listoflist")
+	hf.clean_content_in_file(current_absolute_path + "/" + "TupleOfIntAndTuple")
+	hf.clean_content_in_file(current_absolute_path + "/" + "step_json.json")
 	hf.clean_content_in_file(current_absolute_path + "/" + "Pytracker_output")
 
 	# create tracer
