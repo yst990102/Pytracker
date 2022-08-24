@@ -9,6 +9,8 @@ except:
 DEBUG_listoflist_to_json = False
 DEBUG_get_step_json = True
 
+IS_WHILE = 0
+IS_FOR = 1
 
 # helper functions
 def export_test_case_to_file(output_file: str, test_case: str) -> None:
@@ -88,24 +90,32 @@ def TupleOfIntAndTuple_to_ListOfList(TupleOfIntAndTuple):
 
 # 2022-06-25 使用递归式修改列表
 # change nestedlist_to_listofint&tuple
-def ListOfList_to_ListOfIntAndTuple(item, count_dict={}):
+def ListOfList_to_ListOfIntAndTuple(item, count_dict=None):
+	if count_dict == None:
+		count_dict = {}
+	# print(f"==================== ListOfList_to_ListOfIntAndTuple called ====================")
 	# print("item == ", item)
 	# print("count_dict == ", count_dict)
 	if type(item) == int:
 		return item
 	elif type(item) == list:
-		# while_line = item[0]
 		while_line = get_first_item(item)
+		while_or_for = IS_WHILE if get_first_item(item) == item[0] else IS_FOR
 		try:
 			count_dict[while_line] += 1
 			clear_keys = [i for i in count_dict.keys() if i > while_line]
 			for i in clear_keys:
 				count_dict.pop(i)
 		except:
-			count_dict[while_line] = 1
+			if while_or_for == IS_FOR:
+				count_dict[while_line] = 0
+			elif while_or_for == IS_WHILE:
+				count_dict[while_line] = 1
+
 		list_in_tuple = []
 		for i in item:
 			list_in_tuple.append(ListOfList_to_ListOfIntAndTuple(i, count_dict))
+		# print(f"return {(count_dict[while_line], list_in_tuple)}")
 		return (count_dict[while_line], list_in_tuple)
 
 
@@ -164,7 +174,6 @@ def get_step_json(program: parse_classes.Program):
 			step_list.append({"type": "while_start", "depth": -1})
 			stack.append(cur_max)
 			cur_max += 1
-			print("CASE 1 hit")
 		# CASE 02: end a while-loop and indent backward
 		elif len(end_statement.path) < len(start_statement.path):
 			ended_iteration = start_statement.path[-1]
@@ -172,7 +181,6 @@ def get_step_json(program: parse_classes.Program):
 			step_list.append({"type": "step", "start": start_location, "end": end_location})
 			cur_max = stack.pop()
 			cur_or_max = False
-			print("CASE 2 hit")
 		else:
 			if start_statement.path != end_statement.path:
 				start_while_line_no = start_statement.path[-1].while_line_no
@@ -182,7 +190,6 @@ def get_step_json(program: parse_classes.Program):
 					entered_iteration = end_statement.path[-1]
 					step_list.append({"type": "circle", "start": end_location, "iteration": entered_iteration.iteration_num})
 					cur_max = (cur_max + 1) if cur_or_max == True else (max_max + 1)
-					print(f"CASE 3 hit, start_location == {start_location}, end_location == {end_location}")
 				else:
 					# CASE 04: end current while-loop, then start and enter a parallel while-loop,
 					ended_iteration = start_statement.path[-1]
@@ -193,13 +200,10 @@ def get_step_json(program: parse_classes.Program):
 					step_list.append({"type": "while_start", "depth": -1})
 					cur_max = stack.pop()
 					cur_or_max = False
-					print("CASE 4 hit")
 			# CASE 05: normal step
 			else:
 				step_list.append({"type": "step", "start": start_location, "end": end_location})
-				print("CASE 5 hit")
 		max_max = max(cur_max, max_max)
-		print(f"cur_max == {cur_max}, max_max == {max_max}, stack == {stack}\n")
 		start_statement = start_statement.get_next()
 		end_statement = end_statement.get_next()
 
