@@ -1,10 +1,7 @@
 import os
 import re
 
-try:
-	import backend.parse_classes as parse_classes
-except:
-	import parse_classes as parse_classes
+import parse_classes as parse_classes
 
 DEBUG_listoflist_to_json = False
 DEBUG_get_step_json = True

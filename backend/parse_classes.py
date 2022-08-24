@@ -1,7 +1,4 @@
-try:
-	import helper_functions as hf
-except:
-	import backend.helper_functions as hf
+import helper_functions as hf
 
 Print_Forward = 0
 Print_Backward = 1

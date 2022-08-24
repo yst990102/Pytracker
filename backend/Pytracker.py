@@ -5,18 +5,10 @@ import parse
 import json
 from yapf.yapflib.yapf_api import FormatFile, FormatCode
 
-try:
-	import backend.my_trace as my_trace
-except:
-	import my_trace as my_trace
-try:
-	import backend.helper_functions as hf
-except:
-	import helper_functions as hf
-try:
-	import backend.parse_classes as parse_classes
-except:
-	import parse_classes as parse_classes
+
+import my_trace as my_trace
+import helper_functions as hf
+import parse_classes as parse_classes
 
 current_absolute_path = str(pathlib.Path(__file__).parent.resolve())
 
