@@ -120,6 +120,11 @@ html, body {
     padding-right: 8px;
 }
 
+.line_arrow {
+    padding-left: 24px;
+    padding-right: 8px;
+}
+
 .right {
     flex: 1;
     min-width: 10px;

@@ -13,6 +13,10 @@ var instructions = [];
 var no_starts = 0;
 var inner_while = null;
 var same_depth_while = false;
+var prev_while_depth = 0;
+var cur_line_num = 0;
+var line_arrow_list = [];
+var line_num_list = [];
 
 let editorlib = {
     init() {
@@ -91,19 +95,32 @@ $("#codeSubmit").click(() => {
                 });
             }
             var table = $("#code_output");
-            parselist.forEach((dt) => {
+            parselist.forEach((dt, index) => {
                 line_num = dt["num"];
                 line_content = dt["content"];
                 console.log(line_num);
                 console.log(line_content);
                 markup =
-                    '<tr><td class="line_num" style="white-space: pre;">' +
+                    '<tr><td class="line_arrow" id="arr'+ index +'" style="white-space: pre;"></td>' +
+                    '<td class="line_num" style="white-space: pre;">' +
                     line_num +
                     '</td><td class="line_content" style="white-space: pre;">' +
                     line_content +
                     "</td></tr>";
                 table.append(markup);
             });
+
+            var line0_arrow = "arr" + 0
+            line_num_list.push(0);
+            line_arrow_list.push(
+                arrowLine({
+                    source: `#${CSS.escape(line0_arrow)}`,
+                    destination: `#${CSS.escape(line0_arrow)}`,
+                    sourcePosition: "middleLeft",
+                    destinationPosition: "middleRight",
+                    forceDirection: "horizontal",
+                })
+            )
 
             var buttons = $("#stepbtns");
             buttons.append(
@@ -303,12 +320,55 @@ $(document).on("click", "#stepbtns .editor_btn_prev", function () {
             instructions.pop();
         }
         console.log("DEPTH = ", depth)
+        line_num_list.pop()
+        console.log(line_num_list)
+        var pv = line_num_list[line_num_list.length - 1]
+        var line_num_arrow = "arr" + pv
+        line_arrow_list[line_arrow_list.length - 1].remove();
+        line_arrow_list.pop();
+        line_arrow_list.push(
+            arrowLine({
+                source: `#${CSS.escape(line_num_arrow)}`,
+                destination: `#${CSS.escape(line_num_arrow)}`,
+                sourcePosition: "middleLeft",
+                destinationPosition: "middleRight",
+                forceDirection: "horizontal",
+            })
+        )
     }
 });
 
 function get_next() {
     if (res["list"].length - 1 > count) {
         count += 1;
+        /*if (res["list"][count]["type"] == "step" && count - 1 >= 0 && res['list'][count - 1]["type"] == "while_end") {
+            var s = "r" + res["list"][count]["start"] + "c" + prev_while_depth;
+            var e = "r" + res["list"][count]["end"] + "c" + depth;
+            dist = 1 + (res["list"][count]["end"] - res["list"][count]["start"]);
+            recent.push(
+                arrowLine({
+                    source: `#${CSS.escape(s)}`,
+                    destination: `#${CSS.escape(e)}`,
+                    sourcePosition: "middleLeft",
+                    destinationPosition: "middleLeft",
+                    curvature: 0.5,
+                    forceDirection: "horizontal",
+                })
+            );
+
+            prev_end = res["list"][count]["end"];
+            instructions.push(res["list"][count]);
+
+            if (
+                count + 1 < res["list"].length - 1 &&
+                res["list"][count + 1]["type"] == "circle" &&
+                count + 2 < res["list"].length - 1 &&
+                res["list"][count + 2]["type"] == "while_start"
+            ) {
+                get_next();
+            }
+        }
+        else */
         if (res["list"][count]["type"] == "step") {
             var s = "r" + res["list"][count]["start"] + "c" + depth;
             var e = "r" + res["list"][count]["end"] + "c" + depth;
@@ -483,6 +543,8 @@ function get_next() {
                 inner_while = Math.max(inner_while, depth);
                 same_depth_while = false;
             }
+            // For one line
+            //prev_while_depth = depth
             console.log("depth_stack = ", depth_stack)
             depth = depth_stack.pop();
             const while_depth = depth + 1;
@@ -512,6 +574,21 @@ function get_next() {
                 start: res["list"][count]["start"],
             });
             get_next();
+        }
+        if (prev_end != line_num_list[line_num_list.length - 1]) {
+            var line_num_arrow = "arr" + prev_end
+            line_num_list.push(prev_end);
+            line_arrow_list[line_arrow_list.length - 1].remove();
+            line_arrow_list.pop();
+            line_arrow_list.push(
+                arrowLine({
+                    source: `#${CSS.escape(line_num_arrow)}`,
+                    destination: `#${CSS.escape(line_num_arrow)}`,
+                    sourcePosition: "middleLeft",
+                    destinationPosition: "middleRight",
+                    forceDirection: "horizontal",
+                })
+            )
         }
     }
 }
