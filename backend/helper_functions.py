@@ -1,8 +1,6 @@
 import os
 import re
 
-import parse_classes as parse_classes
-
 DEBUG_listoflist_to_json = False
 DEBUG_get_step_json = True
 
@@ -145,7 +143,7 @@ def tabdict_to_gridindent(tab_dict: dict, while_lines: list) -> dict:
 	return grid_indent
 
 
-def get_step_json(program: parse_classes.Program):
+def get_step_json(program):
 	start_statement = program.get_first_statement()
 	end_statement = start_statement.get_next()
 

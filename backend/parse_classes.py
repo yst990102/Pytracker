@@ -96,7 +96,7 @@ class Iteration(Statement):
 
 	def print_info(self) -> None:
 		print(f"\n==== {self.__class__.__name__} {hex(id(self))} =====")
-		print(f"iteration_num == {self.iteration_num}, while_line_no = {self.while_line_no}")
+		print(f"iteration_num == {self.iteration_num}, while_line_no = {self.while_line_no}, general_steps = {self.general_steps}")
 		for step in self.steps:
 			step.print_info()
 
@@ -144,7 +144,7 @@ class Nested_While_Iteration(Iteration):
 			if isinstance(step, int):
 				new_statement = Assignment(step, self.program, self.path + [self])
 			elif isinstance(step, tuple):
-				if all(isinstance(i, int) for i in step):
+				if all(isinstance(i, int) for i in step[1]):
 					new_statement = Basic_While_Iteration(step, self.program, self.path + [self])
 				else:
 					new_statement = Nested_While_Iteration(step, self.program, self.path + [self])

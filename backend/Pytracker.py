@@ -253,6 +253,7 @@ def backend_main(usercode=None):
 		json.dump(step_json, step_json_file_write)
 	step_json_file_write.close()
 
+	return listoflist, TupleOfIntAndTuple, program, step_json
 
 if __name__ == "__main__":
 	backend_main()

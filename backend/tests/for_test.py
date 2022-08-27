@@ -55,7 +55,8 @@ for i in range(4):
 print(even_sum)
 print(odd_sum)
 """
-		# output should close to even_sum = 0
+		# 应该获取与如下代码类似结果
+		# even_sum = 0
 		# odd_sum = 0
 		# i = 0
 		# j = 4
