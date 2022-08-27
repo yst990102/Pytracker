@@ -14,7 +14,7 @@ app = Flask(__name__)
 def home_page():
     if request.method == "POST":
 
-        # run backend_main()
+        # run backend_main
         Pytracker.backend_main(usercode=request.json)
 
         # grab the result of listoflist and step_json from global variables
