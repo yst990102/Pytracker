@@ -154,12 +154,10 @@ def get_step_json(program: parse_classes.Program):
 	cur_or_max = False
 	stack = []
 
-	step_list = []
+	step_list = [{"type": "step", "start": 0, "end": start_statement.line_no}]
 	while end_statement:
 		start_location = start_statement.line_no
 		end_location = end_statement.line_no
-		if step_list == []:
-			step_list.append({"type": "step", "start": 0, "end": start_location})
 		# use path to judge
 		# CASE 01: start a new while-loop
 		if len(end_statement.path) > len(start_statement.path):
@@ -205,13 +203,10 @@ def get_step_json(program: parse_classes.Program):
 		end_statement = end_statement.get_next()
 
 	max_depth = max_max
-	# print(f"max_depth == {max_depth}")
 	return {"d": max_depth, "list": step_list}
 
 
 step_list_in_json = []
-
-
 def listoflist_to_json(cur_depth, listoflist, while_stack) -> None:
 	index = 0
 	while index < len(listoflist) - 1:
@@ -293,6 +288,23 @@ def remove_singlelist_from_listoflist(listoflist):
 			return_list.append(remove_singlelist_from_listoflist(i))
 		return return_list
 
+# 备用的remove_singlelist_from_listoflist,  功能一样，不过是按照while_liens来删除东西
+def remove_while_loop_last_check_from_listoflist(listoflist, while_lines):
+	for while_line in set(while_lines):
+		listoflist = remove_element_from_listoflist(listoflist, [while_line])
+	return listoflist
+
+def remove_element_from_listoflist(items, while_statement_single_list):
+	if isinstance(items, int):
+		return items
+	elif isinstance(items, list):
+		if items == while_statement_single_list:
+			return None
+		removed_list = []
+		for i in items:
+			if (remove_element_from_listoflist(i, while_statement_single_list) != None):
+				removed_list.append(remove_element_from_listoflist(i, while_statement_single_list))
+		return removed_list
 
 # remove if_else_lines from listoflist
 def remove_if_else_lines_from_listoflist(if_else_lines, listoflist):

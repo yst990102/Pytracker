@@ -141,3 +141,25 @@ print(f"b == {b}")"""
 		        "end": 4
 		    }]
 		})
+
+	def test_only_one_line_assignment(self):
+		usercode = """a = 123"""
+
+		with open(backend_absolute_path + "/" + "UserCode.py", 'w') as f_w:
+			f_w.write(usercode)
+		f_w.close()
+
+		os.system("python " + backend_absolute_path + "/" + "Pytracker.py")
+
+		listoflist = eval(open(backend_absolute_path + "/" + "listoflist", 'r').read())
+		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
+
+		assert (listoflist == [1])
+		assert (step_json == {
+		    "d": 1,
+		    "list": [{
+		        "type": "step",
+		        "start": 0,
+		        "end": 1
+		    }]
+		})
