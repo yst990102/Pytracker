@@ -118,6 +118,7 @@ $("#codeSubmit").click(() => {
                     destination: `#${CSS.escape(line0_arrow)}`,
                     sourcePosition: "middleLeft",
                     destinationPosition: "middleRight",
+                    thickness: 1.3,
                     forceDirection: "horizontal",
                 })
             )
@@ -135,7 +136,7 @@ $("#codeSubmit").click(() => {
             res = data['step_json'];
             var grid = $("#graph");
             markup = "";
-            for (var i = 0; i <= parselist.length; i++) {
+            for (var i = 0; i < parselist.length; i++) {
                 markup += '<div class="row">';
                 for (var j = 0; j < res['d']; j++) {
                     id = "r" + i + "c" + j;
@@ -332,6 +333,7 @@ $(document).on("click", "#stepbtns .editor_btn_prev", function () {
                 destination: `#${CSS.escape(line_num_arrow)}`,
                 sourcePosition: "middleLeft",
                 destinationPosition: "middleRight",
+                thickness: 1.3,
                 forceDirection: "horizontal",
             })
         )
@@ -586,6 +588,7 @@ function get_next() {
                     destination: `#${CSS.escape(line_num_arrow)}`,
                     sourcePosition: "middleLeft",
                     destinationPosition: "middleRight",
+                    thickness: 1.3,
                     forceDirection: "horizontal",
                 })
             )
