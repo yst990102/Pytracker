@@ -27,7 +27,7 @@ def trace_execution_tracking(execution_processes):
 	
 	all_line_nos = []
 	all_local_variables = []
-	
+
 	for process in execution_processes:
 		line_no = process["line_no"]
 		line_content = process["line_content"]
@@ -45,8 +45,6 @@ def trace_execution_tracking(execution_processes):
 		# use regular expression to match
 		while_loop_search = re.search(r"while\s*(.*)\s*:", line_content)
 		if (while_loop_search):
-			# while_statement = while_loop_search.group(0)
-			# while_judgement = while_loop_search.group(1)
 			while_lines.append(line_no)
 
 		# CASE 3: FOR_LOOP
@@ -55,11 +53,12 @@ def trace_execution_tracking(execution_processes):
 			while_lines.append(line_no)
 
 		tab_dict[line_no] = line_content.count('\t')
-	
+
 	# parse str_ListOfList into ListOfList
 	listoflist = parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict)
 	return listoflist, tab_dict, while_lines, if_else_lines
 
+# the str_parsing takes the MOST runtime of backend_main
 def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
 	if DEBUG_parse_strListOfList_into_ListOfList:
 		print("========================== parse_strListOfList_into_ListOfList ==========================")
@@ -72,12 +71,12 @@ def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
 		if while_lines == []:
 			if stack == []:
 				result = result + str(line_no)
-				result = result.replace(",]", "],")
+				# result = result.replace(",]", "],")
 				if DEBUG_parse_strListOfList_into_ListOfList:
 					print(f"{line_no}\t out of loop\t {stack}\t {result}")
 			elif tab_dict[line_no] > tab_dict[stack[-1]]:
 				result = result + str(line_no)
-				result = result.replace(",]", "],")
+				# result = result.replace(",]", "],")
 				if DEBUG_parse_strListOfList_into_ListOfList:
 					print(f"{line_no}\t in loop\t {stack}\t {result}")
 			else:
@@ -96,38 +95,38 @@ def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
 				if stack == []:
 					stack.append(while_lines[0])
 					result = result + "[" + str(line_no)
-					result = result.replace(",]", "],")
+					# result = result.replace(",]", "],")
 					if DEBUG_parse_strListOfList_into_ListOfList:
 						print(f"{line_no}\t new loop statement_1\t {stack}\t {result}")
 				elif tab_dict[stack[-1]] < tab_dict[line_no]:
 					stack.append(while_lines[0])
 					result = result + "[" + str(line_no)
-					result = result.replace(",]", "],")
+					# result = result.replace(",]", "],")
 					if DEBUG_parse_strListOfList_into_ListOfList:
 						print(f"{line_no}\t new loop statement_2\t {stack}\t {result}")
 				elif tab_dict[stack[-1]] == tab_dict[line_no]:
 					del stack[-1]
 					stack.append(while_lines[0])
 					result = result + "][" + str(line_no)
-					result = result.replace(",]", "],")
+					# result = result.replace(",]", "],")
 					if DEBUG_parse_strListOfList_into_ListOfList:
 						print(f"{line_no}\t new loop statement_3\t {stack}\t {result}")
 			del while_lines[0]
 		else:
 			if stack == []:
 				result = result + str(line_no)
-				result = result.replace(",]", "],")
+				# result = result.replace(",]", "],")
 				if DEBUG_parse_strListOfList_into_ListOfList:
 					print(f"{line_no}\t out of loop\t {stack}\t {result}")
 			elif tab_dict[line_no] > tab_dict[stack[-1]]:
 				result = result + str(line_no)
-				result = result.replace(",]", "],")
+				# result = result.replace(",]", "],")
 				if DEBUG_parse_strListOfList_into_ListOfList:
 					print(f"{line_no}\t in loop\t {stack}\t {result}")
 			else:
 				result = result + "]" + str(line_no)
 				stack.pop()
-				result = result.replace(",]", "],")
+				# result = result.replace(",]", "],")
 				if DEBUG_parse_strListOfList_into_ListOfList:
 					print(f"{line_no}\t inner break\t {stack}\t {result}")
 
@@ -143,9 +142,9 @@ def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
 	try:
 		assert (hf.isBracket_match(result) == True)
 	except:
-		print(f"ERROR: isBracket_match Failed! result == {result}, stack == {stack}")
+		print(f"ERROR: isBracket_match Failed! result == {result}")
 		exit(1)
-
+	
 	return eval(result)
 
 
