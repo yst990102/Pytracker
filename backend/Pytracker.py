@@ -178,8 +178,7 @@ def backend_main(*test_signals, usercode=None):
 		hf.clean_content_in_file(current_absolute_path + "/" + "listoflist")
 		hf.clean_content_in_file(current_absolute_path + "/" + "TupleOfIntAndTuple")
 		hf.clean_content_in_file(current_absolute_path + "/" + "step_json.json")
-		hf.clean_content_in_file(current_absolute_path + "/" + "Pytracker_output")
-	
+
 	if SIG_TIME_COST in test_signals: file_clean_end_time = time.time()
 	if SIG_TIME_COST in test_signals: print(f"[Stage 1.2](pre_clean the wrote_output file) \t\t: {file_clean_end_time - file_clean_start_time} seconds")
 	# endregion
