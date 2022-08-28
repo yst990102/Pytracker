@@ -20,76 +20,45 @@ DEBUG_parse_strListOfList_into_ListOfList = False
 SIG_TIME_COST = 0
 SIG_FILE_IO_OFF = 1
 
-def trace_execution_tracking(result_file):
-	# steps -- all the execution steps
-	# formate -- [(line_no, local_variables), (..), ...]
-	steps_info = []
+def trace_execution_tracking(execution_processes):
 	while_lines = []
 	if_else_lines = []
 	tab_dict = {}
+	
+	all_line_nos = []
+	all_local_variables = []
+	
+	for process in execution_processes:
+		line_no = process["line_no"]
+		line_content = process["line_content"]
+		local_variables = process["local_variables"]
+		
+		all_line_nos.append(line_no)
+		all_local_variables.append(local_variables)
+		
+		# CASE 1: IF_STATEMENT
+		if_search = re.search(r"if\s*(.*)\s*:", line_content)
+		if if_search:
+			if_else_lines.append(line_no)
 
-	# delete the initial <string>(1) line in the execution output
-	hf.del_line_in_file(result_file, "<string>")
+		# CASE 2: WHILE_LOOP
+		# use regular expression to match
+		while_loop_search = re.search(r"while\s*(.*)\s*:", line_content)
+		if (while_loop_search):
+			# while_statement = while_loop_search.group(0)
+			# while_judgement = while_loop_search.group(1)
+			while_lines.append(line_no)
 
-	from itertools import islice
-	with open(result_file, 'r') as exec_result:
-		while True:
-			exec_lines_gen = islice(exec_result, 2)
-			exec_content = list(exec_lines_gen)
+		# CASE 3: FOR_LOOP
+		for_loop_search = re.search(r"for\s*(.*)\s*:", line_content)
+		if (for_loop_search):
+			while_lines.append(line_no)
 
-			if not exec_content:
-				break
-			else:
-				# ===================================================================================
-				# STEP 1: grab information for the code line
-				# 0 for line_no, 1 for line_content
-				code_parse = list(parse.parse("({0}): {1}", exec_content[0]))
-
-				line_no = int(code_parse[0])
-				line_content = code_parse[1]
-				# CASE 1: IF_STATEMENT
-				if_search = re.search(r"if\s*(.*)\s*:", line_content)
-				if if_search:
-					if_else_lines.append(line_no)
-
-				# CASE 2: WHILE_LOOP
-				# use regular expression to match
-				while_loop_search = re.search(r"while\s*(.*)\s*:", line_content)
-				if (while_loop_search):
-					# while_statement = while_loop_search.group(0)
-					# while_judgement = while_loop_search.group(1)
-					while_lines.append(line_no)
-
-				# CASE 3: FOR_LOOP
-				for_loop_search = re.search(r"for\s*(.*)\s*:", line_content)
-				if (for_loop_search):
-					while_lines.append(line_no)
-
-				tab_dict[line_no] = line_content.count('\t')
-
-				# ===================================================================================
-				# STEP 2: grab information for the local_variable line
-				vari_parse = list(parse.parse("local_variables == {0}", exec_content[1]))
-
-				local_variables = vari_parse[0]
-
-				steps_info.append((line_no, local_variables))
-
-	exec_result.close()
-
-	all_line_nos = [line_no for (line_no, _) in steps_info]
-	all_local_variables = [local_variables for (_, local_variables) in steps_info]
-	tab_dict = dict(sorted(tab_dict.items()))
-
+		tab_dict[line_no] = line_content.count('\t')
+	
 	# parse str_ListOfList into ListOfList
-	listoflist = parse_strListOfList_into_ListOfList(all_line_nos, while_lines[:], tab_dict)
-
-	# print(f"trace_execution_tracking : listoflist == {listoflist}")
-	# print(f"trace_execution_tracking : tab_dict == {tab_dict}")
-	# print(f"trace_execution_tracking : while_lines == {while_lines}")
-	# print(f"trace_execution_tracking : if_else_lines == {if_else_lines}\n")
+	listoflist = parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict)
 	return listoflist, tab_dict, while_lines, if_else_lines
-
 
 def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
 	if DEBUG_parse_strListOfList_into_ListOfList:
@@ -224,7 +193,7 @@ def backend_main(*test_signals, usercode=None):
 	# region [Stage 1.3](create tracer and run)
 	if SIG_TIME_COST in test_signals: tracer_start_time = time.time()
 	
-	tracer = my_trace.Trace(ignoredirs=[sys.prefix, sys.exec_prefix], trace=1, count=1, outfile=current_absolute_path + "/" + "Pytracker_output")
+	tracer = my_trace.Trace(ignoredirs=[sys.prefix, sys.exec_prefix], trace=1, count=1)
 	tracer.run(reformatted_code)
 	
 	if SIG_TIME_COST in test_signals: tracer_end_time = time.time()
@@ -241,8 +210,8 @@ def backend_main(*test_signals, usercode=None):
 	
 	# trace the whole execution, return a ListOfList
 	global listoflist
-	listoflist, tab_dict, while_lines, if_else_lines = trace_execution_tracking(current_absolute_path + "/" + "Pytracker_output")
-
+	listoflist, tab_dict, while_lines, if_else_lines = trace_execution_tracking(my_trace.execution_processes)
+	
 	# remove single_list -> "[0-9]" from the listoflist
 	listoflist = hf.remove_singlelist_from_listoflist(listoflist)
 	listoflist = hf.remove_if_else_lines_from_listoflist(if_else_lines, listoflist)

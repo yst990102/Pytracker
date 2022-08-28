@@ -126,8 +126,8 @@ class Trace:
 		dict = __main__.__dict__
 		self.initial_locals_keys = list(dict.keys())
 		self.initial_globals_keys = list(dict.keys())
-		global stored_local_variables
-		stored_local_variables = []
+		global execution_processes
+		execution_processes = []
 		self.runctx(cmd, dict, dict)
 
 	def runctx(self, cmd, globals=None, locals=None):
@@ -248,17 +248,14 @@ class Trace:
 			if self.start_time:
 				print('%.2f' % (_time() - self.start_time), end=' ')
 
-			if self.outfile:
-				try:
-					# print("(%d): %s" % (lineno, linecache.getline(self.usercode_file, lineno)), end='', file=open(self.outfile, "a"))
-					print("(%d): %s" % (lineno, self.usercode.splitlines()[lineno - 1]), end='\n', file=open(self.outfile, "a"))
-					print(f"local_variables == {local_variables}", file=open(self.outfile, "a"))
-					stored_local_variables.append(local_variables)
-				except OSError as err:
-					print("Can't save localtrace_trace_and_count output because %s" % err, file=sys.stderr)
-			else:
-				# print("(%d): %s" % (lineno, linecache.getline(self.usercode_file, lineno)), end='')
-				print("(%d): %s" % (lineno, self.usercode.splitlines()[lineno - 1]), end='\n')
+			try:
+				line_info = {"line_no": lineno, "line_content": self.usercode.splitlines()[lineno - 1], "local_variables": local_variables}
+				
+				execution_processes.append(line_info)
+				
+			except OSError as err:
+				print("Can't save localtrace_trace_and_count output because %s" % err, file=sys.stderr)
+				
 		return self.localtrace
 
 	def localtrace_trace(self, frame, why, arg):
