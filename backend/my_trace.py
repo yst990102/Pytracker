@@ -250,12 +250,12 @@ class Trace:
 
 			try:
 				line_info = {"line_no": lineno, "line_content": self.usercode.splitlines()[lineno - 1], "local_variables": local_variables}
-				
+
 				execution_processes.append(line_info)
-				
+
 			except OSError as err:
 				print("Can't save localtrace_trace_and_count output because %s" % err, file=sys.stderr)
-				
+
 		return self.localtrace
 
 	def localtrace_trace(self, frame, why, arg):
