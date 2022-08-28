@@ -2,7 +2,6 @@ import pathlib
 import sys
 import re
 import time
-import parse
 import json
 from yapf.yapflib.yapf_api import FormatFile, FormatCode
 
@@ -66,78 +65,79 @@ def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
 
 	# Create a stack, put it in from left to right, and pop one out every time the indentation is greater than or equal to.
 	stack = []
-	result = ""
+	result = []
 	for count, line_no in enumerate(all_line_nos):
 		if while_lines == []:
 			if stack == []:
-				result = result + str(line_no)
-				# result = result.replace(",]", "],")
+				result.append(str(line_no))
 				if DEBUG_parse_strListOfList_into_ListOfList:
 					print(f"{line_no}\t out of loop\t {stack}\t {result}")
 			elif tab_dict[line_no] > tab_dict[stack[-1]]:
-				result = result + str(line_no)
-				# result = result.replace(",]", "],")
+				result.append(str(line_no))
 				if DEBUG_parse_strListOfList_into_ListOfList:
 					print(f"{line_no}\t in loop\t {stack}\t {result}")
 			else:
-				result = result + "]" + str(line_no)
+				result.append("]")
+				result.append(str(line_no))
 				stack.pop()
-				result = result.replace(",]", "],")
 				if DEBUG_parse_strListOfList_into_ListOfList:
 					print(f"{line_no}\t outer break\t {stack}\t {result}")
 		elif line_no == while_lines[0]:
 			if line_no in stack:
-				result = result + "]" + "[" + str(line_no)
-				result = result.replace(",]", "],")
+				result.append("]")
+				result.append("[")
+				result.append(str(line_no))
 				if DEBUG_parse_strListOfList_into_ListOfList:
 					print(f"{line_no}\t next round loop, loop statement\t {stack}\t {result}")
 			else:
 				if stack == []:
 					stack.append(while_lines[0])
-					result = result + "[" + str(line_no)
-					# result = result.replace(",]", "],")
+					result.append("[")
+					result.append(str(line_no))
 					if DEBUG_parse_strListOfList_into_ListOfList:
 						print(f"{line_no}\t new loop statement_1\t {stack}\t {result}")
 				elif tab_dict[stack[-1]] < tab_dict[line_no]:
 					stack.append(while_lines[0])
-					result = result + "[" + str(line_no)
-					# result = result.replace(",]", "],")
+					result.append("[")
+					result.append(str(line_no))
 					if DEBUG_parse_strListOfList_into_ListOfList:
 						print(f"{line_no}\t new loop statement_2\t {stack}\t {result}")
 				elif tab_dict[stack[-1]] == tab_dict[line_no]:
 					del stack[-1]
 					stack.append(while_lines[0])
-					result = result + "][" + str(line_no)
-					# result = result.replace(",]", "],")
+					result.append("][")
+					result.append(str(line_no))
 					if DEBUG_parse_strListOfList_into_ListOfList:
 						print(f"{line_no}\t new loop statement_3\t {stack}\t {result}")
 			del while_lines[0]
 		else:
 			if stack == []:
-				result = result + str(line_no)
-				# result = result.replace(",]", "],")
+				result.append(str(line_no))
 				if DEBUG_parse_strListOfList_into_ListOfList:
 					print(f"{line_no}\t out of loop\t {stack}\t {result}")
 			elif tab_dict[line_no] > tab_dict[stack[-1]]:
-				result = result + str(line_no)
-				# result = result.replace(",]", "],")
+				result.append(str(line_no))
 				if DEBUG_parse_strListOfList_into_ListOfList:
 					print(f"{line_no}\t in loop\t {stack}\t {result}")
 			else:
-				result = result + "]" + str(line_no)
+				result.append("]")
+				result.append(str(line_no))
 				stack.pop()
-				# result = result.replace(",]", "],")
 				if DEBUG_parse_strListOfList_into_ListOfList:
 					print(f"{line_no}\t inner break\t {stack}\t {result}")
 
 		if count < len(all_line_nos) - 1:
-			result = result + ","
+			result.append(",")
 
 	# add remaining right bracket from stack.pop()
-	result = result + len(stack) * "]"
+	result.append(len(stack) * "]")
 	stack.clear()  # clear stack
 
-	result = "[" + result + "]"
+	result.insert(0, "[")
+	result.append("]")
+	
+	result = "".join(result)
+	result = result.replace(",]", "],")
 
 	try:
 		assert (hf.isBracket_match(result) == True)
