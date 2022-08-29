@@ -26,10 +26,10 @@ def send_email():
     if feedback_info == None:
         print("You need to have feedback information!!")
         return Failed
-    fname, lname, country, feedback_msg = feedback_info["first_name"],feedback_info["last_name"],feedback_info["country"],feedback_info["feedback_message"]
+    fname, lname, issue_type, feedback_msg = feedback_info["first_name"],feedback_info["last_name"],feedback_info["issue-type"],feedback_info["feedback_message"]
     
     mail_subject = f"Pytracker Feedback from {fname} {lname}"
-    mail_body = f"country : {country}\nfeedback_message : {feedback_msg}"
+    mail_body = f"issue_type : {issue_type}\nfeedback_message : {feedback_msg}"
     
     mimemsg = MIMEMultipart()
     mimemsg['From'] = mail_from

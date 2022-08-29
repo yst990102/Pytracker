@@ -9,10 +9,10 @@ function closeForm() {
 $("#feedbackSubmit").click(() => {
     var first_name = document.getElementById("fname").value;
     var last_name = document.getElementById("lname").value;
-    var country = document.getElementById("country").value;
+    var issue_type = document.getElementById("issue-type").value;
     var feedback_message = document.getElementById("feedback").value;
     
-    var feedback_info = {"first_name": first_name, "last_name": last_name, "country": country,"feedback_message": feedback_message};
+    var feedback_info = {"first_name": first_name, "last_name": last_name, "issue-type": issue_type,"feedback_message": feedback_message};
     $.ajax({
         type: "POST",
         url: "/feedback",
