@@ -19,7 +19,6 @@
 
 	<title>Pytracker</title>
 
-
 </head>
 
 <body>
@@ -54,7 +53,8 @@
 	<button class="open-button" onclick="openForm()">Contact the author</button>
 	<!-- Info about the popup feedback form -->
 	<div class="form-popup" id="myForm">
-		<form action="/action_page.php" class="form-container">
+		<form action="/action_page.php" class="form-container" method="post" accept-charset="utf-8" name="FeedbackForm"
+		enctype="multipart/form-data">
 			<label for="fname">First Name</label>
 			<input type="text" id="fname" name="firstname" placeholder="Your first name.." />
 
@@ -69,13 +69,12 @@
 			</select>
 
 			<label for="feedback">Feedback</label>
-			<div>
-				<textarea id="tiny"> &lt;p&gt;Welcome to the TinyMCE jQuery example!&lt;/p&gt;</textarea>
-			</div>
-			<button type="button" class="btn">
+			<textarea id="feedback" name="feedback" placeholder="Write something.."
+				style="resize:none;height: 200px"></textarea>
+
+			<button id="feedbackSubmit" type="button" class="btn">
 				Submit
 			</button>
-
 			<button type="button" class="btn cancel" onclick="closeForm()">
 				Close
 			</button>
@@ -87,18 +86,6 @@
 	<script src="{{ url_for('static',filename='scripts/src-min/ext-language_tools.js') }}"></script>
 	<script src="{{ url_for('static',filename='scripts/script.js') }}"></script>
 	<script src="{{ url_for('static',filename='scripts/feedback.js') }}"></script>
-	<script>
-		$('textarea#tiny').tinymce({
-			height: 500,
-			menubar: false,
-			plugins: [
-				'a11ychecker', 'advlist', 'advcode', 'advtable', 'autolink', 'checklist', 'export',
-				'lists', 'link', 'image', 'charmap', 'preview', 'anchor', 'searchreplace', 'visualblocks',
-				'powerpaste', 'fullscreen', 'formatpainter', 'insertdatetime', 'media', 'table', 'help', 'wordcount'
-			],
-			toolbar: 'undo redo | a11ycheck casechange blocks | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist checklist outdent indent | removeformat | code table help'
-		});
-	</script>
 </body>
 
 </html>
