@@ -7,6 +7,7 @@ Failed = 1
 
 # sender email address : pytracker.sender@hotmail.com
 # sender email password: pytracker_sender
+# WARNING: hotmail can only send out 100 emails per day. for more info about other email address: https://www.zhihu.com/question/23522774/answer/107362958
 
 # receiver email address : pytracker.receiver@hotmail.com
 # receiver email password: pytracker_receiver
@@ -19,8 +20,6 @@ mail_to = "pytracker.receiver@hotmail.com"
 
 global feedback_info
 feedback_info = None
-
-connection = smtplib.SMTP(host='smtp-mail.outlook.com', port=587)
 
 def send_email():
     if feedback_info == None:
@@ -37,6 +36,7 @@ def send_email():
     mimemsg['Subject'] = mail_subject
     mimemsg.attach(MIMEText(mail_body, 'plain'))
     
+    connection = smtplib.SMTP(host='smtp-mail.outlook.com', port=587)
     connection.starttls()
     connection.login(username, password)
     connection.send_message(mimemsg)
