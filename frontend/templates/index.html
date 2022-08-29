@@ -1,52 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+	integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous">
+	</script>
+<script src="https://cdn.tiny.cloud/1/mmcgy080g0q9wr33tjp2th052p011p6uvcwapqfi523oy264/tinymce/6/tinymce.min.js"
+	referrerpolicy="origin"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tinymce/tinymce-jquery@1/dist/tinymce-jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/arrow-line/dist/arrow-line.min.js"></script>
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pytracker</title>
-    <script 
-        src="https://code.jquery.com/jquery-3.6.0.min.js" 
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-        crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/arrow-line/dist/arrow-line.min.js"></script>
-    <!-- <script src="{{ url_for('static',filename='scripts/node_modules/jsplumb/dist/js/jsplumb.js') }}"></script> -->
-    <link rel="stylesheet" href="{{ url_for('static',filename='styles/style.css') }}">
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link href="../static/styles/feedback.css" rel="stylesheet">
+	<link rel="stylesheet" href="{{ url_for('static',filename='styles/style.css') }}">
+
+	<title>Pytracker</title>
+
+
 </head>
-<script src="../"></script>
+
 <body>
-    <h1 class="pytracker" onclick="window.location.reload()">Pytracker</h1>
-    <div id="inputeditor" class="editor">
-        <div class="editor_wrapper">
-            <div class="editor_body">
-                <div id="editor" class="editor_code"></div>
-            </div>
-            <div class="editor_footer">
-                <button id="codeSubmit" type="submit" class="editor_btn">Analyse</button>
-            </div>
-        </div>
-    </div>
+	<h1 class="pytracker" onclick="window.location.reload()">Pytracker</h1>
+	<div id="inputeditor" class="editor">
+		<div class="editor_wrapper">
+			<div class="editor_body">
+				<div id="editor" class="editor_code"></div>
+			</div>
+			<div class="editor_footer">
+				<button id="codeSubmit" type="submit" class="editor_btn">Analyse</button>
+			</div>
+		</div>
+	</div>
 
-    <div id="output" class="visualisation_div">
-        <div class="left">
-            <table id="code_output" class="code_table"></table>
-        </div>
-        <div id="diagram" class="right">
-            <div id="graph" class="grid"></div>
-        </div>
+	<div id="output" class="visualisation_div">
+		<div class="left">
+			<table id="code_output" class="code_table"></table>
+		</div>
+		<div id="diagram" class="right">
+			<div id="graph" class="grid"></div>
+		</div>
 
-    </div>
+	</div>
 
-    <div class="left">
-        <div id="stepbtns" class="buttons">
-        </div>
-    </div>
+	<div class="left">
+		<div id="stepbtns" class="buttons">
+		</div>
+	</div>
 
-    <script src="{{ url_for('static',filename='scripts/src-min/ace.js') }}"></script>
-    <script src="{{ url_for('static',filename='scripts/src-min/mode-python.js') }}"></script>
-    <script src="{{ url_for('static',filename='scripts/src-min/ext-language_tools.js') }}"></script>
-    <script src="{{ url_for('static',filename='scripts/script.js') }}"></script>
+	{% comment %} a button for "Contact the author" {% endcomment %}
+	<button class="open-button" onclick="openForm()">Contact the author</button>
+	{% comment %} Info about the popup feedback form {% endcomment %}
+	<div class="form-popup" id="myForm">
+		<form action="/action_page.php" class="form-container">
+			<label for="fname">First Name</label>
+			<input type="text" id="fname" name="firstname" placeholder="Your first name.." />
+
+			<label for="lname">Last Name</label>
+			<input type="text" id="lname" name="lastname" placeholder="Your last name.." />
+
+			<label for="country">Country</label>
+			<select id="country" name="country">
+				<option value="australia">Australia</option>
+				<option value="canada">Canada</option>
+				<option value="usa">USA</option>
+			</select>
+
+			<label for="feedback">Feedback</label>
+			<div>
+				<textarea id="tiny"> &lt;p&gt;Welcome to the TinyMCE jQuery example!&lt;/p&gt;</textarea>
+			</div>
+			<button type="button" class="btn">
+				Submit
+			</button>
+
+			<button type="button" class="btn cancel" onclick="closeForm()">
+				Close
+			</button>
+		</form>
+	</div>
+
+	<script src="{{ url_for('static',filename='scripts/src-min/ace.js') }}"></script>
+	<script src="{{ url_for('static',filename='scripts/src-min/mode-python.js') }}"></script>
+	<script src="{{ url_for('static',filename='scripts/src-min/ext-language_tools.js') }}"></script>
+	<script src="{{ url_for('static',filename='scripts/script.js') }}"></script>
+	<script src="{{ url_for('static',filename='scripts/feedback.js') }}"></script>
+	<script>
+		$('textarea#tiny').tinymce({
+			height: 500,
+			menubar: false,
+			plugins: [
+				'a11ychecker', 'advlist', 'advcode', 'advtable', 'autolink', 'checklist', 'export',
+				'lists', 'link', 'image', 'charmap', 'preview', 'anchor', 'searchreplace', 'visualblocks',
+				'powerpaste', 'fullscreen', 'formatpainter', 'insertdatetime', 'media', 'table', 'help', 'wordcount'
+			],
+			toolbar: 'undo redo | a11ycheck casechange blocks | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist checklist outdent indent | removeformat | code table help'
+		});
+	</script>
 </body>
 
 </html>
