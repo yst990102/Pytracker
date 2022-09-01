@@ -1,5 +1,3 @@
-import helper_functions as hf
-
 Print_Forward = 0
 Print_Backward = 1
 
@@ -12,8 +10,6 @@ class Statement():
 		self.__previous = None
 		self.__next = None
 		self.path = path
-
-		self.program = program
 
 	# set the previous statement
 	def set_previous(self, previous) -> None:
@@ -57,8 +53,6 @@ class Iteration(Statement):
 			print(f"---- create {self.__class__.__name__} {steps}")
 
 		self.general_steps = steps[1]  # general step list, formed by integer
-		# self.general_steps = hf.TupleOfIntAndTuple_to_ListOfList(steps)
-		# print(f"self.general_steps == {self.general_steps}")
 
 		self.while_line_no = self.general_steps[0]
 		self.steps = []  # list of all Assignment/Iteration Nodes
@@ -86,14 +80,6 @@ class Iteration(Statement):
 		elif isinstance(pointer, Iteration):
 			return pointer.get_last_inner_step()
 
-	# def set_enter_into_point(self):
-	# 	assert (isinstance(self.get_first_inner_step(), Assignment))
-	# 	self.get_first_inner_step().enter_into_iteration = self
-
-	# def set_break_out_point(self):
-	# 	assert (isinstance(self.get_last_inner_step(), Assignment))
-	# 	self.get_last_inner_step().break_out_iterations += [self]
-
 	def print_info(self) -> None:
 		print(f"\n==== {self.__class__.__name__} {hex(id(self))} =====")
 		print(f"iteration_num == {self.iteration_num}, while_line_no = {self.while_line_no}, general_steps = {self.general_steps}")
@@ -107,19 +93,15 @@ class Basic_While_Iteration(Iteration):
 		super().__init__(steps, program, path)
 
 		# classify iteration to program.while_loops attribute
-		assert (isinstance(self.program, Program))
-		self.program.add_while_loop(self)
+		program.add_while_loop(self)
 
-		self.add_sub_statements(steps)
+		self.add_sub_statements(steps, program)
 		self.inner_bi_linklist_set()
 
-		# self.set_enter_into_point()
-		# self.set_break_out_point()
-
-	def add_sub_statements(self, steps: tuple) -> None:
+	def add_sub_statements(self, steps: tuple, program) -> None:
 		# add statements for self.steps
 		for step in steps[1]:
-			new_statement = Assignment(step, self.program, self.path + [self])
+			new_statement = Assignment(step, program, self.path + [self])
 			self.steps.append(new_statement)
 
 
@@ -129,25 +111,21 @@ class Nested_While_Iteration(Iteration):
 		super().__init__(steps, program, path)
 
 		# classify iteration to program.while_loops attribute
-		assert (isinstance(self.program, Program))
-		self.program.add_while_loop(self)
+		program.add_while_loop(self)
 
-		self.add_sub_statements(steps)
+		self.add_sub_statements(steps, program)
 		self.inner_bi_linklist_set()
 
-		# self.set_enter_into_point()
-		# self.set_break_out_point()
-
-	def add_sub_statements(self, steps: tuple) -> None:
+	def add_sub_statements(self, steps: tuple, program) -> None:
 		# add statements for self.steps
 		for step in steps[1]:
 			if isinstance(step, int):
-				new_statement = Assignment(step, self.program, self.path + [self])
+				new_statement = Assignment(step, program, self.path + [self])
 			elif isinstance(step, tuple):
 				if all(isinstance(i, int) for i in step[1]):
-					new_statement = Basic_While_Iteration(step, self.program, self.path + [self])
+					new_statement = Basic_While_Iteration(step, program, self.path + [self])
 				else:
-					new_statement = Nested_While_Iteration(step, self.program, self.path + [self])
+					new_statement = Nested_While_Iteration(step, program, self.path + [self])
 			self.steps.append(new_statement)
 
 
@@ -159,15 +137,11 @@ class Assignment(Statement):
 			print(f"---- create {self.__class__.__name__} {line_no}")
 		self.line_no = line_no
 
-		# self.enter_into_iteration = None
-		# self.break_out_iterations = []
-
 	def print_info(self) -> None:
 		print(f"==== {self.__class__.__name__} {hex(id(self))} =====")
 		print(f"line_no == {self.line_no}")
 		print(f"previous = {self.get_previous()}, next = {self.get_next()}")
 		print(f"path = {self.path}")
-		# print(f"enter_into_iteration = {self.enter_into_iteration}, break_out_iterations = {self.break_out_iterations}")
 
 	def print_val(self) -> None:
 		if isinstance(self.path[-1], Iteration):
@@ -218,10 +192,7 @@ class Program():
 			while_path, while_line_no, while_iterations = while_loop_info["path"], while_loop_info["while_line_no"], while_loop_info["iterations"]
 
 			while_iteration_set = [while_iterations[0].general_steps, while_iterations[-1].general_steps]
-			# print(f"iteration_set first = itr_num = {while_iterations[0].iteration_num}, steps = {while_iterations[0].general_steps}")
-			# print(f"iteration_set last = itr_num = {while_iterations[-1].iteration_num}, steps = {while_iterations[-1].general_steps}")
 			for index, while_iteration in enumerate(while_iterations):
-				# print(f"itr_num = {while_iteration.iteration_num}, steps = {while_iteration.general_steps}")
 				if index == 0 or index == len(while_iterations) - 1:
 					continue
 				if while_iteration.general_steps not in while_iteration_set:

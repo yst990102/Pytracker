@@ -124,8 +124,10 @@ class Trace:
 	def run(self, cmd):
 		import __main__
 		dict = __main__.__dict__
-		self.initial_locals_keys = list(dict.keys())
-		self.initial_globals_keys = list(dict.keys())
+		
+		self.initial_locals_keys = set(dict.keys())
+		self.initial_globals_keys = set(dict.keys())
+		
 		global execution_processes
 		execution_processes = []
 		self.runctx(cmd, dict, dict)
@@ -145,6 +147,12 @@ class Trace:
 		except:
 			raise
 		finally:
+			local_variables = {}
+			local_variables_set_diff = list(locals.keys() - self.initial_locals_keys)
+			for key in local_variables_set_diff:
+				local_variables[key] = locals[key]
+			# print(f"finally local_variables = {local_variables}")
+			
 			if not self.donothing:
 				sys.settrace(None)
 				threading.settrace(None)
@@ -241,9 +249,13 @@ class Trace:
 			frame_globals = frame.f_globals
 
 			local_variables = {}
-			for key, value in frame_locals.items():
-				if key not in self.initial_locals_keys:
-					local_variables.update({key: value})
+			local_variables_set_diff = list(frame_locals.keys() - self.initial_locals_keys)
+			for key in local_variables_set_diff:
+				local_variables[key] = frame_locals[key]
+			# global_variables = {}
+			# global_variables_set_diff = list(frame_globals.keys() - self.initial_globals_keys)
+			# for key in global_variables_set_diff:
+			# 	global_variables[key] = frame_globals[key]
 
 			if self.start_time:
 				print('%.2f' % (_time() - self.start_time), end=' ')
@@ -252,6 +264,8 @@ class Trace:
 				line_info = {"line_no": lineno, "line_content": self.usercode.splitlines()[lineno - 1], "local_variables": local_variables}
 
 				execution_processes.append(line_info)
+				# print(f"({lineno}) {self.usercode.splitlines()[lineno - 1]}")
+				# print(f"local_variables = {local_variables}")
 
 			except OSError as err:
 				print("Can't save localtrace_trace_and_count output because %s" % err, file=sys.stderr)
