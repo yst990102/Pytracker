@@ -1,7 +1,9 @@
+from typing import overload
 from flask import Flask, render_template, request
 
 import sys
 import pathlib
+import builtins
 backend_absolute_path = str(pathlib.Path(__file__).parent.parent.resolve()) + "/backend"
 sys.path.insert(0, backend_absolute_path)
 
@@ -10,6 +12,11 @@ import feedback_email
 
 app = Flask(__name__)
 
+def input(__prompt: object = ...) -> str:
+	print(f"__prompt = {__prompt}, type = {type(__prompt)}")
+	# web.user_input()
+	# return builtins.input(__prompt)
+	return "lol"
 
 @app.route('/', methods=["GET", "POST"])
 def home_page():
@@ -34,7 +41,7 @@ def submit_feedback():
         print("feedback email send Failed!!!")
     return render_template('index.html')
 
-@app.route('/input', methods=["GET", "POST"])
+@app.route('/input', methods=["POST"])
 def user_input():
     if request.method == "POST":
         user_input_content = request.json

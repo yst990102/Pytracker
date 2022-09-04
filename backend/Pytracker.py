@@ -3,7 +3,6 @@ import sys
 import re
 import time
 import json
-import builtins
 from yapf.yapflib.yapf_api import FormatFile, FormatCode
 
 import my_trace as my_trace
@@ -22,12 +21,6 @@ DEBUG_parse_strListOfList_into_ListOfList = False
 # SIGNAL
 SIG_TIME_COST = 0
 SIG_FILE_IO_OFF = 1
-
-def input(__prompt: object = ...) -> str:
-	print(f"__prompt = {__prompt}, type = {type(__prompt)}")
-	web.user_input()
-	return builtins.input(__prompt)
-
 
 def trace_execution_tracking(execution_processes):
 	while_lines = []
