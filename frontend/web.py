@@ -2,8 +2,8 @@ from flask import Flask, render_template, request
 
 import sys
 import pathlib
-backend_absolute_path = str(pathlib.Path(__file__).parent.parent.resolve())
-sys.path.insert(0, backend_absolute_path + "/backend")
+backend_absolute_path = str(pathlib.Path(__file__).parent.parent.resolve()) + "/backend"
+sys.path.insert(0, backend_absolute_path)
 
 import Pytracker
 import feedback_email
@@ -32,6 +32,13 @@ def submit_feedback():
     email_send_result = feedback_email.send_email()
     if email_send_result == feedback_email.Failed:
         print("feedback email send Failed!!!")
+    return render_template('index.html')
+
+@app.route('/input', methods=["GET", "POST"])
+def user_input():
+    if request.method == "POST":
+        user_input_content = request.json
+        print(f"frontend userinput = {user_input_content}")
     return render_template('index.html')
 
 if __name__ == "__main__":

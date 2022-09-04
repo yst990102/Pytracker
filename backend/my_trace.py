@@ -239,6 +239,8 @@ class Trace:
 				return self.localtrace
 
 	def localtrace_trace_and_count(self, frame, why, arg):
+		if frame.f_code.co_name == "input":
+			return self.localtrace
 		if why == "line":
 			# record the file name and line number of every trace
 			lineno = frame.f_lineno

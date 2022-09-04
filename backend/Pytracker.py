@@ -3,13 +3,18 @@ import sys
 import re
 import time
 import json
+import builtins
 from yapf.yapflib.yapf_api import FormatFile, FormatCode
 
 import my_trace as my_trace
 import helper_functions as hf
 import parse_classes as parse_classes
 
-current_absolute_path = str(pathlib.Path(__file__).parent.resolve())
+backend_absolute_path  = str(pathlib.Path(__file__).parent.resolve())
+frontend_absolute_path = str(pathlib.Path(__file__).parent.parent.resolve()) + "/frontend"
+sys.path.insert(0, frontend_absolute_path)
+
+import web
 
 # DEBUG switches
 DEBUG_parse_strListOfList_into_ListOfList = False
@@ -17,6 +22,11 @@ DEBUG_parse_strListOfList_into_ListOfList = False
 # SIGNAL
 SIG_TIME_COST = 0
 SIG_FILE_IO_OFF = 1
+
+def input(__prompt: object = ...) -> str:
+	print(f"__prompt = {__prompt}, type = {type(__prompt)}")
+	web.user_input()
+	return builtins.input(__prompt)
 
 
 def trace_execution_tracking(execution_processes):
@@ -159,11 +169,11 @@ def backend_main(*test_signals, usercode=None):
 		reformat_start_time = time.time()
 	global reformatted_code
 	if usercode == None:
-		usercode = open(current_absolute_path + "/" + "UserCode.py", 'r').read()
+		usercode = open(backend_absolute_path + "/" + "UserCode.py", 'r').read()
 		# format with yapf3 before create test_script
-		reformatted_code, encoding, changed = FormatFile(filename=f"{current_absolute_path}/UserCode.py", style_config=f"{current_absolute_path}/.style.yapf")
+		reformatted_code, encoding, changed = FormatFile(filename=f"{backend_absolute_path}/UserCode.py", style_config=f"{backend_absolute_path}/.style.yapf")
 	else:
-		reformatted_code, changed = FormatCode(unformatted_source=usercode, style_config=f"{current_absolute_path}/.style.yapf")
+		reformatted_code, changed = FormatCode(unformatted_source=usercode, style_config=f"{backend_absolute_path}/.style.yapf")
 	if SIG_TIME_COST in test_signals:
 		reformat_end_time = time.time()
 	if SIG_TIME_COST in test_signals:
@@ -175,9 +185,9 @@ def backend_main(*test_signals, usercode=None):
 		file_clean_start_time = time.time()
 
 	if SIG_FILE_IO_OFF not in test_signals:
-		hf.clean_content_in_file(current_absolute_path + "/" + "listoflist")
-		hf.clean_content_in_file(current_absolute_path + "/" + "TupleOfIntAndTuple")
-		hf.clean_content_in_file(current_absolute_path + "/" + "step_json.json")
+		hf.clean_content_in_file(backend_absolute_path + "/" + "listoflist")
+		hf.clean_content_in_file(backend_absolute_path + "/" + "TupleOfIntAndTuple")
+		hf.clean_content_in_file(backend_absolute_path + "/" + "step_json.json")
 
 	if SIG_TIME_COST in test_signals:
 		file_clean_end_time = time.time()
@@ -212,7 +222,7 @@ def backend_main(*test_signals, usercode=None):
 
 	if SIG_FILE_IO_OFF not in test_signals:
 		# write listoflist into "listoflist"
-		with open(current_absolute_path + "/" + "listoflist", 'w') as listoflist_out:
+		with open(backend_absolute_path + "/" + "listoflist", 'w') as listoflist_out:
 			listoflist_out.write(str(listoflist))
 		listoflist_out.close()
 
@@ -231,7 +241,7 @@ def backend_main(*test_signals, usercode=None):
 
 	if SIG_FILE_IO_OFF not in test_signals:
 		# write listoflist into "listoflist"
-		with open(current_absolute_path + "/" + "TupleOfIntAndTuple", 'w') as TupleOfIntAndTuple_out:
+		with open(backend_absolute_path + "/" + "TupleOfIntAndTuple", 'w') as TupleOfIntAndTuple_out:
 			TupleOfIntAndTuple_out.write(str(TupleOfIntAndTuple))
 		TupleOfIntAndTuple_out.close()
 
@@ -260,7 +270,7 @@ def backend_main(*test_signals, usercode=None):
 
 	if SIG_FILE_IO_OFF not in test_signals:
 		# write step_json into "step_json"
-		with open(current_absolute_path + "/" + "step_json.json", "w") as step_json_file_write:
+		with open(backend_absolute_path + "/" + "step_json.json", "w") as step_json_file_write:
 			json.dump(step_json, step_json_file_write)
 		step_json_file_write.close()
 
