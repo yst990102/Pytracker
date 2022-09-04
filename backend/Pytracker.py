@@ -7,16 +7,10 @@ from yapf.yapflib.yapf_api import FormatFile, FormatCode
 
 import my_trace as my_trace
 import helper_functions as hf
-import parse_classes as parse_classes
 
 backend_absolute_path  = str(pathlib.Path(__file__).parent.resolve())
 frontend_absolute_path = str(pathlib.Path(__file__).parent.parent.resolve()) + "/frontend"
 sys.path.insert(0, frontend_absolute_path)
-
-import web
-
-# DEBUG switches
-DEBUG_parse_strListOfList_into_ListOfList = False
 
 # SIGNAL
 SIG_TIME_COST = 0
@@ -29,6 +23,10 @@ def trace_execution_tracking(execution_processes):
 
 	all_line_nos = []
 	all_local_variables = []
+	
+	from my_trace import Pytracker_outIO
+	tracer_stdout = Pytracker_outIO
+	print(f"tracer_stdout = {tracer_stdout.getvalue()}")
 
 	for process in execution_processes:
 		line_no = process["line_no"]
@@ -57,103 +55,8 @@ def trace_execution_tracking(execution_processes):
 		tab_dict[line_no] = line_content.count('\t')
 
 	# parse str_ListOfList into ListOfList
-	listoflist = parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict)
-	return listoflist, tab_dict, while_lines, if_else_lines
-
-
-# the str_parsing takes the MOST runtime of backend_main
-def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
-	if DEBUG_parse_strListOfList_into_ListOfList:
-		print("========================== parse_strListOfList_into_ListOfList ==========================")
-		print(f"all_line_nos == {all_line_nos}\nwhile_lines == {while_lines}\ntab_dict == {tab_dict}")
-
-	# Create a stack, put it in from left to right, and pop one out every time the indentation is greater than or equal to.
-	stack = []
-	result = []
-	for count, line_no in enumerate(all_line_nos):
-		if while_lines == []:
-			if stack == []:
-				result.append(str(line_no))
-				if DEBUG_parse_strListOfList_into_ListOfList:
-					print(f"{line_no}\t out of loop\t {stack}\t {result}")
-			elif tab_dict[line_no] > tab_dict[stack[-1]]:
-				result.append(str(line_no))
-				if DEBUG_parse_strListOfList_into_ListOfList:
-					print(f"{line_no}\t in loop\t {stack}\t {result}")
-			else:
-				result.append("]")
-				result.append(str(line_no))
-				stack.pop()
-				if DEBUG_parse_strListOfList_into_ListOfList:
-					print(f"{line_no}\t outer break\t {stack}\t {result}")
-		elif line_no == while_lines[0]:
-			if line_no in stack:
-				result.append("]")
-				result.append("[")
-				result.append(str(line_no))
-				if DEBUG_parse_strListOfList_into_ListOfList:
-					print(f"{line_no}\t next round loop, loop statement\t {stack}\t {result}")
-			else:
-				if stack == []:
-					stack.append(while_lines[0])
-					result.append("[")
-					result.append(str(line_no))
-					if DEBUG_parse_strListOfList_into_ListOfList:
-						print(f"{line_no}\t new loop statement_1\t {stack}\t {result}")
-				elif tab_dict[stack[-1]] < tab_dict[line_no]:
-					stack.append(while_lines[0])
-					result.append("[")
-					result.append(str(line_no))
-					if DEBUG_parse_strListOfList_into_ListOfList:
-						print(f"{line_no}\t new loop statement_2\t {stack}\t {result}")
-				elif tab_dict[stack[-1]] == tab_dict[line_no]:
-					del stack[-1]
-					stack.append(while_lines[0])
-					result.append("][")
-					result.append(str(line_no))
-					if DEBUG_parse_strListOfList_into_ListOfList:
-						print(f"{line_no}\t new loop statement_3\t {stack}\t {result}")
-			del while_lines[0]
-		else:
-			if stack == []:
-				result.append(str(line_no))
-				if DEBUG_parse_strListOfList_into_ListOfList:
-					print(f"{line_no}\t out of loop\t {stack}\t {result}")
-			elif tab_dict[line_no] > tab_dict[stack[-1]]:
-				result.append(str(line_no))
-				if DEBUG_parse_strListOfList_into_ListOfList:
-					print(f"{line_no}\t in loop\t {stack}\t {result}")
-			else:
-				result.append("]")
-				result.append(str(line_no))
-				stack.pop()
-				if DEBUG_parse_strListOfList_into_ListOfList:
-					print(f"{line_no}\t inner break\t {stack}\t {result}")
-
-		if count < len(all_line_nos) - 1:
-			result.append(",")
-
-	# add remaining right bracket from stack.pop()
-	result.append(len(stack) * "]")
-	stack.clear()  # clear stack
-
-	result.insert(0, "[")
-	result.append("]")
-
-	result = "".join(result)
-	result = result.replace(",]", "],")
-
-	try:
-		assert (hf.isBracket_match(result) == True)
-	except:
-		print(f"ERROR: isBracket_match Failed! result == {result}")
-		exit(1)
-
-	return eval(result)
-
-
-def parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict: dict, grid_indent: dict):
-	return parse_classes.Program(TupleOfIntAndTuple, tab_dict, grid_indent)
+	listoflist = hf.parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict)
+	return listoflist, tab_dict, while_lines, if_else_lines, tracer_stdout
 
 
 def backend_main(*test_signals, usercode=None):
@@ -207,7 +110,7 @@ def backend_main(*test_signals, usercode=None):
 
 	# trace the whole execution, return a ListOfList
 	global listoflist
-	listoflist, tab_dict, while_lines, if_else_lines = trace_execution_tracking(my_trace.execution_processes)
+	listoflist, tab_dict, while_lines, if_else_lines, tracer_stdout = trace_execution_tracking(my_trace.execution_processes)
 
 	# remove single_list -> "[0-9]" from the listoflist
 	listoflist = hf.remove_singlelist_from_listoflist(listoflist)
@@ -240,7 +143,7 @@ def backend_main(*test_signals, usercode=None):
 
 	grid_indent = hf.tabdict_to_gridindent(tab_dict, while_lines)
 	# then convert into Program
-	program = parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict, grid_indent)
+	program = hf.parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict, grid_indent)
 
 	# TEST: all available print ways testing for program
 	# program.print_statements()

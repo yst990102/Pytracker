@@ -49,6 +49,7 @@ Sample use, programmatically
 """
 __all__ = ['Trace', 'CoverageResults']
 
+from io import StringIO
 import linecache
 import os
 import sys
@@ -128,8 +129,13 @@ class Trace:
 		self.initial_locals_keys = set(dict.keys())
 		self.initial_globals_keys = set(dict.keys())
 		
+		global line_no_list, line_content_list, local_variable_list
+		line_no_list = []
+		line_content_list = []
+		local_variable_list = []
 		global execution_processes
 		execution_processes = []
+		
 		self.runctx(cmd, dict, dict)
 
 	def runctx(self, cmd, globals=None, locals=None):
@@ -142,16 +148,31 @@ class Trace:
 		if not self.donothing:
 			threading.settrace(self.globaltrace)
 			sys.settrace(self.globaltrace)
+		
+		global Pytracker_outIO
+		Pytracker_outIO = StringIO()
+		# redirect the stdout
+		old_stdout = sys.stdout
+		sys.stdout = Pytracker_outIO
+		
 		try:
 			exec(cmd, globals, locals)
 		except:
 			raise
 		finally:
+			sys.stdout = old_stdout
+			
 			local_variables = {}
 			local_variables_set_diff = list(locals.keys() - self.initial_locals_keys)
 			for key in local_variables_set_diff:
 				local_variables[key] = locals[key]
-			# print(f"finally local_variables = {local_variables}")
+			local_variable_list.append(local_variables)
+			del local_variable_list[0]
+			
+			assert(len(line_no_list) == len(line_content_list) == len(local_variable_list))
+			for i in range(len(line_no_list)):
+				line_info = {"line_no": line_no_list[i], "line_content": line_content_list[i], "local_variables": local_variable_list[i]}
+				execution_processes.append(line_info)
 			
 			if not self.donothing:
 				sys.settrace(None)
@@ -263,12 +284,9 @@ class Trace:
 				print('%.2f' % (_time() - self.start_time), end=' ')
 
 			try:
-				line_info = {"line_no": lineno, "line_content": self.usercode.splitlines()[lineno - 1], "local_variables": local_variables}
-
-				execution_processes.append(line_info)
-				# print(f"({lineno}) {self.usercode.splitlines()[lineno - 1]}")
-				# print(f"local_variables = {local_variables}")
-
+				line_no_list.append(lineno)
+				line_content_list.append(self.usercode.splitlines()[lineno - 1])
+				local_variable_list.append(local_variables)
 			except OSError as err:
 				print("Can't save localtrace_trace_and_count output because %s" % err, file=sys.stderr)
 

@@ -1,8 +1,11 @@
 import os
-import re
+import parse_classes as parse_classes
 
+# DEBUG switches
+DEBUG_parse_strListOfList_into_ListOfList = False
 DEBUG_listoflist_to_json = False
 DEBUG_get_step_json = True
+
 
 IS_WHILE = 0
 IS_FOR = 1
@@ -27,23 +30,6 @@ def display_file(file_name: str) -> None:
 	print(content)
 	f_read.close()
 
-
-def isBracket_match(s: str) -> bool:
-	finding = []
-	for ch in s:
-		if ch == '(':
-			finding.append(')')
-		elif ch == '[':
-			finding.append(']')
-		elif ch == '{':
-			finding.append('}')
-		elif ch.isdigit() or ch == ",":
-			continue
-		elif not finding or not ch == finding.pop(-1):
-			return False
-	return len(finding) == 0
-
-
 def del_line_in_file(filename, content):
 	with open(filename, "r") as f:
 		lines = f.readlines()
@@ -67,6 +53,21 @@ def clean_content_in_file(filename):
 		# file does not exist, create a blank file
 		open(filename, 'w').close()
 		return
+
+def isBracket_match(s: str) -> bool:
+	finding = []
+	for ch in s:
+		if ch == '(':
+			finding.append(')')
+		elif ch == '[':
+			finding.append(']')
+		elif ch == '{':
+			finding.append('}')
+		elif ch.isdigit() or ch == ",":
+			continue
+		elif not finding or not ch == finding.pop(-1):
+			return False
+	return len(finding) == 0
 
 
 def TupleOfIntAndTuple_to_ListOfList(TupleOfIntAndTuple):
@@ -205,78 +206,6 @@ def get_step_json(program):
 	return {"d": max_depth, "list": step_list}
 
 
-step_list_in_json = []
-
-
-def listoflist_to_json(cur_depth, listoflist, while_stack) -> None:
-	index = 0
-	while index < len(listoflist) - 1:
-		p1, _ = get_first(listoflist[index])
-		p2, enter_loop = get_first(listoflist[index + 1])
-
-		if not enter_loop:
-			if isinstance(listoflist[index], int):
-				if DEBUG_listoflist_to_json:
-					print(f"step, {p1} => {p2}")
-				step_list_in_json.append({"type": "step", "start": p1, "end": p2})
-			elif isinstance(listoflist[index], list):
-				if DEBUG_listoflist_to_json:
-					print(f"step, {listoflist[index][-1]} => {p2}")
-				step_list_in_json.append({"type": "step", "start": listoflist[index][-1], "end": p2})
-		else:
-			entered_loop = listoflist[index + 1]
-
-			if p1 != p2:
-				if DEBUG_listoflist_to_json:
-					print(f"step, {p1} => {p2}")
-				step_list_in_json.append({"type": "step", "start": p1, "end": p2})
-
-			if DEBUG_listoflist_to_json:
-				print(f"circle, {p2}")
-			step_list_in_json.append({"type": "circle", "start": p2})
-
-			if p2 not in while_stack:
-				while_stack.append(p2)
-				if DEBUG_listoflist_to_json:
-					print(f"while_start, {cur_depth}")
-				step_list_in_json.append({"type": "while_start", "depth": cur_depth})
-
-			listoflist_to_json(cur_depth + 1, entered_loop, while_stack)
-
-			try:
-				follow_items = listoflist[index + 2]
-				if isinstance(follow_items, int):
-					while_stack.pop()
-					if DEBUG_listoflist_to_json:
-						print(f"while_end, {entered_loop[0]} => {entered_loop[-1]}")
-					step_list_in_json.append({"type": "while_end", "start": entered_loop[0], "end": entered_loop[-1]})
-
-				elif isinstance(follow_items, list) and p2 != follow_items[0]:
-					if DEBUG_listoflist_to_json:
-						print("wtf???")
-			except:
-				continue
-		index += 1
-
-
-def get_first(item):
-	if isinstance(item, int):
-		return (item, False)
-	elif isinstance(item, list):
-		return (item[0], True)
-
-
-# minus 1 for every item in the nested list
-def minus1_for_listoflist(listoflist):
-	if type(listoflist) == int:
-		return listoflist - 1
-	elif type(listoflist) == list:
-		minus1_list = []
-		for i in listoflist:
-			minus1_list.append(minus1_for_listoflist(i))
-		return minus1_list
-
-
 # remove single_list == remove the last loop statement check
 def remove_singlelist_from_listoflist(listoflist):
 	if type(listoflist) == int:
@@ -288,13 +217,6 @@ def remove_singlelist_from_listoflist(listoflist):
 				continue
 			return_list.append(remove_singlelist_from_listoflist(i))
 		return return_list
-
-
-# 备用的remove_singlelist_from_listoflist,  功能一样，不过是按照while_liens来删除东西
-def remove_while_loop_last_check_from_listoflist(listoflist, while_lines):
-	for while_line in set(while_lines):
-		listoflist = remove_element_from_listoflist(listoflist, [while_line])
-	return listoflist
 
 
 def remove_element_from_listoflist(items, while_statement_single_list):
@@ -323,3 +245,98 @@ def remove_if_else_lines_from_listoflist(if_else_lines, listoflist):
 				if i not in if_else_lines:
 					return_list.append(i)
 		return return_list
+
+
+# the str_parsing takes the MOST runtime of backend_main
+def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
+	if DEBUG_parse_strListOfList_into_ListOfList:
+		print("========================== parse_strListOfList_into_ListOfList ==========================")
+		print(f"all_line_nos == {all_line_nos}\nwhile_lines == {while_lines}\ntab_dict == {tab_dict}")
+
+	# Create a stack, put it in from left to right, and pop one out every time the indentation is greater than or equal to.
+	stack = []
+	result = []
+	for count, line_no in enumerate(all_line_nos):
+		if while_lines == []:
+			if stack == []:
+				result.append(str(line_no))
+				if DEBUG_parse_strListOfList_into_ListOfList:
+					print(f"{line_no}\t out of loop\t {stack}\t {result}")
+			elif tab_dict[line_no] > tab_dict[stack[-1]]:
+				result.append(str(line_no))
+				if DEBUG_parse_strListOfList_into_ListOfList:
+					print(f"{line_no}\t in loop\t {stack}\t {result}")
+			else:
+				result.append("]")
+				result.append(str(line_no))
+				stack.pop()
+				if DEBUG_parse_strListOfList_into_ListOfList:
+					print(f"{line_no}\t outer break\t {stack}\t {result}")
+		elif line_no == while_lines[0]:
+			if line_no in stack:
+				result.append("]")
+				result.append("[")
+				result.append(str(line_no))
+				if DEBUG_parse_strListOfList_into_ListOfList:
+					print(f"{line_no}\t next round loop, loop statement\t {stack}\t {result}")
+			else:
+				if stack == []:
+					stack.append(while_lines[0])
+					result.append("[")
+					result.append(str(line_no))
+					if DEBUG_parse_strListOfList_into_ListOfList:
+						print(f"{line_no}\t new loop statement_1\t {stack}\t {result}")
+				elif tab_dict[stack[-1]] < tab_dict[line_no]:
+					stack.append(while_lines[0])
+					result.append("[")
+					result.append(str(line_no))
+					if DEBUG_parse_strListOfList_into_ListOfList:
+						print(f"{line_no}\t new loop statement_2\t {stack}\t {result}")
+				elif tab_dict[stack[-1]] == tab_dict[line_no]:
+					del stack[-1]
+					stack.append(while_lines[0])
+					result.append("][")
+					result.append(str(line_no))
+					if DEBUG_parse_strListOfList_into_ListOfList:
+						print(f"{line_no}\t new loop statement_3\t {stack}\t {result}")
+			del while_lines[0]
+		else:
+			if stack == []:
+				result.append(str(line_no))
+				if DEBUG_parse_strListOfList_into_ListOfList:
+					print(f"{line_no}\t out of loop\t {stack}\t {result}")
+			elif tab_dict[line_no] > tab_dict[stack[-1]]:
+				result.append(str(line_no))
+				if DEBUG_parse_strListOfList_into_ListOfList:
+					print(f"{line_no}\t in loop\t {stack}\t {result}")
+			else:
+				result.append("]")
+				result.append(str(line_no))
+				stack.pop()
+				if DEBUG_parse_strListOfList_into_ListOfList:
+					print(f"{line_no}\t inner break\t {stack}\t {result}")
+
+		if count < len(all_line_nos) - 1:
+			result.append(",")
+
+	# add remaining right bracket from stack.pop()
+	result.append(len(stack) * "]")
+	stack.clear()  # clear stack
+
+	result.insert(0, "[")
+	result.append("]")
+
+	result = "".join(result)
+	result = result.replace(",]", "],")
+
+	try:
+		assert (isBracket_match(result) == True)
+	except:
+		print(f"ERROR: isBracket_match Failed! result == {result}")
+		exit(1)
+
+	return eval(result)
+
+
+def parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict: dict, grid_indent: dict):
+	return parse_classes.Program(TupleOfIntAndTuple, tab_dict, grid_indent)
