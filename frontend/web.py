@@ -5,7 +5,7 @@ import sys
 import pathlib
 import builtins
 
-backend_absolute_path = str(pathlib.Path(__file__).parent.parent.resolve()) + "/backend"
+backend_absolute_path = str(pathlib.Path(__file__).resolve().parents[1]) + "/backend"
 sys.path.insert(0, backend_absolute_path)
 
 import Pytracker

@@ -146,6 +146,7 @@ $("#codeSubmit").click(() => {
                 '<p class="curr_var_text">Current variables</p>'
             )
 
+            console.log(data)
             console.log(data['step_json']);
             res = data['step_json'];
             var grid = $("#graph");
