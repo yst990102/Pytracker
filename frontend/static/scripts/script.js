@@ -130,7 +130,21 @@ $("#codeSubmit").click(() => {
             buttons.append(
                 '<button id="prev" type="submit" class="editor_btn_prev">Prev</button>'
             );
-        
+                
+            var output_div = $("#prog_out");
+            output_div.append(
+                '<p class="prog_out_text">Program Output</p>'
+            )
+
+            var prev_var_div = $("#prev_var");
+            prev_var_div.append(
+                '<p class="prev_var_text">Previous variables</p>'
+            )
+                
+            var next_var_dix = $("#curr_var");
+            next_var_dix.append(
+                '<p class="curr_var_text">Current variables</p>'
+            )
 
             console.log(data['step_json']);
             res = data['step_json'];
@@ -285,6 +299,45 @@ $(document).on("click", "#stepbtns .editor_btn_prev", function () {
             recent.pop();
             instructions.pop();
 
+            while (
+                instructions[instructions.length - 1]["type"] == "step" &&
+                instructions.length - 2 >= 0 &&
+                instructions[instructions.length - 2]["type"] == "while_start"
+            ) {
+                const circle_depth = depth;
+                // Remove step
+                depth--;
+                recent[recent.length - 1].remove();
+                recent.pop();
+                instructions.pop();
+
+                // Remove while_start
+                if (same_depth_while === true) {
+                    same_depth_while = false;
+                }
+                instructions.pop();
+                depth_stack.pop();
+                no_starts--;
+
+                // Remove circle
+                recent[recent.length - 1].remove();
+                recent.pop();
+                const it_row = instructions[instructions.length - 1]["start"] - 1;
+                const it_cell_id = "r" + it_row + "c" + circle_depth + "t";
+                console.log(it_cell_id)
+                console.log(depth)
+                $("#" + it_cell_id).remove();
+                instructions.pop();
+
+                // Remove dashed
+                prev_end = instructions[instructions.length - 1]["start"];
+                recent[recent.length - 1].remove();
+                recent.pop();
+                instructions.pop();
+                count -= 3
+            }
+            console.log(instructions)
+
             console.log(instructions[instructions.length - 2])
             if (instructions.length - 2 >= 0 && instructions[instructions.length - 2]["type"] != "while_start") {
                 // Remove step
@@ -314,6 +367,7 @@ $(document).on("click", "#stepbtns .editor_btn_prev", function () {
             } else {
                 count -= 2;
             }
+            console.log(count)
 
         } else {
             recent[recent.length - 1].remove();

@@ -89,6 +89,7 @@ html, body {
     display:flex;
     flex-direction: column;
     padding: 6px 16px;
+    margin-top: 16px;
     margin-left: 5px;
     margin-right: 5px;
     border: 1px solid gray;
@@ -102,6 +103,7 @@ html, body {
     display:flex;
     flex-direction: column;
     padding: 6px 16px;
+    margin-top: 16px;
     margin-left: 5px;
     margin-right: 5px;
     border: 1px solid gray;
@@ -162,4 +164,50 @@ tr {
     justify-content: right;
     margin-top: 8px;
     font-size: 12px;
+}
+
+.user_display {
+    display: flex;
+    height: 100%;
+}
+
+.info {
+    width: 50%;
+    display: flex;
+}
+
+.program_output {
+    width: 25%;
+    flex: 1;
+}
+
+.prog_out_text {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 16px;
+}
+
+.prev_var_text {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 16px;
+}
+
+.curr_var_text {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 16px;
+}
+
+.variables {
+    width: 75%;
+    display: flex;
+}
+
+.previous_var {
+    width: 50%;
+}
+
+.current_var {
+    width: 50%;
 }

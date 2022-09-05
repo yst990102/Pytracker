@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 
 import sys
 import pathlib
-backend_absolute_path = str(pathlib.Path(__file__).parent.parent.resolve())
+backend_absolute_path = str(pathlib.Path(__file__).resolve().parents[1])
 sys.path.insert(0, backend_absolute_path + "/backend")
 
 import Pytracker
