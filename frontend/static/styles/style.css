@@ -186,18 +186,21 @@ tr {
     text-align: center;
     font-size: 14px;
     margin-top: 16px;
+    text-decoration: underline;
 }
 
 .prev_var_text {
     text-align: center;
     font-size: 14px;
     margin-top: 16px;
+    text-decoration: underline;
 }
 
 .curr_var_text {
     text-align: center;
     font-size: 14px;
     margin-top: 16px;
+    text-decoration: underline;
 }
 
 .variables {
