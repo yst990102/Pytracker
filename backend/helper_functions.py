@@ -181,7 +181,7 @@ def get_step_json(program:parse_classes.Program):
 	cur_or_max = False
 	stack = []
 
-	step_list = [{"type": "step", "start": 0, "end": start_statement.line_no}]
+	step_list = [{"type": "step", "start": 0, "end": start_statement.line_no, "local_variables": start_statement.local_variables}]
 	while end_statement:
 		start_location = start_statement.line_no
 		end_location = end_statement.line_no
@@ -191,8 +191,8 @@ def get_step_json(program:parse_classes.Program):
 			if stack != []:
 				cur_or_max = True
 			entered_iteration = end_statement.path[-1]
-			step_list.append({"type": "step", "start": start_location, "end": end_location})
-			step_list.append({"type": "circle", "start": end_location, "iteration": entered_iteration.iteration_num})
+			step_list.append({"type": "step", "start": start_location, "end": end_location, "local_variables": end_statement.local_variables})
+			step_list.append({"type": "circle", "start": end_location, "iteration": entered_iteration.iteration_num, "local_variables": end_statement.local_variables})
 			step_list.append({"type": "while_start", "depth": -1})
 			stack.append(cur_max)
 			cur_max += 1
@@ -200,7 +200,7 @@ def get_step_json(program:parse_classes.Program):
 		elif len(end_statement.path) < len(start_statement.path):
 			ended_iteration = start_statement.path[-1]
 			step_list.append({"type": "while_end", "start": ended_iteration.get_first_inner_step().line_no, "end": ended_iteration.get_last_inner_step().line_no})
-			step_list.append({"type": "step", "start": start_location, "end": end_location})
+			step_list.append({"type": "step", "start": start_location, "end": end_location, "local_variables": end_statement.local_variables})
 			cur_max = stack.pop()
 			cur_or_max = False
 		else:
@@ -210,13 +210,13 @@ def get_step_json(program:parse_classes.Program):
 				if start_while_line_no == end_while_line_no:
 					# CASE 03: enter a new iteration which from same while-loop
 					entered_iteration = end_statement.path[-1]
-					step_list.append({"type": "circle", "start": end_location, "iteration": entered_iteration.iteration_num})
+					step_list.append({"type": "circle", "start": end_location, "iteration": entered_iteration.iteration_num, "local_variables": end_statement.local_variables})
 					cur_max = (cur_max + 1) if cur_or_max == True else (max_max + 1)
 				else:
 					# CASE 04: end current while-loop, then start and enter a parallel while-loop,
 					ended_iteration = start_statement.path[-1]
 					step_list.append({"type": "while_end", "start": ended_iteration.get_first_inner_step().line_no, "end": ended_iteration.get_last_inner_step().line_no})
-					step_list.append({"type": "step", "start": start_location, "end": end_location})
+					step_list.append({"type": "step", "start": start_location, "end": end_location, "local_variables": end_statement.local_variables})
 					entered_iteration = end_statement.path[-1]
 					step_list.append({"type": "circle", "start": end_location, "iteration": entered_iteration.iteration_num})
 					step_list.append({"type": "while_start", "depth": -1})
@@ -224,7 +224,7 @@ def get_step_json(program:parse_classes.Program):
 					cur_or_max = False
 			# CASE 05: normal step
 			else:
-				step_list.append({"type": "step", "start": start_location, "end": end_location})
+				step_list.append({"type": "step", "start": start_location, "end": end_location, "local_variables": end_statement.local_variables})
 		max_max = max(cur_max, max_max)
 		start_statement = start_statement.get_next()
 		end_statement = end_statement.get_next()
