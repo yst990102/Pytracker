@@ -126,12 +126,8 @@ class Trace:
 		import __main__
 		dict = __main__.__dict__
 		
-		# TODO: idk why replace this part with that will fix the local_variables missing issue for multi-run in web.py
-		# self.initial_locals_keys = set(dict.keys())
-		# self.initial_globals_keys = set(dict.keys())
-		
-		self.initial_locals_keys = {'__builtins__', '__cached__', '__spec__', '__name__', '__annotations__', 'usercode', '__package__', 'Pytracker', '__file__', '__doc__', '__loader__'}
-		self.initial_globals_keys = {'__builtins__', '__cached__', '__spec__', '__name__', '__annotations__', 'usercode', '__package__', 'Pytracker', '__file__', '__doc__', '__loader__'}
+		self.initial_locals_keys = set(dict.keys())
+		self.initial_globals_keys = set(dict.keys())
 		
 		global line_no_list, line_content_list, local_variable_list
 		line_no_list = []
