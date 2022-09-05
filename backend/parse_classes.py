@@ -1,3 +1,6 @@
+from io import StringIO
+import helper_functions as hf
+
 Print_Forward = 0
 Print_Backward = 1
 
@@ -46,17 +49,18 @@ class Statement():
 
 class Iteration(Statement):
 
-	def __init__(self, steps: tuple, program, path) -> None:
+	def __init__(self, info:tuple, program, path) -> None:
 		super().__init__(program, path)
 
 		if creation_print:
 			print(f"---- create {self.__class__.__name__} {steps}")
-
-		self.general_steps = steps[1]  # general step list, formed by integer
+		
+		self.info = info
+		self.general_steps = hf.get_general_steps(info) # general step list, formed by integer
 
 		self.while_line_no = self.general_steps[0]
 		self.steps = []  # list of all Assignment/Iteration Nodes
-		self.iteration_num = steps[0]  # integer for iteration number
+		self.iteration_num = info[0]  # integer for iteration number
 
 	def inner_bi_linklist_set(self) -> None:
 		# set the inner bi-linklist in self.steps
@@ -119,7 +123,7 @@ class Nested_While_Iteration(Iteration):
 	def add_sub_statements(self, steps: tuple, program) -> None:
 		# add statements for self.steps
 		for step in steps[1]:
-			if isinstance(step, int):
+			if isinstance(step, dict):
 				new_statement = Assignment(step, program, self.path + [self])
 			elif isinstance(step, tuple):
 				if all(isinstance(i, int) for i in step[1]):
@@ -131,11 +135,13 @@ class Nested_While_Iteration(Iteration):
 
 class Assignment(Statement):
 
-	def __init__(self, line_no: int, program, path) -> None:
+	def __init__(self, info: dict, program, path) -> None:
 		super().__init__(program, path)
 		if creation_print:
-			print(f"---- create {self.__class__.__name__} {line_no}")
-		self.line_no = line_no
+			print(f"---- create {self.__class__.__name__} {info['line_no']}")
+		self.info = info
+		self.line_no = info['line_no']
+		self.local_variables = info['local_variables']
 
 	def print_info(self) -> None:
 		print(f"==== {self.__class__.__name__} {hex(id(self))} =====")
@@ -152,7 +158,7 @@ class Assignment(Statement):
 
 class Program():
 
-	def __init__(self, TupleOfIntAndTuple: tuple, tab_dict: dict, grid_indent: dict) -> None:
+	def __init__(self, TupleOfIntAndTuple: tuple, tab_dict: dict, grid_indent: dict, Pytracker_outIO: StringIO) -> None:
 		self.TupleOfIntAndTuple = TupleOfIntAndTuple
 		self.tab_dict = tab_dict
 		self.grid_indent = grid_indent  # stored but not in use
@@ -160,8 +166,10 @@ class Program():
 		self.statements = []
 		self.while_loops = []  # classify iterations by while_line, not in use
 
+		self.Pytracker_outIO = Pytracker_outIO
+
 		for element in self.TupleOfIntAndTuple[1]:
-			if isinstance(element, int):
+			if isinstance(element, dict):
 				new_statement = Assignment(element, self, [self])
 			elif isinstance(element, tuple):
 				if all(isinstance(i, int) for i in element):

@@ -23,13 +23,9 @@ def trace_execution_tracking(execution_processes):
 
 	all_line_nos = []
 	all_local_variables = []
-	
-	from my_trace import Pytracker_outIO
-	tracer_stdout = Pytracker_outIO
-	print(f"tracer_stdout = {tracer_stdout.getvalue()}")
 
 	for process in execution_processes:
-		line_no = process["line_no"]
+		line_no = process['line_no']
 		line_content = process["line_content"]
 		local_variables = process["local_variables"]
 
@@ -56,7 +52,10 @@ def trace_execution_tracking(execution_processes):
 
 	# parse str_ListOfList into ListOfList
 	listoflist = hf.parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict)
-	return listoflist, tab_dict, while_lines, if_else_lines, tracer_stdout
+	# integrate listoflist and all_local_variables
+	listoflist_integrated = hf.integrate_listoflist_with_local_variables(listoflist, all_local_variables)
+	
+	return listoflist, listoflist_integrated, tab_dict, while_lines, if_else_lines
 
 
 def backend_main(*test_signals, usercode=None):
@@ -110,11 +109,13 @@ def backend_main(*test_signals, usercode=None):
 
 	# trace the whole execution, return a ListOfList
 	global listoflist
-	listoflist, tab_dict, while_lines, if_else_lines, tracer_stdout = trace_execution_tracking(my_trace.execution_processes)
+	listoflist, listoflist_integrated, tab_dict, while_lines, if_else_lines = trace_execution_tracking(my_trace.execution_processes)
 
 	# remove single_list -> "[0-9]" from the listoflist
 	listoflist = hf.remove_singlelist_from_listoflist(listoflist)
+	listoflist_integrated = hf.remove_singlelist_from_listoflist_integrated(listoflist_integrated)
 	listoflist = hf.remove_if_else_lines_from_listoflist(if_else_lines, listoflist)
+	listoflist_integrated = hf.remove_if_else_lines_from_listoflist_integrated(if_else_lines, listoflist_integrated)
 
 	if SIG_FILE_IO_OFF not in test_signals:
 		# write listoflist into "listoflist"
@@ -134,6 +135,7 @@ def backend_main(*test_signals, usercode=None):
 
 	# convert ListOfList into TupleOfIntAndTuple
 	TupleOfIntAndTuple = hf.ListOfList_to_ListOfIntAndTuple(listoflist)
+	TupleOfIntAndTuple_integrated = hf.ListOfList_to_ListOfIntAndTuple_integrated(listoflist_integrated)
 
 	if SIG_FILE_IO_OFF not in test_signals:
 		# write listoflist into "listoflist"
@@ -143,7 +145,7 @@ def backend_main(*test_signals, usercode=None):
 
 	grid_indent = hf.tabdict_to_gridindent(tab_dict, while_lines)
 	# then convert into Program
-	program = hf.parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict, grid_indent)
+	program_integrated = hf.parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple_integrated, tab_dict, grid_indent, my_trace.Pytracker_outIO)
 
 	# TEST: all available print ways testing for program
 	# program.print_statements()
@@ -162,7 +164,7 @@ def backend_main(*test_signals, usercode=None):
 		json_generate_start_time = time.time()
 
 	global step_json
-	step_json = hf.get_step_json(program)
+	step_json = hf.get_step_json(program_integrated)
 
 	if SIG_FILE_IO_OFF not in test_signals:
 		# write step_json into "step_json"
@@ -178,7 +180,7 @@ def backend_main(*test_signals, usercode=None):
 
 	if SIG_TIME_COST in test_signals:
 		print(f"--------------- All Stages --------------- \t\t: {json_generate_end_time - reformat_start_time} seconds")
-	return listoflist, TupleOfIntAndTuple, program, step_json
+	return listoflist, TupleOfIntAndTuple, program_integrated, step_json
 
 
 if __name__ == "__main__":

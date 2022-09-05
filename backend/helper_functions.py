@@ -1,3 +1,4 @@
+from io import StringIO
 import os
 import parse_classes as parse_classes
 
@@ -90,12 +91,9 @@ def TupleOfIntAndTuple_to_ListOfList(TupleOfIntAndTuple):
 def ListOfList_to_ListOfIntAndTuple(item, count_dict=None):
 	if count_dict == None:
 		count_dict = {}
-	# print(f"==================== ListOfList_to_ListOfIntAndTuple called ====================")
-	# print("item == ", item)
-	# print("count_dict == ", count_dict)
-	if type(item) == int:
+	if isinstance(item, int):
 		return item
-	elif type(item) == list:
+	elif isinstance(item, list):
 		while_line = get_first_item(item)
 		while_or_for = IS_WHILE if get_first_item(item) == item[0] else IS_FOR
 		try:
@@ -112,15 +110,42 @@ def ListOfList_to_ListOfIntAndTuple(item, count_dict=None):
 		list_in_tuple = []
 		for i in item:
 			list_in_tuple.append(ListOfList_to_ListOfIntAndTuple(i, count_dict))
-		# print(f"return {(count_dict[while_line], list_in_tuple)}")
 		return (count_dict[while_line], list_in_tuple)
+def ListOfList_to_ListOfIntAndTuple_integrated(item, count_dict=None):
+	if count_dict == None:
+		count_dict = {}
+	
+	if isinstance(item, dict):
+		return item
+	elif isinstance(item, list):
+		while_line = get_first_item_integrated(item)['line_no']
+		while_or_for = IS_WHILE if get_first_item_integrated(item) == item[0] else IS_FOR
+		try:
+			count_dict[while_line] += 1
+			clear_keys = [i for i in count_dict.keys() if i > while_line]
+			for i in clear_keys:
+				count_dict.pop(i)
+		except:
+			if while_or_for == IS_FOR:
+				count_dict[while_line] = 0
+			elif while_or_for == IS_WHILE:
+				count_dict[while_line] = 1
 
+		list_in_tuple = []
+		for i in item:
+			list_in_tuple.append(ListOfList_to_ListOfIntAndTuple_integrated(i, count_dict))
+		return (count_dict[while_line], list_in_tuple)
 
 def get_first_item(item):
 	if isinstance(item, int):
 		return item
 	elif isinstance(item, list):
 		return get_first_item(item[0])
+def get_first_item_integrated(item):
+	if isinstance(item, dict):
+		return item
+	elif isinstance(item, list):
+		return get_first_item_integrated(item[0])
 
 
 def tabdict_to_gridindent(tab_dict: dict, while_lines: list) -> dict:
@@ -145,9 +170,11 @@ def tabdict_to_gridindent(tab_dict: dict, while_lines: list) -> dict:
 	return grid_indent
 
 
-def get_step_json(program):
+def get_step_json(program:parse_classes.Program):
 	start_statement = program.get_first_statement()
 	end_statement = start_statement.get_next()
+	assert(isinstance(start_statement, parse_classes.Assignment))
+	assert(isinstance(end_statement, parse_classes.Assignment) or end_statement is None)
 
 	cur_max = 1
 	max_max = 1
@@ -208,29 +235,25 @@ def get_step_json(program):
 
 # remove single_list == remove the last loop statement check
 def remove_singlelist_from_listoflist(listoflist):
-	if type(listoflist) == int:
+	if isinstance(listoflist, int):
 		return listoflist
-	elif type(listoflist) == list:
+	elif isinstance(listoflist, list):
 		return_list = []
 		for i in listoflist:
-			if type(i) == list and len(i) == 1:
+			if isinstance(i,list) and len(i) == 1:
 				continue
 			return_list.append(remove_singlelist_from_listoflist(i))
 		return return_list
-
-
-def remove_element_from_listoflist(items, while_statement_single_list):
-	if isinstance(items, int):
-		return items
-	elif isinstance(items, list):
-		if items == while_statement_single_list:
-			return None
-		removed_list = []
-		for i in items:
-			if (remove_element_from_listoflist(i, while_statement_single_list) != None):
-				removed_list.append(remove_element_from_listoflist(i, while_statement_single_list))
-		return removed_list
-
+def remove_singlelist_from_listoflist_integrated(listoflist_integrated):
+	if isinstance(listoflist_integrated, dict):
+		return listoflist_integrated
+	elif isinstance(listoflist_integrated, list):
+		return_list = []
+		for i in listoflist_integrated:
+			if isinstance(i,list) and len(i) == 1:
+				continue
+			return_list.append(remove_singlelist_from_listoflist_integrated(i))
+		return return_list
 
 # remove if_else_lines from listoflist
 def remove_if_else_lines_from_listoflist(if_else_lines, listoflist):
@@ -243,6 +266,18 @@ def remove_if_else_lines_from_listoflist(if_else_lines, listoflist):
 				return_list.append(remove_if_else_lines_from_listoflist(if_else_lines, i))
 			elif isinstance(i, int):
 				if i not in if_else_lines:
+					return_list.append(i)
+		return return_list
+def remove_if_else_lines_from_listoflist_integrated(if_else_lines, listoflist_integrated):
+	if all(isinstance(item, dict) for item in listoflist_integrated):
+		return [x for x in listoflist_integrated if x['line_no'] not in if_else_lines]
+	else:
+		return_list = []
+		for i in listoflist_integrated:
+			if isinstance(i, list):
+				return_list.append(remove_if_else_lines_from_listoflist_integrated(if_else_lines, i))
+			elif isinstance(i, dict):
+				if i['line_no'] not in if_else_lines:
 					return_list.append(i)
 		return return_list
 
@@ -338,5 +373,58 @@ def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
 	return eval(result)
 
 
-def parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple, tab_dict: dict, grid_indent: dict):
-	return parse_classes.Program(TupleOfIntAndTuple, tab_dict, grid_indent)
+def parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple_integrated, tab_dict: dict, grid_indent: dict, Pytracker_outIO: StringIO):
+	return parse_classes.Program(TupleOfIntAndTuple_integrated, tab_dict, grid_indent, Pytracker_outIO)
+
+def integrate_listoflist_with_local_variables(listoflist, all_local_variables):
+	# yielder for local_variables and listoflist
+	def yield_locals():
+		for i in all_local_variables:
+			yield i
+	def listoflist_yield(listoflist):
+		if isinstance(listoflist, int):
+			yield listoflist
+		elif isinstance(listoflist, list):
+			for i in listoflist:
+				yield from listoflist_yield(i)
+	
+	# map method
+	def map(line_no, local_variables):
+		return {'line_no': line_no, "local_variables": local_variables}
+	
+	# main integration method
+	def integration(listoflist):
+		if isinstance(listoflist, int):
+			return map(listoflist, next(locals_iterator))
+		elif isinstance(listoflist, list):
+			return_list = []
+			for i in listoflist:
+				return_list.append(integration(i))
+			return return_list
+	
+	# check listoflist length
+	def listoflist_len(listoflist):
+		if all(isinstance(i, int) for i in listoflist):
+			return len(listoflist)
+		else:
+			length = 0
+			for i in listoflist:
+				if isinstance(i, int):
+					length += 1
+				if isinstance(i, list):
+					length += listoflist_len(i)
+			return length
+		
+	assert(listoflist_len(listoflist) == len(all_local_variables))
+	locals_iterator = yield_locals()
+	
+	return integration(listoflist)
+
+def get_general_steps(info):
+	if isinstance(info, dict):
+		return info['line_no']
+	elif isinstance(info, tuple):
+		return_list = []
+		for i in info[1]:
+		    return_list.append(get_general_steps(i))
+		return return_list
