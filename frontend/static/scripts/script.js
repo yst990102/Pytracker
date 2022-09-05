@@ -17,6 +17,7 @@ var prev_while_depth = 0;
 var cur_line_num = 0;
 var line_arrow_list = [];
 var line_num_list = [];
+var local_variables_list = [];
 
 let editorlib = {
     init() {
@@ -138,12 +139,14 @@ $("#codeSubmit").click(() => {
 
             var prev_var_div = $("#prev_var");
             prev_var_div.append(
-                '<p class="prev_var_text">Previous variables</p>'
+                '<p class="prev_var_text">Previous variables</p>' +
+                '<table id="prev_var_table"></table>'
             )
                 
             var next_var_dix = $("#curr_var");
             next_var_dix.append(
-                '<p class="curr_var_text">Current variables</p>'
+                '<p class="curr_var_text">Current variables</p>' +
+                '<table id="curr_var_table"></table>'
             )
 
             console.log(data)
@@ -632,6 +635,34 @@ function get_next() {
             });
             get_next();
         }
+        console.log(res["list"][count]['local_variables'])
+        local_variables_list.push(res["list"][count]['local_variables'])
+        console.log(local_variables_list)
+
+        if (local_variables_list.length > 1) {
+            var prev_table = $("#prev_var_table");
+            prev_table.empty();
+            for (const [key, value] of Object.entries(local_variables_list[local_variables_list.length - 2])) {
+                console.log(key, value)
+                prev_table.append(
+                    '<tr><td style="white-space: pre;">' + key + '</td>' +
+                    '<td style="white-space: pre;">' + value + '</td>' +
+                    '</tr>'
+                )
+            }
+        }
+
+        var curr_table = $("#curr_var_table");
+        curr_table.empty();
+        for (const [key, value] of Object.entries(res["list"][count]['local_variables'])) {
+            console.log(key, value)
+            curr_table.append(
+                '<tr><td style="white-space: pre;">' + key + '</td>' +
+                '<td style="white-space: pre;">' + value + '</td>' +
+                '</tr>'
+            )
+        }
+
         if (prev_end != line_num_list[line_num_list.length - 1]) {
             var line_num_arrow = "arr" + prev_end
             line_num_list.push(prev_end);
