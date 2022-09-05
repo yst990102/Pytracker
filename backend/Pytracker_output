@@ -1,0 +1,8 @@
+(1): a = 10
+local_variables == {}
+(2): b = 20
+local_variables == {}
+(3): if a == b:
+local_variables == {}
+(6): 	print(b)
+local_variables == {}

@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
     height: 100%;
     overflow: visible;
     min-width: 120px;
@@ -86,7 +87,7 @@ html, body {
 .editor_btn_prev {
     float: right;
     position: relative;
-    display:flex;
+    display: flex;
     flex-direction: column;
     padding: 6px 16px;
     margin-top: 16px;
@@ -100,7 +101,7 @@ html, body {
 .editor_btn_next {
     float: right;
     position: relative;
-    display:flex;
+    display: flex;
     flex-direction: column;
     padding: 6px 16px;
     margin-top: 16px;

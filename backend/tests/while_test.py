@@ -539,7 +539,136 @@ print(odd_sum)
 		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [1, 2, 3, [4, 5, [6, 8, 11], [6, 10, 11], [6, 8, 11], [6, 10, 11], 18], [4, 5, [6, 10, 11], [6, 8, 11], [6, 10, 11], [6, 8, 11], 18], 20, 21])
-		assert (step_json == {"d": 7, "list": [{"type": "step", "start": 0, "end": 1}, {"type": "step", "start": 1, "end": 2}, {"type": "step", "start": 2, "end": 3}, {"type": "step", "start": 3, "end": 4}, {"type": "circle", "start": 4, "iteration": 1}, {"type": "while_start", "depth": -1}, {"type": "step", "start": 4, "end": 5}, {"type": "step", "start": 5, "end": 6}, {"type": "circle", "start": 6, "iteration": 1}, {"type": "while_start", "depth": -1}, {"type": "step", "start": 6, "end": 8}, {"type": "step", "start": 8, "end": 11}, {"type": "circle", "start": 6, "iteration": 4}, {"type": "step", "start": 6, "end": 10}, {"type": "step", "start": 10, "end": 11}, {"type": "while_end", "start": 6, "end": 11}, {"type": "step", "start": 11, "end": 18}, {"type": "circle", "start": 4, "iteration": 2}, {"type": "step", "start": 4, "end": 5}, {"type": "step", "start": 5, "end": 6}, {"type": "circle", "start": 6, "iteration": 1}, {"type": "while_start", "depth": -1}, {"type": "step", "start": 6, "end": 10}, {"type": "step", "start": 10, "end": 11}, {"type": "circle", "start": 6, "iteration": 4}, {"type": "step", "start": 6, "end": 8}, {"type": "step", "start": 8, "end": 11}, {"type": "while_end", "start": 6, "end": 11}, {"type": "step", "start": 11, "end": 18}, {"type": "while_end", "start": 4, "end": 18}, {"type": "step", "start": 18, "end": 20}, {"type": "step", "start": 20, "end": 21}]})
+		assert (step_json == {
+		    "d":
+		        7,
+		    "list": [{
+		        "type": "step",
+		        "start": 0,
+		        "end": 1
+		    }, {
+		        "type": "step",
+		        "start": 1,
+		        "end": 2
+		    }, {
+		        "type": "step",
+		        "start": 2,
+		        "end": 3
+		    }, {
+		        "type": "step",
+		        "start": 3,
+		        "end": 4
+		    }, {
+		        "type": "circle",
+		        "start": 4,
+		        "iteration": 1
+		    }, {
+		        "type": "while_start",
+		        "depth": -1
+		    }, {
+		        "type": "step",
+		        "start": 4,
+		        "end": 5
+		    }, {
+		        "type": "step",
+		        "start": 5,
+		        "end": 6
+		    }, {
+		        "type": "circle",
+		        "start": 6,
+		        "iteration": 1
+		    }, {
+		        "type": "while_start",
+		        "depth": -1
+		    }, {
+		        "type": "step",
+		        "start": 6,
+		        "end": 8
+		    }, {
+		        "type": "step",
+		        "start": 8,
+		        "end": 11
+		    }, {
+		        "type": "circle",
+		        "start": 6,
+		        "iteration": 4
+		    }, {
+		        "type": "step",
+		        "start": 6,
+		        "end": 10
+		    }, {
+		        "type": "step",
+		        "start": 10,
+		        "end": 11
+		    }, {
+		        "type": "while_end",
+		        "start": 6,
+		        "end": 11
+		    }, {
+		        "type": "step",
+		        "start": 11,
+		        "end": 18
+		    }, {
+		        "type": "circle",
+		        "start": 4,
+		        "iteration": 2
+		    }, {
+		        "type": "step",
+		        "start": 4,
+		        "end": 5
+		    }, {
+		        "type": "step",
+		        "start": 5,
+		        "end": 6
+		    }, {
+		        "type": "circle",
+		        "start": 6,
+		        "iteration": 1
+		    }, {
+		        "type": "while_start",
+		        "depth": -1
+		    }, {
+		        "type": "step",
+		        "start": 6,
+		        "end": 10
+		    }, {
+		        "type": "step",
+		        "start": 10,
+		        "end": 11
+		    }, {
+		        "type": "circle",
+		        "start": 6,
+		        "iteration": 4
+		    }, {
+		        "type": "step",
+		        "start": 6,
+		        "end": 8
+		    }, {
+		        "type": "step",
+		        "start": 8,
+		        "end": 11
+		    }, {
+		        "type": "while_end",
+		        "start": 6,
+		        "end": 11
+		    }, {
+		        "type": "step",
+		        "start": 11,
+		        "end": 18
+		    }, {
+		        "type": "while_end",
+		        "start": 4,
+		        "end": 18
+		    }, {
+		        "type": "step",
+		        "start": 18,
+		        "end": 20
+		    }, {
+		        "type": "step",
+		        "start": 20,
+		        "end": 21
+		    }]
+		})
 
 	def test_while_in_ifelse(self):
 		usercode = """a = 0

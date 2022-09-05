@@ -49,6 +49,7 @@ Sample use, programmatically
 """
 __all__ = ['Trace', 'CoverageResults']
 
+from io import StringIO
 import linecache
 import os
 import sys
@@ -124,10 +125,17 @@ class Trace:
 	def run(self, cmd):
 		import __main__
 		dict = __main__.__dict__
-		self.initial_locals_keys = list(dict.keys())
-		self.initial_globals_keys = list(dict.keys())
-		global stored_local_variables
-		stored_local_variables = []
+		
+		self.initial_locals_keys = set(dict.keys())
+		self.initial_globals_keys = set(dict.keys())
+		
+		global line_no_list, line_content_list, local_variable_list
+		line_no_list = []
+		line_content_list = []
+		local_variable_list = []
+		global execution_processes
+		execution_processes = []
+		
 		self.runctx(cmd, dict, dict)
 
 	def runctx(self, cmd, globals=None, locals=None):
@@ -140,11 +148,32 @@ class Trace:
 		if not self.donothing:
 			threading.settrace(self.globaltrace)
 			sys.settrace(self.globaltrace)
+		
+		global Pytracker_outIO
+		Pytracker_outIO = StringIO()
+		# redirect the stdout
+		old_stdout = sys.stdout
+		sys.stdout = Pytracker_outIO
+		
 		try:
 			exec(cmd, globals, locals)
 		except:
 			raise
 		finally:
+			sys.stdout = old_stdout
+			
+			local_variables = {}
+			local_variables_set_diff = list(locals.keys() - self.initial_locals_keys)
+			for key in local_variables_set_diff:
+				local_variables[key] = locals[key]
+			local_variable_list.append(local_variables)
+			del local_variable_list[0]
+			
+			assert(len(line_no_list) == len(line_content_list) == len(local_variable_list))
+			for i in range(len(line_no_list)):
+				line_info = {'line_no': line_no_list[i], "line_content": line_content_list[i], "local_variables": local_variable_list[i]}
+				execution_processes.append(line_info)
+			
 			if not self.donothing:
 				sys.settrace(None)
 				threading.settrace(None)
@@ -231,6 +260,8 @@ class Trace:
 				return self.localtrace
 
 	def localtrace_trace_and_count(self, frame, why, arg):
+		if frame.f_code.co_name == "input":
+			return self.localtrace
 		if why == "line":
 			# record the file name and line number of every trace
 			lineno = frame.f_lineno
@@ -241,24 +272,24 @@ class Trace:
 			frame_globals = frame.f_globals
 
 			local_variables = {}
-			for key, value in frame_locals.items():
-				if key not in self.initial_locals_keys:
-					local_variables.update({key: value})
+			local_variables_set_diff = list(frame_locals.keys() - self.initial_locals_keys)
+			for key in local_variables_set_diff:
+				local_variables[key] = frame_locals[key]
+			# global_variables = {}
+			# global_variables_set_diff = list(frame_globals.keys() - self.initial_globals_keys)
+			# for key in global_variables_set_diff:
+			# 	global_variables[key] = frame_globals[key]
 
 			if self.start_time:
 				print('%.2f' % (_time() - self.start_time), end=' ')
 
-			if self.outfile:
-				try:
-					# print("(%d): %s" % (lineno, linecache.getline(self.usercode_file, lineno)), end='', file=open(self.outfile, "a"))
-					print("(%d): %s" % (lineno, self.usercode.splitlines()[lineno - 1]), end='\n', file=open(self.outfile, "a"))
-					print(f"local_variables == {local_variables}", file=open(self.outfile, "a"))
-					stored_local_variables.append(local_variables)
-				except OSError as err:
-					print("Can't save localtrace_trace_and_count output because %s" % err, file=sys.stderr)
-			else:
-				# print("(%d): %s" % (lineno, linecache.getline(self.usercode_file, lineno)), end='')
-				print("(%d): %s" % (lineno, self.usercode.splitlines()[lineno - 1]), end='\n')
+			try:
+				line_no_list.append(lineno)
+				line_content_list.append(self.usercode.splitlines()[lineno - 1])
+				local_variable_list.append(local_variables)
+			except OSError as err:
+				print("Can't save localtrace_trace_and_count output because %s" % err, file=sys.stderr)
+
 		return self.localtrace
 
 	def localtrace_trace(self, frame, why, arg):

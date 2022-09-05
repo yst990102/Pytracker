@@ -5,6 +5,7 @@ backend_absolute_path = str(pathlib.Path(__file__).parent.parent.resolve())
 
 
 class Test_For_Statement():
+
 	def test_simple_forloop(self):
 		usercode = """for i in range(5):
 	print("Here")
@@ -19,7 +20,26 @@ class Test_For_Statement():
 		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [[1, 2], [1, 2], [1, 2], [1, 2], [1, 2]])
-		assert (step_json == {"d": 2, "list": [{"type": "step", "start": 0, "end": 1}, {"type": "step", "start": 1, "end": 2}, {"type": "circle", "start": 1, "iteration": 5}, {"type": "step", "start": 1, "end": 2}]})
+		assert (step_json == {
+		    "d": 2,
+		    "list": [{
+		        "type": "step",
+		        "start": 0,
+		        "end": 1
+		    }, {
+		        "type": "step",
+		        "start": 1,
+		        "end": 2
+		    }, {
+		        "type": "circle",
+		        "start": 1,
+		        "iteration": 5
+		    }, {
+		        "type": "step",
+		        "start": 1,
+		        "end": 2
+		    }]
+		})
 
 	def test_complex_forloop(self):
 		usercode = """for a in range(4):
@@ -38,7 +58,26 @@ class Test_For_Statement():
 		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [[1, 3], [1, 5], [1, 3], [1, 5]])
-		assert (step_json == {"d": 2, "list": [{"type": "step", "start": 0, "end": 1}, {"type": "step", "start": 1, "end": 3}, {"type": "circle", "start": 1, "iteration": 4}, {"type": "step", "start": 1, "end": 5}]})
+		assert (step_json == {
+		    "d": 2,
+		    "list": [{
+		        "type": "step",
+		        "start": 0,
+		        "end": 1
+		    }, {
+		        "type": "step",
+		        "start": 1,
+		        "end": 3
+		    }, {
+		        "type": "circle",
+		        "start": 1,
+		        "iteration": 4
+		    }, {
+		        "type": "step",
+		        "start": 1,
+		        "end": 5
+		    }]
+		})
 
 	# TODO: Iteration Number Error
 	def test_nested_forloop(self):
@@ -68,7 +107,7 @@ print(odd_sum)
 		# 			odd_sum += (i + j)
 		# 		j += 1
 		# 	i += 1
-			
+
 		# print(even_sum)
 		# print(odd_sum)
 

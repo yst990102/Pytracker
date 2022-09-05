@@ -155,11 +155,4 @@ print(f"b == {b}")"""
 		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [1])
-		assert (step_json == {
-		    "d": 1,
-		    "list": [{
-		        "type": "step",
-		        "start": 0,
-		        "end": 1
-		    }]
-		})
+		assert (step_json == {"d": 1, "list": [{"type": "step", "start": 0, "end": 1}]})
