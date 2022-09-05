@@ -635,32 +635,35 @@ function get_next() {
             });
             get_next();
         }
-        console.log(res["list"][count]['local_variables'])
-        local_variables_list.push(res["list"][count]['local_variables'])
-        console.log(local_variables_list)
 
-        if (local_variables_list.length > 1) {
-            var prev_table = $("#prev_var_table");
-            prev_table.empty();
-            for (const [key, value] of Object.entries(local_variables_list[local_variables_list.length - 2])) {
+        if (res["list"][count]["type"] == "step" || res["list"][count]["type"] == "circle") {
+            console.log(res["list"][count]['local_variables'])
+            local_variables_list.push(res["list"][count]['local_variables'])
+            console.log(local_variables_list)
+    
+            if (local_variables_list.length > 1) {
+                var prev_table = $("#prev_var_table");
+                prev_table.empty();
+                for (const [key, value] of Object.entries(local_variables_list[local_variables_list.length - 2])) {
+                    console.log(key, value)
+                    prev_table.append(
+                        '<tr><td style="white-space: pre;">' + key + '</td>' +
+                        '<td style="white-space: pre;">' + value + '</td>' +
+                        '</tr>'
+                    )
+                }
+            }
+    
+            var curr_table = $("#curr_var_table");
+            curr_table.empty();
+            for (const [key, value] of Object.entries(local_variables_list[local_variables_list.length - 1])) {
                 console.log(key, value)
-                prev_table.append(
+                curr_table.append(
                     '<tr><td style="white-space: pre;">' + key + '</td>' +
                     '<td style="white-space: pre;">' + value + '</td>' +
                     '</tr>'
                 )
             }
-        }
-
-        var curr_table = $("#curr_var_table");
-        curr_table.empty();
-        for (const [key, value] of Object.entries(res["list"][count]['local_variables'])) {
-            console.log(key, value)
-            curr_table.append(
-                '<tr><td style="white-space: pre;">' + key + '</td>' +
-                '<td style="white-space: pre;">' + value + '</td>' +
-                '</tr>'
-            )
         }
 
         if (prev_end != line_num_list[line_num_list.length - 1]) {
