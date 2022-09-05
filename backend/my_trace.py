@@ -136,7 +136,7 @@ class Trace:
 		global execution_processes
 		execution_processes = []
 		
-		self.runctx(cmd, dict, dict)
+		self.runctx(cmd, dict.copy(), dict.copy())
 
 	def runctx(self, cmd, globals=None, locals=None):
 		self.usercode = cmd
