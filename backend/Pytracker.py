@@ -23,14 +23,17 @@ def trace_execution_tracking(execution_processes):
 
 	all_line_nos = []
 	all_local_variables = []
+	all_stdouts = []
 
 	for process in execution_processes:
 		line_no = process['line_no']
 		line_content = process["line_content"]
 		local_variables = process["local_variables"]
+		stdout = process["stdout"]
 
 		all_line_nos.append(line_no)
 		all_local_variables.append(local_variables)
+		all_stdouts.append(stdout)
 
 		# CASE 1: IF_STATEMENT
 		if_search = re.search(r"if\s*(.*)\s*:", line_content)
@@ -52,8 +55,8 @@ def trace_execution_tracking(execution_processes):
 
 	# parse str_ListOfList into ListOfList
 	listoflist = hf.parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict)
-	# integrate listoflist and all_local_variables
-	listoflist_integrated = hf.integrate_listoflist_with_local_variables(listoflist, all_local_variables)
+	# integrate listoflist and all_local_variables and all_stdouts
+	listoflist_integrated = hf.integrate_listoflist_with_local_variables(listoflist, all_local_variables, all_stdouts)
 	
 	return listoflist, listoflist_integrated, tab_dict, while_lines, if_else_lines
 
@@ -81,6 +84,7 @@ def backend_main(*test_signals, usercode=None):
 
 	if SIG_FILE_IO_OFF not in test_signals:
 		hf.clean_content_in_file(backend_absolute_path + "/" + "listoflist")
+		hf.clean_content_in_file(backend_absolute_path + "/" + "listoflist_integrated")
 		hf.clean_content_in_file(backend_absolute_path + "/" + "TupleOfIntAndTuple")
 		hf.clean_content_in_file(backend_absolute_path + "/" + "step_json.json")
 
@@ -122,6 +126,9 @@ def backend_main(*test_signals, usercode=None):
 		with open(backend_absolute_path + "/" + "listoflist", 'w') as listoflist_out:
 			listoflist_out.write(str(listoflist))
 		listoflist_out.close()
+		with open(backend_absolute_path + "/" + "listoflist_integrated", 'w') as listoflist_integrated_out:
+			listoflist_integrated_out.write(str(listoflist_integrated))
+		listoflist_integrated_out.close()
 
 	if SIG_TIME_COST in test_signals:
 		listoflist_end_time = time.time()
@@ -145,7 +152,7 @@ def backend_main(*test_signals, usercode=None):
 
 	grid_indent = hf.tabdict_to_gridindent(tab_dict, while_lines)
 	# then convert into Program
-	program_integrated = hf.parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple_integrated, tab_dict, grid_indent, my_trace.Pytracker_outIO)
+	program_integrated = hf.parse_convert_TupleOfIntAndTuple_integrated_into_Program(TupleOfIntAndTuple_integrated, tab_dict, grid_indent)
 
 	# TEST: all available print ways testing for program
 	# program.print_statements()

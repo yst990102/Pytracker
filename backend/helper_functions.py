@@ -191,8 +191,8 @@ def get_step_json(program:parse_classes.Program):
 			if stack != []:
 				cur_or_max = True
 			entered_iteration = end_statement.path[-1]
-			step_list.append({"type": "step", "start": start_location, "end": end_location, "local_variables": end_statement.local_variables})
-			step_list.append({"type": "circle", "start": end_location, "iteration": entered_iteration.iteration_num, "local_variables": end_statement.local_variables})
+			step_list.append({"type": "step", "start": start_location, "end": end_location, "local_variables": end_statement.local_variables, "stdout": end_statement.stdout})
+			step_list.append({"type": "circle", "start": end_location, "iteration": entered_iteration.iteration_num, "local_variables": end_statement.local_variables, "stdout": end_statement.stdout})
 			step_list.append({"type": "while_start", "depth": -1})
 			stack.append(cur_max)
 			cur_max += 1
@@ -200,7 +200,7 @@ def get_step_json(program:parse_classes.Program):
 		elif len(end_statement.path) < len(start_statement.path):
 			ended_iteration = start_statement.path[-1]
 			step_list.append({"type": "while_end", "start": ended_iteration.get_first_inner_step().line_no, "end": ended_iteration.get_last_inner_step().line_no})
-			step_list.append({"type": "step", "start": start_location, "end": end_location, "local_variables": end_statement.local_variables})
+			step_list.append({"type": "step", "start": start_location, "end": end_location, "local_variables": end_statement.local_variables, "stdout": end_statement.stdout})
 			cur_max = stack.pop()
 			cur_or_max = False
 		else:
@@ -210,21 +210,21 @@ def get_step_json(program:parse_classes.Program):
 				if start_while_line_no == end_while_line_no:
 					# CASE 03: enter a new iteration which from same while-loop
 					entered_iteration = end_statement.path[-1]
-					step_list.append({"type": "circle", "start": end_location, "iteration": entered_iteration.iteration_num, "local_variables": end_statement.local_variables})
+					step_list.append({"type": "circle", "start": end_location, "iteration": entered_iteration.iteration_num, "local_variables": end_statement.local_variables, "stdout": end_statement.stdout})
 					cur_max = (cur_max + 1) if cur_or_max == True else (max_max + 1)
 				else:
 					# CASE 04: end current while-loop, then start and enter a parallel while-loop,
 					ended_iteration = start_statement.path[-1]
 					step_list.append({"type": "while_end", "start": ended_iteration.get_first_inner_step().line_no, "end": ended_iteration.get_last_inner_step().line_no})
-					step_list.append({"type": "step", "start": start_location, "end": end_location, "local_variables": end_statement.local_variables})
+					step_list.append({"type": "step", "start": start_location, "end": end_location, "local_variables": end_statement.local_variables, "stdout": end_statement.stdout})
 					entered_iteration = end_statement.path[-1]
-					step_list.append({"type": "circle", "start": end_location, "iteration": entered_iteration.iteration_num})
+					step_list.append({"type": "circle", "start": end_location, "iteration": entered_iteration.iteration_num, "local_variables": end_statement.local_variables, "stdout": end_statement.stdout})
 					step_list.append({"type": "while_start", "depth": -1})
 					cur_max = stack.pop()
 					cur_or_max = False
 			# CASE 05: normal step
 			else:
-				step_list.append({"type": "step", "start": start_location, "end": end_location, "local_variables": end_statement.local_variables})
+				step_list.append({"type": "step", "start": start_location, "end": end_location, "local_variables": end_statement.local_variables, "stdout": end_statement.stdout})
 		max_max = max(cur_max, max_max)
 		start_statement = start_statement.get_next()
 		end_statement = end_statement.get_next()
@@ -373,13 +373,16 @@ def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
 	return eval(result)
 
 
-def parse_convert_TupleOfIntTuple_into_Program(TupleOfIntAndTuple_integrated, tab_dict: dict, grid_indent: dict, Pytracker_outIO: StringIO):
-	return parse_classes.Program(TupleOfIntAndTuple_integrated, tab_dict, grid_indent, Pytracker_outIO)
+def parse_convert_TupleOfIntAndTuple_integrated_into_Program(TupleOfIntAndTuple_integrated, tab_dict: dict, grid_indent: dict):
+	return parse_classes.Program(TupleOfIntAndTuple_integrated, tab_dict, grid_indent)
 
-def integrate_listoflist_with_local_variables(listoflist, all_local_variables):
+def integrate_listoflist_with_local_variables(listoflist, all_local_variables, all_stdouts):
 	# yielder for local_variables and listoflist
 	def yield_locals():
 		for i in all_local_variables:
+			yield i
+	def yield_stdouts():
+		for i in all_stdouts:
 			yield i
 	def listoflist_yield(listoflist):
 		if isinstance(listoflist, int):
@@ -389,13 +392,13 @@ def integrate_listoflist_with_local_variables(listoflist, all_local_variables):
 				yield from listoflist_yield(i)
 	
 	# map method
-	def map(line_no, local_variables):
-		return {'line_no': line_no, "local_variables": local_variables}
+	def map(line_no, local_variables, stdout):
+		return {'line_no': line_no, "local_variables": local_variables, "stdout": stdout}
 	
 	# main integration method
 	def integration(listoflist):
 		if isinstance(listoflist, int):
-			return map(listoflist, next(locals_iterator))
+			return map(listoflist, next(locals_iterator), next(stdout_iterator))
 		elif isinstance(listoflist, list):
 			return_list = []
 			for i in listoflist:
@@ -417,6 +420,7 @@ def integrate_listoflist_with_local_variables(listoflist, all_local_variables):
 		
 	assert(listoflist_len(listoflist) == len(all_local_variables))
 	locals_iterator = yield_locals()
+	stdout_iterator = yield_stdouts()
 	
 	return integration(listoflist)
 
@@ -426,5 +430,5 @@ def get_general_steps(info):
 	elif isinstance(info, tuple):
 		return_list = []
 		for i in info[1]:
-		    return_list.append(get_general_steps(i))
+			return_list.append(get_general_steps(i))
 		return return_list

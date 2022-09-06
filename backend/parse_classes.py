@@ -142,6 +142,7 @@ class Assignment(Statement):
 		self.info = info
 		self.line_no = info['line_no']
 		self.local_variables = info['local_variables']
+		self.stdout = info['stdout']
 
 	def print_info(self) -> None:
 		print(f"==== {self.__class__.__name__} {hex(id(self))} =====")
@@ -158,17 +159,15 @@ class Assignment(Statement):
 
 class Program():
 
-	def __init__(self, TupleOfIntAndTuple: tuple, tab_dict: dict, grid_indent: dict, Pytracker_outIO: StringIO) -> None:
-		self.TupleOfIntAndTuple = TupleOfIntAndTuple
+	def __init__(self, TupleOfIntAndTuple_integrated: tuple, tab_dict: dict, grid_indent: dict) -> None:
+		self.TupleOfIntAndTuple_integrated = TupleOfIntAndTuple_integrated
 		self.tab_dict = tab_dict
 		self.grid_indent = grid_indent  # stored but not in use
 
 		self.statements = []
 		self.while_loops = []  # classify iterations by while_line, not in use
 
-		self.Pytracker_outIO = Pytracker_outIO
-
-		for element in self.TupleOfIntAndTuple[1]:
+		for element in self.TupleOfIntAndTuple_integrated[1]:
 			if isinstance(element, dict):
 				new_statement = Assignment(element, self, [self])
 			elif isinstance(element, tuple):
