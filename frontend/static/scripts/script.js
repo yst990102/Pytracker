@@ -140,13 +140,13 @@ $("#codeSubmit").click(() => {
             var prev_var_div = $("#prev_var");
             prev_var_div.append(
                 '<p class="prev_var_text">Previous variables</p>' +
-                '<table id="prev_var_table"></table>'
+                '<table class="variable_table" id="prev_var_table"></table>'
             )
                 
             var next_var_dix = $("#curr_var");
             next_var_dix.append(
                 '<p class="curr_var_text">Current variables</p>' +
-                '<table id="curr_var_table"></table>'
+                '<table class="variable_table" id="curr_var_table"></table>'
             )
 
             console.log(data)
@@ -182,6 +182,7 @@ $(document).on("click", "#stepbtns .editor_btn_next", function () {
     console.log("NEXT CLICK")
     console.log("Instructions = ", instructions);
     get_next();
+    console.log(local_variables_list)
     console.log("DEPTH = ", depth)
     const height = $(window).height();
     const width = $(window).width();
@@ -207,6 +208,7 @@ $(document).on("click", "#stepbtns .editor_btn_prev", function () {
             recent[recent.length - 1].remove();
             recent.pop();
             instructions.pop();
+            local_variables_list.pop()
 
             // Remove circle and iteration number
             recent[recent.length - 1].remove();
@@ -217,6 +219,7 @@ $(document).on("click", "#stepbtns .editor_btn_prev", function () {
             console.log(depth)
             $("#" + it_cell_id).remove();
             instructions.pop();
+            local_variables_list.pop()
 
             // Remove dashed line
             const dashed_line = instructions[instructions.length - 1];
@@ -238,9 +241,9 @@ $(document).on("click", "#stepbtns .editor_btn_prev", function () {
             count -= 1;
             prev_end = res["list"][count]["end"];
 
-
             if (res["list"][count]["type"] == "circle") {
                 count -= 1;
+                local_variables_list.pop()
             }
         } else if (
             instructions[instructions.length - 1]["type"] == "step" &&
@@ -267,6 +270,7 @@ $(document).on("click", "#stepbtns .editor_btn_prev", function () {
             instructions.pop();
 
             count -= 1;
+            local_variables_list.pop()
         } else if (
             instructions[instructions.length - 1]["type"] == "step" &&
             instructions.length - 2 >= 0 &&
@@ -278,6 +282,7 @@ $(document).on("click", "#stepbtns .editor_btn_prev", function () {
             recent[recent.length - 1].remove();
             recent.pop();
             instructions.pop();
+            local_variables_list.pop()
 
             // Remove while_start
             if (same_depth_while === true) {
@@ -296,6 +301,7 @@ $(document).on("click", "#stepbtns .editor_btn_prev", function () {
             console.log(depth)
             $("#" + it_cell_id).remove();
             instructions.pop();
+            local_variables_list.pop()
 
             // Remove dashed
             prev_end = instructions[instructions.length - 1]["start"];
@@ -339,6 +345,8 @@ $(document).on("click", "#stepbtns .editor_btn_prev", function () {
                 recent.pop();
                 instructions.pop();
                 count -= 3
+                local_variables_list.pop()
+                local_variables_list.pop()
             }
             console.log(instructions)
 
@@ -348,6 +356,7 @@ $(document).on("click", "#stepbtns .editor_btn_prev", function () {
                 recent[recent.length - 1].remove();
                 recent.pop();
                 instructions.pop();
+                local_variables_list.pop()
 
                 if (instructions.length - 2 >= 0 && instructions[instructions.length - 2]["type"] == "while_end") {
                     prev_end = instructions[instructions.length - 1]["start"];
@@ -377,7 +386,39 @@ $(document).on("click", "#stepbtns .editor_btn_prev", function () {
             recent[recent.length - 1].remove();
             recent.pop();
             instructions.pop();
+            local_variables_list.pop()
         }
+        console.log(local_variables_list)
+        var prev_table = $("#prev_var_table");
+        var curr_table = $("#curr_var_table");
+        if (local_variables_list.length > 1) {
+            prev_table.empty();
+            for (const [key, value] of Object.entries(local_variables_list[local_variables_list.length - 2])) {
+                console.log(key, value)
+                prev_table.append(
+                    '<tr><td class="key_var" style="white-space: pre;">' + key + '</td>' +
+                    '<td class="value_var" style="white-space: pre;">' + value + '</td>' +
+                    '</tr>'
+                )
+            }
+        } else {
+            prev_table.empty();
+        }
+        if (local_variables_list.length > 0) {
+            curr_table.empty();
+            for (const [key, value] of Object.entries(local_variables_list[local_variables_list.length - 1])) {
+                console.log(key, value)
+                curr_table.append(
+                    '<tr><td class="key_var" style="white-space: pre;">' + key + '</td>' +
+                    '<td class="value_var" style="white-space: pre;">' + value + '</td>' +
+                    '</tr>'
+                )
+            }
+        } else {
+            prev_table.empty();
+            curr_table.empty();
+        }
+
         console.log("DEPTH = ", depth)
         line_num_list.pop()
         console.log(line_num_list)
@@ -447,6 +488,8 @@ function get_next() {
                 })
             );
             prev_end = res["list"][count]["end"];
+            line_num_list.push(prev_end);
+            local_variables_list.push(res["list"][count]['local_variables'])
             instructions.push(res["list"][count]);
             if (
                 count + 1 < res["list"].length - 1 &&
@@ -484,6 +527,7 @@ function get_next() {
                 "</p>"
             );
             if (res["list"][count]["start"] == prev_end) {
+                line_num_list.pop();
                 recent.push(
                     arrowLine({
                         source: `#${CSS.escape(p)}`,
@@ -581,6 +625,7 @@ function get_next() {
                     forceDirection: "horizontal",
                 })
             );
+            local_variables_list.push(res["list"][count]['local_variables'])
             instructions.push(res["list"][count]);
             get_next();
         } else if (res["list"][count]["type"] == "while_start") {
@@ -638,7 +683,6 @@ function get_next() {
 
         if (res["list"][count]["type"] == "step" || res["list"][count]["type"] == "circle") {
             console.log(res["list"][count]['local_variables'])
-            local_variables_list.push(res["list"][count]['local_variables'])
             console.log(local_variables_list)
     
             if (local_variables_list.length > 1) {
@@ -647,8 +691,8 @@ function get_next() {
                 for (const [key, value] of Object.entries(local_variables_list[local_variables_list.length - 2])) {
                     console.log(key, value)
                     prev_table.append(
-                        '<tr><td style="white-space: pre;">' + key + '</td>' +
-                        '<td style="white-space: pre;">' + value + '</td>' +
+                        '<tr><td class="key_var" style="white-space: pre;">' + key + '</td>' +
+                        '<td class="value_var" style="white-space: pre;">' + value + '</td>' +
                         '</tr>'
                     )
                 }
@@ -659,29 +703,25 @@ function get_next() {
             for (const [key, value] of Object.entries(local_variables_list[local_variables_list.length - 1])) {
                 console.log(key, value)
                 curr_table.append(
-                    '<tr><td style="white-space: pre;">' + key + '</td>' +
-                    '<td style="white-space: pre;">' + value + '</td>' +
+                    '<tr><td class="key_var" style="white-space: pre;">' + key + '</td>' +
+                    '<td class="value_var" style="white-space: pre;">' + value + '</td>' +
                     '</tr>'
                 )
             }
         }
-
-        if (prev_end != line_num_list[line_num_list.length - 1]) {
-            var line_num_arrow = "arr" + prev_end
-            line_num_list.push(prev_end);
-            line_arrow_list[line_arrow_list.length - 1].remove();
-            line_arrow_list.pop();
-            line_arrow_list.push(
-                arrowLine({
-                    source: `#${CSS.escape(line_num_arrow)}`,
-                    destination: `#${CSS.escape(line_num_arrow)}`,
-                    sourcePosition: "middleLeft",
-                    destinationPosition: "middleRight",
-                    thickness: 1.3,
-                    forceDirection: "horizontal",
-                })
-            )
-        }
+        var line_num_arrow = "arr" + prev_end
+        line_arrow_list[line_arrow_list.length - 1].remove();
+        line_arrow_list.pop();
+        line_arrow_list.push(
+            arrowLine({
+                source: `#${CSS.escape(line_num_arrow)}`,
+                destination: `#${CSS.escape(line_num_arrow)}`,
+                sourcePosition: "middleLeft",
+                destinationPosition: "middleRight",
+                thickness: 1.3,
+                forceDirection: "horizontal",
+            })
+        )
     }
 }
 

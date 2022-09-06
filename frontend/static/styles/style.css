@@ -169,7 +169,6 @@ tr {
 
 .user_display {
     display: flex;
-    height: 100%;
 }
 
 .info {
@@ -210,8 +209,24 @@ tr {
 
 .previous_var {
     width: 50%;
+    overflow-x: auto;
 }
 
 .current_var {
     width: 50%;
+    overflow-x: auto;
+}
+
+.variable_table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.key_var {
+    padding-right: 12px;
+    border-right: 2px solid black;
+}
+
+.value_var {
+    padding-left: 12px;
 }
