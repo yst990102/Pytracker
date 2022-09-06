@@ -18,6 +18,7 @@ var cur_line_num = 0;
 var line_arrow_list = [];
 var line_num_list = [];
 var local_variables_list = [];
+var program_output_list = [];
 
 let editorlib = {
     init() {
@@ -134,7 +135,8 @@ $("#codeSubmit").click(() => {
                 
             var output_div = $("#prog_out");
             output_div.append(
-                '<p class="prog_out_text">Program Output</p>'
+                '<p class="prog_out_text">Program Output</p>' +
+                '<table class="prog_table" id="prog_out_table"></table>'
             )
 
             var prev_var_div = $("#prev_var");
@@ -209,6 +211,7 @@ $(document).on("click", "#stepbtns .editor_btn_prev", function () {
             recent.pop();
             instructions.pop();
             local_variables_list.pop()
+            program_output_list.pop()
 
             // Remove circle and iteration number
             recent[recent.length - 1].remove();
@@ -254,6 +257,7 @@ $(document).on("click", "#stepbtns .editor_btn_prev", function () {
             recent[recent.length - 1].remove();
             recent.pop();
             instructions.pop();
+            program_output_list.pop();
 
             recent[recent.length - 1].remove();
             recent.pop();
@@ -283,6 +287,7 @@ $(document).on("click", "#stepbtns .editor_btn_prev", function () {
             recent.pop();
             instructions.pop();
             local_variables_list.pop()
+            program_output_list.pop()
 
             // Remove while_start
             if (same_depth_while === true) {
@@ -320,6 +325,7 @@ $(document).on("click", "#stepbtns .editor_btn_prev", function () {
                 recent[recent.length - 1].remove();
                 recent.pop();
                 instructions.pop();
+                program_output_list.pop()
 
                 // Remove while_start
                 if (same_depth_while === true) {
@@ -357,6 +363,7 @@ $(document).on("click", "#stepbtns .editor_btn_prev", function () {
                 recent.pop();
                 instructions.pop();
                 local_variables_list.pop()
+                program_output_list.pop()
 
                 if (instructions.length - 2 >= 0 && instructions[instructions.length - 2]["type"] == "while_end") {
                     prev_end = instructions[instructions.length - 1]["start"];
@@ -387,7 +394,29 @@ $(document).on("click", "#stepbtns .editor_btn_prev", function () {
             recent.pop();
             instructions.pop();
             local_variables_list.pop()
+            program_output_list.pop();
         }
+        console.log("stdout", program_output_list)
+        if (program_output_list[program_output_list.length - 1] !== "" && program_output_list.length > 0) {
+            var output_list = program_output_list[program_output_list.length - 1].split(/\r?\n/);
+            var stdout_table = $("#prog_out_table")
+            stdout_table.empty();
+            output_list.forEach(item => {
+                if (item !== "") {
+                    if (program_output_list.length > 0) {
+                        stdout_table.append(
+                            '<tr><td class="prog_arr" style="white-space: pre;"> > </td>' +
+                            '<td class="prog_stdout" style="white-space: pre;">' + item + '</td>' +
+                            '</tr>'
+                        )
+                    }
+                }
+            })
+        } else {
+            var stdout_table = $("#prog_out_table")
+            stdout_table.empty();
+        }
+
         console.log(local_variables_list)
         var prev_table = $("#prev_var_table");
         var curr_table = $("#curr_var_table");
@@ -491,6 +520,25 @@ function get_next() {
             line_num_list.push(prev_end);
             local_variables_list.push(res["list"][count]['local_variables'])
             instructions.push(res["list"][count]);
+            program_output_list.push(res["list"][count]['stdout'])
+
+            if (res["list"][count]['stdout'] !== "") {
+                var output_list = res["list"][count]['stdout'].split(/\r?\n/);
+                var stdout_table = $("#prog_out_table")
+                stdout_table.empty();
+                output_list.forEach(item => {
+                    if (item !== "") {
+                        if (program_output_list.length > 0) {
+                            stdout_table.append(
+                                '<tr><td class="prog_arr" style="white-space: pre;"> > </td>' +
+                                '<td class="prog_stdout" style="white-space: pre;">' + item + '</td>' +
+                                '</tr>'
+                            )
+                        }
+                    }
+                })
+            }
+
             if (
                 count + 1 < res["list"].length - 1 &&
                 res["list"][count + 1]["type"] == "circle" &&

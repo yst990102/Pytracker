@@ -115,7 +115,7 @@ body {
 .line_num {
     padding-right: 8px;
     border-right: 2px solid black;
-    float: right;
+    text-align: right;
 }
 
 .line_content {
@@ -223,11 +223,17 @@ tr {
 }
 
 .key_var {
+    vertical-align: middle;
     padding-right: 12px;
     border-right: 2px solid black;
-    float: right;
+    text-align: right;
 }
 
 .value_var {
     padding-left: 12px;
+}
+
+.prog_table {
+    margin-left: auto;
+    margin-right: auto;
 }
