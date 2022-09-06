@@ -181,7 +181,7 @@ def get_step_json(program:parse_classes.Program):
 	cur_or_max = False
 	stack = []
 
-	step_list = [{"type": "step", "start": 0, "end": start_statement.line_no, "local_variables": start_statement.local_variables}]
+	step_list = [{"type": "step", "start": 0, "end": start_statement.line_no, "local_variables": start_statement.local_variables, "stdout": start_statement.stdout}]
 	while end_statement:
 		start_location = start_statement.line_no
 		end_location = end_statement.line_no
