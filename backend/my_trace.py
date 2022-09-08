@@ -153,6 +153,7 @@ class Trace:
 		global Pytracker_outIO
 		Pytracker_outIO = StringIO()
 		# redirect the stdout
+		global old_stdout
 		old_stdout = sys.stdout
 		sys.stdout = Pytracker_outIO
 		
