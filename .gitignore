@@ -1,11 +1,5 @@
 __pycache__/*
 *.pyc
 *.log
-references/*
-
-test.py
-
-listoflist
-TupleOfIntAndTuple
-step_json.json
 UserCode.py
+test.py
