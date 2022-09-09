@@ -1,3 +1,4 @@
+import os
 from typing import overload
 from flask import Flask, render_template, request
 
@@ -6,12 +7,13 @@ import pathlib
 import builtins
 
 backend_absolute_path = str(pathlib.Path(__file__).resolve().parents[1]) + "/backend"
+frontend_absolute_path = str(pathlib.Path(__file__).resolve().parents[1]) + "/frontend"
 sys.path.insert(0, backend_absolute_path)
 
 import Pytracker
 import feedback_email
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder= frontend_absolute_path + '/templates/')
 
 def input(__prompt: object = ...) -> str:
 	print(f"__prompt = {__prompt}, type = {type(__prompt)}")
@@ -50,4 +52,5 @@ def user_input():
     return render_template('index.html')
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(debug=True, host='0.0.0.0', port=port)
