@@ -309,6 +309,9 @@ def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
 					print(f"{line_no}\t outer break\t {stack}\t {result}")
 		elif line_no == while_lines[0]:
 			if line_no in stack:
+				while stack[:].pop() != line_no:
+					stack.pop()
+					result.append("]")
 				result.append("]")
 				result.append("[")
 				result.append(str(line_no))
@@ -363,6 +366,7 @@ def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
 
 	result = "".join(result)
 	result = result.replace(",]", "],")
+	result = result.replace("],]", "]],")
 
 	try:
 		assert (isBracket_match(result) == True)
