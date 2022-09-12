@@ -171,6 +171,7 @@ tr {
 .user_display {
     display: flex;
     height: 50%;
+    padding-bottom: 150px;
 }
 
 .info {

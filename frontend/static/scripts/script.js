@@ -194,6 +194,10 @@ $(document).on("click", "#stepbtns .editor_btn_next", function () {
 });
 
 $(document).on("click", "#stepbtns .editor_btn_prev", function () {
+    get_prev();
+});
+
+function get_prev() {
     if (count >= 0) {
         count -= 1;
         console.log("PREV CLICK")
@@ -466,7 +470,7 @@ $(document).on("click", "#stepbtns .editor_btn_prev", function () {
             })
         )
     }
-});
+}
 
 function get_next() {
     if (res["list"].length - 1 > count) {
@@ -780,6 +784,28 @@ $(window).resize(function () {
     const svgParent = recent[recent.length - 1].getParentSvgId();
     $("#" + svgParent).attr("height", height);
     $("#" + svgParent).attr("width", width);
+    var line_num_arrow = "arr" + prev_end
+    line_arrow_list[line_arrow_list.length - 1].remove();
+    line_arrow_list.pop();
+    line_arrow_list.push(
+        arrowLine({
+            source: `#${CSS.escape(line_num_arrow)}`,
+            destination: `#${CSS.escape(line_num_arrow)}`,
+            sourcePosition: "middleLeft",
+            destinationPosition: "middleRight",
+            thickness: 1.3,
+            forceDirection: "horizontal",
+        })
+    )
+    var temp_count = count;
+    while (count >= 0) {
+        get_prev();
+    }
+    while (count < temp_count) {
+        get_next();
+    }
+    console.log(count)
+    console.log(temp_count)
 
     console.log(svgParent, height, width);
 });
