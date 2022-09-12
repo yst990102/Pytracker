@@ -779,11 +779,13 @@ function get_next() {
 
 $(window).resize(function () {
     console.log("HERE")
+    /*
     const height = $(window).height();
     const width = $(window).width();
     const svgParent = recent[recent.length - 1].getParentSvgId();
     $("#" + svgParent).attr("height", height);
     $("#" + svgParent).attr("width", width);
+    */
     var line_num_arrow = "arr" + prev_end
     line_arrow_list[line_arrow_list.length - 1].remove();
     line_arrow_list.pop();
@@ -806,8 +808,6 @@ $(window).resize(function () {
     }
     console.log(count)
     console.log(temp_count)
-
-    console.log(svgParent, height, width);
 });
 
 editorlib.init();
