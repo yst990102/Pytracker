@@ -136,19 +136,19 @@ $("#codeSubmit").click(() => {
             var output_div = $("#prog_out");
             output_div.append(
                 '<p class="prog_out_text">Program Output</p>' +
-                '<table class="prog_table" id="prog_out_table"></table>'
+                '<div class="program_output_scroll"><table class="prog_table" id="prog_out_table"></table></div>'
             )
 
             var prev_var_div = $("#prev_var");
             prev_var_div.append(
                 '<p class="prev_var_text">Previous variables</p>' +
-                '<table class="variable_table" id="prev_var_table"></table>'
+                '<div class="prev_var_table_scroll"><table class="variable_table" id="prev_var_table"></table></div>'
             )
                 
             var next_var_dix = $("#curr_var");
             next_var_dix.append(
                 '<p class="curr_var_text">Current variables</p>' +
-                '<table class="variable_table" id="curr_var_table"></table>'
+                '<div class="curr_var_table_scroll"><table class="variable_table" id="curr_var_table"></table></div>'
             )
 
             console.log(data)
