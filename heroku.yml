@@ -2,8 +2,6 @@ build:
   docker:
     web: Dockerfile
 run:
-  web: bundle exec puma -C config/puma.rb
-  worker:
+  web:
     command:
       - python frontend/web.py
-    image: web
