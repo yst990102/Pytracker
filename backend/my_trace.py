@@ -67,7 +67,6 @@ import threading
 # personal import
 from trace import CoverageResults, _Ignore, _modname
 
-
 class Trace:
 
 	def __init__(self, count=1, trace=1, countfuncs=0, countcallers=0, ignoremods=(), ignoredirs=(), infile=None, outfile=None, usercode_file="UserCode.py", timing=False):
@@ -128,6 +127,8 @@ class Trace:
 		
 		self.initial_locals_keys = set(dict.keys())
 		self.initial_globals_keys = set(dict.keys())
+		self.usercode = cmd
+
 		
 		global line_no_list, line_content_list, local_variable_list, stdout_list
 		line_no_list = []
@@ -140,8 +141,6 @@ class Trace:
 		self.runctx(cmd, dict.copy(), dict.copy())
 
 	def runctx(self, cmd, globals=None, locals=None):
-		self.usercode = cmd
-
 		if globals is None:
 			globals = {}
 		if locals is None:

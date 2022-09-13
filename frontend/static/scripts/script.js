@@ -36,19 +36,49 @@ $("#codeSubmit").click(() => {
 });
 
 function frontend_main(){
-    traceback_check();
+    var userinput_list = [];
+    userinput_list = get_prompt_inputs();
+    $.ajax({
+        type: "POST",
+        url: "/userinput",
+        data: JSON.stringify(userinput_list),
+        contentType: "application/json",
+        success: function(data){
+            receive_status = data['receive_status']
+            if (receive_status != true){
+                alert("userinput receive_status failed!!");
+                return false;
+            }
+        },
+        error: function(err) {
+            console.log(err);
+        },
+    });
+
+    // if (traceback_check()){
+    //     analyse_usercode();
+    // }
     analyse_usercode();
 }
 
-// function get_prompt_inputs(){
-//     var usercode = editor.getValue().trim();
-//     var match_regex = /input\s?\(.*\)/g;
-//     var usercode_matched_list = usercode.match(match_regex);
-//     for (let index = 0; index < usercode_matched_list.length; index++) {
-//         var code = usercode_matched_list[index];
-//         console.log({"input_statement": code.match(/\(().*)\)/)});
-//     }
-// }
+function get_prompt_inputs(){
+    var usercode_list = editor.getValue().trim().split('\n');
+    var match_regex = /input\s?\(.*\)/g;
+    var userinput_list = [];
+
+    for (let i = 0; i < usercode_list.length; i++) {
+        // for (let j = 0; j < usercode_matched_list[i].match(/\(.*\)/).length; j++) {
+        //     var input_info = usercode_matched_list[i].match(/\(.*\)/)[j].replace(/\(\"/, "").replace(/\"\)/, "");
+        //     console.log(input_info);
+        // }
+        if (usercode_list[i].match(match_regex)){
+            var userinput = prompt(usercode_list[i], "enter ur value here...");
+            userinput_list.push({"usercode": usercode_list[i], "userinput": userinput});
+        }
+    }
+
+    return userinput_list;
+}
 
 
 function traceback_check(){
@@ -63,6 +93,7 @@ function traceback_check(){
                 alert(data['error_msg']);
                 return false;
             }
+            return true;
         },
         error: function(err) {
             console.log(err);

@@ -13,17 +13,23 @@ frontend_absolute_path = str(
     pathlib.Path(__file__).resolve().parents[1]) + "/frontend"
 sys.path.insert(0, backend_absolute_path)
 
+import my_trace
 import Pytracker
 import feedback_email
 
 app = Flask(__name__, template_folder=frontend_absolute_path + '/templates/')
 
-
 def input(__prompt: object = ...) -> str:
-    print(f"__prompt = {__prompt}, type = {type(__prompt)}")
-    # web.user_input()
-    # return builtins.input(__prompt)
-    return "lol"
+	userinput = next(userinput_iter)
+	return userinput['userinput']
+
+@app.route('/userinput', methods=["POST"])
+def get_userinput_list():
+    if request.method == "POST":
+        global userinput_iter
+        userinput_iter = iter(request.json)
+        return {"receive_status": True}
+    return render_template('index.html')
 
 @app.route('/traceback', methods=["POST"])
 def traceback_checking():
@@ -44,7 +50,7 @@ def home_page():
     if request.method == "POST":
 
         # run backend_main
-        Pytracker.backend_main(usercode=request.json)
+        Pytracker.backend_main(usercode=request.json, userinput_iter=userinput_iter)
 
         # grab the result of listoflist and step_json from global variables
         listoflist = Pytracker.listoflist

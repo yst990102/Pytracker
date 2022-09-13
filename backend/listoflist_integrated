@@ -1,1 +1,1 @@
-[{'line_no': 1, 'local_variables': {'a': 'lol'}, 'stdout': "__prompt = enter a:, type = <class 'str'>\n"}, {'line_no': 2, 'local_variables': {'a': 'lol', 'b': 'lol'}, 'stdout': "__prompt = enter a:, type = <class 'str'>\n"}]
+[{'line_no': 1, 'local_variables': {'a': '23'}, 'stdout': ''}, {'line_no': 2, 'local_variables': {'b': '23', 'a': '23'}, 'stdout': ''}, {'line_no': 3, 'local_variables': {'b': '23', 'a': '23', 'c': '321'}, 'stdout': ''}, {'line_no': 4, 'local_variables': {'b': '23', 'a': '23', 'c': '321', 'd': '132'}, 'stdout': ''}]

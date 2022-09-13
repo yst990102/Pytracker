@@ -1,3 +1,4 @@
+import builtins
 import pathlib
 import sys
 import re
@@ -11,10 +12,17 @@ import helper_functions as hf
 backend_absolute_path  = str(pathlib.Path(__file__).parent.resolve())
 frontend_absolute_path = str(pathlib.Path(__file__).parent.parent.resolve()) + "/frontend"
 sys.path.insert(0, frontend_absolute_path)
+import web
 
 # SIGNAL
 SIG_TIME_COST = 0
 SIG_FILE_IO_OFF = 1
+
+def input(__prompt: object = ...) -> str:
+	sys.stdout = my_trace.old_stdout
+	input_value = builtins.input(__prompt)
+	sys.stdout = my_trace.Pytracker_outIO
+	return input_value
 
 def trace_execution_tracking(execution_processes):
 	while_lines = []
@@ -61,7 +69,7 @@ def trace_execution_tracking(execution_processes):
 	return listoflist, listoflist_integrated, tab_dict, while_lines, if_else_lines
 
 
-def backend_main(*test_signals, usercode=None):
+def backend_main(*test_signals, usercode=None, userinput_iter=iter(list())):	
 	# region [Stage 1.1](reformat user's code)
 	if SIG_TIME_COST in test_signals:
 		reformat_start_time = time.time()
