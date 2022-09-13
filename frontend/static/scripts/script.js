@@ -32,149 +32,167 @@ let editorlib = {
 };
 
 $("#codeSubmit").click(() => {
-    if (editordiv.style.display !== "none") {
-        editordiv.style.display = "none";
-    }
-
-    const txt = editor.getValue();
-    var usercode = txt.trim();
-    var lines = usercode.split("\n");
-    // parselist = [];
-    // parselist.push({
-    //     num: "Program Start",
-    //     content: "",
-    // })
-    // for (var i = 1; i <= lines.length; i++) {
-    //     parselist.push({
-    //         num: i,
-    //         content: lines[i - 1],
-    //     });
-    // }
-    // console.log(parselist);
-
-    // var table = $("#code_output");
-    // parselist.forEach((dt) => {
-    //     line_num = dt["num"];
-    //     line_content = dt["content"];
-    //     console.log(line_num);
-    //     console.log(line_content);
-    //     markup =
-    //         '<tr><td class="line_num" style="white-space: pre;">' +
-    //         line_num +
-    //         '</td><td class="line_content" style="white-space: pre;">' +
-    //         line_content +
-    //         "</td></tr>";
-    //     table.append(markup);
-    // });
-
-    // var buttons = $("#stepbtns");
-    // buttons.append(
-    //     '<button id="next" type="submit" class="editor_btn_next">Next</button>'
-    // );
-    // buttons.append(
-    //     '<button id="prev" type="submit" class="editor_btn_prev">Prev</button>'
-    // );
-
     $.ajax({
         type: "POST",
-        url: "/",
-        data: JSON.stringify(usercode),
+        url: "/traceback",
+        data: JSON.stringify(editor.getValue().trim()),
         contentType: "application/json",
-        success: function (data) {
-            code = data['code'].split('\n')
-            console.log(code)
-
-            parselist = [];
-            parselist.push({
-                num: "Program Start",
-                content: "",
-            })
-
-            for (var i = 1; i < code.length; i++) {
-                parselist.push({
-                    num: i,
-                    content: code[i - 1],
+        success: function(data){
+            If_Error = data['error']
+            if (If_Error){
+                alert(data['error_msg']);
+                return false;
+            } else {
+                if (editordiv.style.display !== "none") {
+                    editordiv.style.display = "none";
+                }
+                
+                const txt = editor.getValue();
+                var usercode = txt.trim();
+                var lines = usercode.split("\n");
+                
+                // parselist = [];
+                // parselist.push({
+                //     num: "Program Start",
+                //     content: "",
+                // })
+                // for (var i = 1; i <= lines.length; i++) {
+                //     parselist.push({
+                //         num: i,
+                //         content: lines[i - 1],
+                //     });
+                // }
+                // console.log(parselist);
+            
+                // var table = $("#code_output");
+                // parselist.forEach((dt) => {
+                //     line_num = dt["num"];
+                //     line_content = dt["content"];
+                //     console.log(line_num);
+                //     console.log(line_content);
+                //     markup =
+                //         '<tr><td class="line_num" style="white-space: pre;">' +
+                //         line_num +
+                //         '</td><td class="line_content" style="white-space: pre;">' +
+                //         line_content +
+                //         "</td></tr>";
+                //     table.append(markup);
+                // });
+            
+                // var buttons = $("#stepbtns");
+                // buttons.append(
+                //     '<button id="next" type="submit" class="editor_btn_next">Next</button>'
+                // );
+                // buttons.append(
+                //     '<button id="prev" type="submit" class="editor_btn_prev">Prev</button>'
+                // );
+                
+                $.ajax({
+                    type: "POST",
+                    url: "/",
+                    data: JSON.stringify(usercode),
+                    contentType: "application/json",
+                    success: function (data) {
+                        code = data['code'].split('\n')
+                        console.log(code)
+            
+                        parselist = [];
+                        parselist.push({
+                            num: "Program Start",
+                            content: "",
+                        })
+            
+                        for (var i = 1; i < code.length; i++) {
+                            parselist.push({
+                                num: i,
+                                content: code[i - 1],
+                            });
+                        }
+                        var table = $("#code_output");
+                        parselist.forEach((dt, index) => {
+                            line_num = dt["num"];
+                            line_content = dt["content"];
+                            console.log(line_num);
+                            console.log(line_content);
+                            markup =
+                                '<tr><td class="line_arrow" id="arr' + index + '" style="white-space: pre;"></td>' +
+                                '<td class="line_num" style="white-space: pre;">' +
+                                line_num +
+                                '</td><td class="line_content" style="white-space: pre;">' +
+                                line_content +
+                                "</td></tr>";
+                            table.append(markup);
+                        });
+            
+                        var line0_arrow = "arr" + 0
+                        line_num_list.push(0);
+                        line_arrow_list.push(
+                            arrowLine({
+                                source: `#${CSS.escape(line0_arrow)}`,
+                                destination: `#${CSS.escape(line0_arrow)}`,
+                                sourcePosition: "middleLeft",
+                                destinationPosition: "middleRight",
+                                thickness: 1.3,
+                                forceDirection: "horizontal",
+                            })
+                        )
+            
+                        var buttons = $("#stepbtns");
+                        buttons.append(
+                            '<button id="next" type="submit" class="editor_btn_next">Next</button>'
+                        );
+                        buttons.append(
+                            '<button id="prev" type="submit" class="editor_btn_prev">Prev</button>'
+                        );
+                            
+                        var output_div = $("#prog_out");
+                        output_div.append(
+                            '<p class="prog_out_text">Program Output</p>' +
+                            '<div class="program_output_scroll"><table class="prog_table" id="prog_out_table"></table></div>'
+                        )
+            
+                        var prev_var_div = $("#prev_var");
+                        prev_var_div.append(
+                            '<p class="prev_var_text">Previous variables</p>' +
+                            '<div class="prev_var_table_scroll"><table class="variable_table" id="prev_var_table"></table></div>'
+                        )
+                            
+                        var next_var_dix = $("#curr_var");
+                        next_var_dix.append(
+                            '<p class="curr_var_text">Current variables</p>' +
+                            '<div class="curr_var_table_scroll"><table class="variable_table" id="curr_var_table"></table></div>'
+                        )
+            
+                        console.log(data)
+                        console.log(data['step_json']);
+                        res = data['step_json'];
+                        var grid = $("#graph");
+                        markup = "";
+                        for (var i = 0; i < parselist.length; i++) {
+                            markup += '<div class="row">';
+                            for (var j = 0; j < res['d']; j++) {
+                                id = "r" + i + "c" + j;
+                                markup += '<div id ="' + id + '" class="col"></div>';
+                            }
+                            markup += "</div>";
+                        }
+                        grid.append(markup);
+                        console.log("HERE")
+                        const height = $(window).height();
+                        const width = $(window).width();
+                        console.log(height, width)
+                        document.body.style.width = width;
+                        document.body.style.height = height;
+            
+            
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    },
                 });
             }
-            var table = $("#code_output");
-            parselist.forEach((dt, index) => {
-                line_num = dt["num"];
-                line_content = dt["content"];
-                console.log(line_num);
-                console.log(line_content);
-                markup =
-                    '<tr><td class="line_arrow" id="arr' + index + '" style="white-space: pre;"></td>' +
-                    '<td class="line_num" style="white-space: pre;">' +
-                    line_num +
-                    '</td><td class="line_content" style="white-space: pre;">' +
-                    line_content +
-                    "</td></tr>";
-                table.append(markup);
-            });
-
-            var line0_arrow = "arr" + 0
-            line_num_list.push(0);
-            line_arrow_list.push(
-                arrowLine({
-                    source: `#${CSS.escape(line0_arrow)}`,
-                    destination: `#${CSS.escape(line0_arrow)}`,
-                    sourcePosition: "middleLeft",
-                    destinationPosition: "middleRight",
-                    thickness: 1.3,
-                    forceDirection: "horizontal",
-                })
-            )
-
-            var buttons = $("#stepbtns");
-            buttons.append(
-                '<button id="next" type="submit" class="editor_btn_next">Next</button>'
-            );
-            buttons.append(
-                '<button id="prev" type="submit" class="editor_btn_prev">Prev</button>'
-            );
-                
-            var output_div = $("#prog_out");
-            output_div.append(
-                '<p class="prog_out_text">Program Output</p>' +
-                '<div class="program_output_scroll"><table class="prog_table" id="prog_out_table"></table></div>'
-            )
-
-            var prev_var_div = $("#prev_var");
-            prev_var_div.append(
-                '<p class="prev_var_text">Previous variables</p>' +
-                '<div class="prev_var_table_scroll"><table class="variable_table" id="prev_var_table"></table></div>'
-            )
-                
-            var next_var_dix = $("#curr_var");
-            next_var_dix.append(
-                '<p class="curr_var_text">Current variables</p>' +
-                '<div class="curr_var_table_scroll"><table class="variable_table" id="curr_var_table"></table></div>'
-            )
-
-            console.log(data)
-            console.log(data['step_json']);
-            res = data['step_json'];
-            var grid = $("#graph");
-            markup = "";
-            for (var i = 0; i < parselist.length; i++) {
-                markup += '<div class="row">';
-                for (var j = 0; j < res['d']; j++) {
-                    id = "r" + i + "c" + j;
-                    markup += '<div id ="' + id + '" class="col"></div>';
-                }
-                markup += "</div>";
-            }
-            grid.append(markup);
-            console.log("HERE")
-            const height = $(window).height();
-            const width = $(window).width();
-            console.log(height, width)
-            document.body.style.width = width;
-            document.body.style.height = height;
-
-
         },
-        error: function (err) {
+        error: function(err) {
             console.log(err);
         },
     });
