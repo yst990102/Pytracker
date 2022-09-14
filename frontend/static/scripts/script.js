@@ -47,18 +47,15 @@ function frontend_main(){
             receive_status = data['receive_status']
             if (receive_status != true){
                 alert("userinput receive_status failed!!");
-                return false;
+            }
+            if (!traceback_check()){
+                analyse_usercode();
             }
         },
         error: function(err) {
             console.log(err);
         },
     });
-
-    // if (traceback_check()){
-    //     analyse_usercode();
-    // }
-    analyse_usercode();
 }
 
 function get_prompt_inputs(){
