@@ -7,6 +7,7 @@ import traceback, subprocess
 import sys
 import pathlib
 import builtins
+from yapf.yapflib.yapf_api import FormatFile, FormatCode
 
 backend_absolute_path = str(
     pathlib.Path(__file__).resolve().parents[1]) + "/backend"
@@ -38,9 +39,12 @@ def get_userinput_list():
 def traceback_checking():
     if request.method == "POST":
         usercode = request.json
+        reformatted_code, changed = FormatCode(unformatted_source=usercode, style_config=f"{backend_absolute_path}/.style.yapf")
+        
         with open(backend_absolute_path + '/UserCode.py', 'w') as f_write:
-            f_write.write(usercode)
+            f_write.write(reformatted_code)
         f_write.close()
+        
         
         # tracebacke v1.0
         # traceback_result = subprocess.Popen(['python '+ backend_absolute_path + '/UserCode.py'], stderr=subprocess.PIPE, shell=True).stderr.read().decode("utf-8")
