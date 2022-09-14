@@ -44,18 +44,20 @@ function frontend_main(){
         data: JSON.stringify(userinput_list),
         contentType: "application/json",
         success: function(data){
-            receive_status = data['receive_status']
+            receive_status = data['receive_status'];
             if (receive_status != true){
                 alert("userinput receive_status failed!!");
-            }
-            if (!traceback_check()){
-                analyse_usercode();
+                return false;
             }
         },
         error: function(err) {
             console.log(err);
         },
     });
+    
+    if (!traceback_check()){
+        analyse_usercode();
+    }
 }
 
 function get_prompt_inputs(){
@@ -64,10 +66,6 @@ function get_prompt_inputs(){
     var userinput_list = [];
 
     for (let i = 0; i < usercode_list.length; i++) {
-        // for (let j = 0; j < usercode_matched_list[i].match(/\(.*\)/).length; j++) {
-        //     var input_info = usercode_matched_list[i].match(/\(.*\)/)[j].replace(/\(\"/, "").replace(/\"\)/, "");
-        //     console.log(input_info);
-        // }
         if (usercode_list[i].match(match_regex)){
             var userinput = prompt(usercode_list[i], "enter ur value here...");
             userinput_list.push({"usercode": usercode_list[i], "userinput": userinput});
@@ -79,23 +77,25 @@ function get_prompt_inputs(){
 
 
 function traceback_check(){
+    var traceback_result = false;
     $.ajax({
         type: "POST",
+        async: false,
         url: "/traceback",
         data: JSON.stringify(editor.getValue().trim()),
         contentType: "application/json",
         success: function(data){
-            If_Error = data['error']
+            If_Error = data['error'];
             if (If_Error){
                 alert(data['error_msg']);
-                return false;
+                traceback_result = true;
             }
-            return true;
         },
         error: function(err) {
             console.log(err);
         },
     });
+    return traceback_result;
 }
 
 function analyse_usercode(){
@@ -106,42 +106,6 @@ function analyse_usercode(){
     const txt = editor.getValue();
     var usercode = txt.trim();
     var lines = usercode.split("\n");
-    
-    // parselist = [];
-    // parselist.push({
-    //     num: "Program Start",
-    //     content: "",
-    // })
-    // for (var i = 1; i <= lines.length; i++) {
-    //     parselist.push({
-    //         num: i,
-    //         content: lines[i - 1],
-    //     });
-    // }
-    // console.log(parselist);
-
-    // var table = $("#code_output");
-    // parselist.forEach((dt) => {
-    //     line_num = dt["num"];
-    //     line_content = dt["content"];
-    //     console.log(line_num);
-    //     console.log(line_content);
-    //     markup =
-    //         '<tr><td class="line_num" style="white-space: pre;">' +
-    //         line_num +
-    //         '</td><td class="line_content" style="white-space: pre;">' +
-    //         line_content +
-    //         "</td></tr>";
-    //     table.append(markup);
-    // });
-
-    // var buttons = $("#stepbtns");
-    // buttons.append(
-    //     '<button id="next" type="submit" class="editor_btn_next">Next</button>'
-    // );
-    // buttons.append(
-    //     '<button id="prev" type="submit" class="editor_btn_prev">Prev</button>'
-    // );
     
     $.ajax({
         type: "POST",
