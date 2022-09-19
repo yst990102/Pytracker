@@ -62,7 +62,7 @@ def trace_execution_tracking(execution_processes):
 		tab_dict[line_no] = line_content.count('\t')
 
 	# parse str_ListOfList into ListOfList
-	listoflist = hf.parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict)
+	listoflist = hf.parse_strListOfList_into_ListOfList(all_line_nos, while_lines[:], tab_dict)
 	# integrate listoflist and all_local_variables and all_stdouts
 	listoflist_integrated = hf.integrate_listoflist_with_local_variables(listoflist, all_local_variables, all_stdouts)
 	
@@ -160,7 +160,7 @@ def backend_main(*test_signals, usercode=None, userinput_iter=iter(list())):
 
 	grid_indent = hf.tabdict_to_gridindent(tab_dict, while_lines)
 	# then convert into Program
-	program_integrated = hf.parse_convert_TupleOfIntAndTuple_integrated_into_Program(TupleOfIntAndTuple_integrated, tab_dict, grid_indent)
+	program_integrated = hf.parse_convert_TupleOfIntAndTuple_integrated_into_Program(TupleOfIntAndTuple_integrated, tab_dict, grid_indent, while_lines)
 
 	# TEST: all available print ways testing for program
 	# program.print_statements()

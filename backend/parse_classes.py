@@ -159,10 +159,11 @@ class Assignment(Statement):
 
 class Program():
 
-	def __init__(self, TupleOfIntAndTuple_integrated: tuple, tab_dict: dict, grid_indent: dict) -> None:
+	def __init__(self, TupleOfIntAndTuple_integrated: tuple, tab_dict: dict, grid_indent: dict, while_lines:list) -> None:
 		self.TupleOfIntAndTuple_integrated = TupleOfIntAndTuple_integrated
 		self.tab_dict = tab_dict
 		self.grid_indent = grid_indent  # stored but not in use
+		self.while_lines_set = set(while_lines)
 
 		self.statements = []
 		self.while_loops = []  # classify iterations by while_line, not in use
