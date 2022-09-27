@@ -1,3 +1,4 @@
+import builtins
 import pathlib
 import sys
 import re
@@ -11,10 +12,17 @@ import helper_functions as hf
 backend_absolute_path  = str(pathlib.Path(__file__).parent.resolve())
 frontend_absolute_path = str(pathlib.Path(__file__).parent.parent.resolve()) + "/frontend"
 sys.path.insert(0, frontend_absolute_path)
+import web
 
 # SIGNAL
 SIG_TIME_COST = 0
 SIG_FILE_IO_OFF = 1
+
+def input(__prompt: object = ...) -> str:
+	sys.stdout = my_trace.old_stdout
+	input_value = builtins.input(__prompt)
+	sys.stdout = my_trace.Pytracker_outIO
+	return input_value
 
 def trace_execution_tracking(execution_processes):
 	while_lines = []
@@ -54,14 +62,14 @@ def trace_execution_tracking(execution_processes):
 		tab_dict[line_no] = line_content.count('\t')
 
 	# parse str_ListOfList into ListOfList
-	listoflist = hf.parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict)
+	listoflist = hf.parse_strListOfList_into_ListOfList(all_line_nos, while_lines[:], tab_dict)
 	# integrate listoflist and all_local_variables and all_stdouts
 	listoflist_integrated = hf.integrate_listoflist_with_local_variables(listoflist, all_local_variables, all_stdouts)
 	
 	return listoflist, listoflist_integrated, tab_dict, while_lines, if_else_lines
 
 
-def backend_main(*test_signals, usercode=None):
+def backend_main(*test_signals, usercode=None, userinput_iter=iter(list())):	
 	# region [Stage 1.1](reformat user's code)
 	if SIG_TIME_COST in test_signals:
 		reformat_start_time = time.time()
@@ -152,7 +160,7 @@ def backend_main(*test_signals, usercode=None):
 
 	grid_indent = hf.tabdict_to_gridindent(tab_dict, while_lines)
 	# then convert into Program
-	program_integrated = hf.parse_convert_TupleOfIntAndTuple_integrated_into_Program(TupleOfIntAndTuple_integrated, tab_dict, grid_indent)
+	program_integrated = hf.parse_convert_TupleOfIntAndTuple_integrated_into_Program(TupleOfIntAndTuple_integrated, tab_dict, grid_indent, while_lines)
 
 	# TEST: all available print ways testing for program
 	# program.print_statements()
