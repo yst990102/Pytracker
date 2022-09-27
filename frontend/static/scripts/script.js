@@ -320,6 +320,12 @@ function get_prev() {
             console.log(depth_stack)
             instructions.pop();
 
+            while (instructions[instructions.length - 1]['type'] == "while_end") {
+                depth_stack.push(instructions[instructions.length - 1]["wdepth"]);
+                instructions.pop();
+                count -= 1;
+            }
+
             count -= 1;
             local_variables_list.pop()
         } else if (
@@ -797,6 +803,22 @@ function get_next() {
             const while_depth = depth + 1;
             var s = "r" + res["list"][count]["end"] + "c" + depth;
             var e = "r" + res["list"][count]["end"] + "c" + while_depth;
+
+            instructions.push({
+                type: "while_end",
+                depth: pdepth,
+                wdepth: depth,
+            });
+
+            while (res['list'][count + 1]['type'] == "while_end" && count + 1 < res["list"].length - 1) {
+                depth = depth_stack.pop();
+                count += 1;
+                instructions.push({
+                    type: "while_end",
+                    depth: pdepth,
+                    wdepth: depth,
+                });
+            }
             /*
             recent.push(
                 arrowLine({
@@ -813,11 +835,6 @@ function get_next() {
                 })
             );
             */
-            instructions.push({
-                type: "while_end",
-                depth: pdepth,
-                wdepth: depth,
-            });
             /*
             instructions.push({
                 type: "dashed",
