@@ -214,7 +214,8 @@ def get_step_json(program:parse_classes.Program):
 				step_list.append({"type": "circle", "start": end_location, "iteration": entered_iteration.iteration_num, "local_variables": end_statement.local_variables, "stdout": end_statement.stdout})
 			else:
 				step_list.append({"type": "step", "start": start_location, "end": end_location, "local_variables": end_statement.local_variables, "stdout": end_statement.stdout})
-			cur_max = stack.pop()
+			if stack != []:
+				cur_max = stack.pop()
 			cur_or_max = False
 		else:
 			if start_statement.path != end_statement.path:
