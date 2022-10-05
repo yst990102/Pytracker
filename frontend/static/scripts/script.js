@@ -190,8 +190,7 @@ function analyse_usercode(){
             markup = "";
             for (var i = 0; i < parselist.length; i++) {
                 markup += '<div class="row">';
-                // TODO: CHANGE BACK
-                for (var j = 0; j < 12/*res['d']*/; j++) {
+                for (var j = 0; j < 20/*res['d']*/; j++) {
                     id = "r" + i + "c" + j;
                     markup += '<div id ="' + id + '" class="col"></div>';
                 }
@@ -239,6 +238,7 @@ function get_prev() {
             instructions.length - 2 >= 0 &&
             instructions[instructions.length - 2]["type"] == "circle"
         ) {
+            console.log(depth_stack)
             console.log("HERE")
             const circle_depth = depth;
             depth--;
@@ -286,7 +286,18 @@ function get_prev() {
                 local_variables_list.pop()
             } else if (res['list'][count]['type'] == "while_end") {
                 // If while_end then pop from instructions
+                const pdepth = instructions[instructions.length - 1]["depth"];
+                console.log(pdepth)
+                depth = pdepth;
+                depth_stack.push(instructions[instructions.length - 1]["wdepth"]);
+                console.log(depth_stack)
                 instructions.pop();
+
+                while (instructions[instructions.length - 1]['type'] == "while_end") {
+                    depth_stack.push(instructions[instructions.length - 1]["wdepth"]);
+                    instructions.pop();
+                    count -= 1;
+                }
                 count -= 1;
             }
         } else if (
@@ -846,6 +857,7 @@ function get_next() {
                 depth = prev_while_depth;
                 inner_while = null;
             }
+            console.log("DEPTH_STACK", depth_stack)
             get_next();
         }
 
