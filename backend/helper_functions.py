@@ -197,11 +197,25 @@ def get_step_json(program:parse_classes.Program):
 			stack.append(cur_max)
 			cur_max += 1
 		# CASE 02: end a while-loop and indent backward
-		elif len(end_statement.path) < len(start_statement.path):
-			ended_iteration = start_statement.path[-1]
-			step_list.append({"type": "while_end", "start": ended_iteration.get_first_inner_step().line_no, "end": ended_iteration.get_last_inner_step().line_no})
-			step_list.append({"type": "step", "start": start_location, "end": end_location, "local_variables": end_statement.local_variables, "stdout": end_statement.stdout})
-			cur_max = stack.pop()
+		elif len(end_statement.path) < len(start_statement.path):			
+			# HERE: test printing of Assignments' self.while_ends property
+			# exit_str = ""
+			# for while_end_iteration in start_statement.while_ends:
+			# 	exit_str = exit_str + str(while_end_iteration.general_steps) + " ,"
+			# if start_statement.while_ends:
+			# 	print(f"{start_statement.line_no}: exit=={exit_str}")
+
+			for while_end_iteration in start_statement.while_ends:
+				step_list.append({"type": "while_end", "start": while_end_iteration.get_first_inner_step().line_no, "end": while_end_iteration.get_last_inner_step().line_no})
+				# print(f"append start:{while_end_iteration.get_first_inner_step().line_no}, end:{while_end_iteration.get_last_inner_step().line_no}")
+			
+			if end_location in program.while_lines_set:
+				entered_iteration = end_statement.path[-1]
+				step_list.append({"type": "circle", "start": end_location, "iteration": entered_iteration.iteration_num, "local_variables": end_statement.local_variables, "stdout": end_statement.stdout})
+			else:
+				step_list.append({"type": "step", "start": start_location, "end": end_location, "local_variables": end_statement.local_variables, "stdout": end_statement.stdout})
+			if stack != []:
+				cur_max = stack.pop()
 			cur_or_max = False
 		else:
 			if start_statement.path != end_statement.path:
@@ -309,6 +323,9 @@ def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
 					print(f"{line_no}\t outer break\t {stack}\t {result}")
 		elif line_no == while_lines[0]:
 			if line_no in stack:
+				while stack[:].pop() != line_no:
+					stack.pop()
+					result.append("]")
 				result.append("]")
 				result.append("[")
 				result.append(str(line_no))
@@ -363,6 +380,7 @@ def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
 
 	result = "".join(result)
 	result = result.replace(",]", "],")
+	result = result.replace("],]", "]],")
 
 	try:
 		assert (isBracket_match(result) == True)
@@ -373,8 +391,8 @@ def parse_strListOfList_into_ListOfList(all_line_nos, while_lines, tab_dict):
 	return eval(result)
 
 
-def parse_convert_TupleOfIntAndTuple_integrated_into_Program(TupleOfIntAndTuple_integrated, tab_dict: dict, grid_indent: dict):
-	return parse_classes.Program(TupleOfIntAndTuple_integrated, tab_dict, grid_indent)
+def parse_convert_TupleOfIntAndTuple_integrated_into_Program(TupleOfIntAndTuple_integrated, tab_dict: dict, grid_indent: dict, while_lines):
+	return parse_classes.Program(TupleOfIntAndTuple_integrated, tab_dict, grid_indent, while_lines)
 
 def integrate_listoflist_with_local_variables(listoflist, all_local_variables, all_stdouts):
 	# yielder for local_variables and listoflist

@@ -53,7 +53,7 @@ class Iteration(Statement):
 		super().__init__(program, path)
 
 		if creation_print:
-			print(f"---- create {self.__class__.__name__} {steps}")
+			print(f"---- create {self.__class__.__name__} {info}")
 		
 		self.info = info
 		self.general_steps = hf.get_general_steps(info) # general step list, formed by integer
@@ -143,6 +143,14 @@ class Assignment(Statement):
 		self.line_no = info['line_no']
 		self.local_variables = info['local_variables']
 		self.stdout = info['stdout']
+		
+		self.while_ends = None
+	
+	def add_while_end(self, while_end):
+		if self.while_ends == None:
+			self.while_ends = [while_end]
+		else:
+			self.while_ends.append(while_end)
 
 	def print_info(self) -> None:
 		print(f"==== {self.__class__.__name__} {hex(id(self))} =====")
@@ -159,13 +167,14 @@ class Assignment(Statement):
 
 class Program():
 
-	def __init__(self, TupleOfIntAndTuple_integrated: tuple, tab_dict: dict, grid_indent: dict) -> None:
+	def __init__(self, TupleOfIntAndTuple_integrated: tuple, tab_dict: dict, grid_indent: dict, while_lines:list) -> None:
 		self.TupleOfIntAndTuple_integrated = TupleOfIntAndTuple_integrated
 		self.tab_dict = tab_dict
 		self.grid_indent = grid_indent  # stored but not in use
+		self.while_lines_set = set(while_lines)
 
 		self.statements = []
-		self.while_loops = []  # classify iterations by while_line, not in use
+		self.while_loops = []
 
 		for element in self.TupleOfIntAndTuple_integrated[1]:
 			if isinstance(element, dict):
@@ -177,8 +186,15 @@ class Program():
 					new_statement = Nested_While_Iteration(element, self, [self])
 			self.add_statement(new_statement)
 
+		self.set_exit_statements()
 		# IMPORTANT: this is implementation for the filter of Pytracker
 		self.filt_algo_implement()
+	
+	def set_exit_statements(self):
+		for while_loop in self.while_loops:
+			last_iteration = while_loop['iterations'][-1]
+			last_iteration.get_last_inner_step().add_while_end(last_iteration)
+			# print(f"set {last_iteration.get_last_inner_step().line_no} in {last_iteration.general_steps} => {while_loop['while_line_no']}")
 
 	def add_while_loop(self, new_iteration: Iteration):
 		new_while_path = new_iteration.path

@@ -2,3 +2,4 @@ fasteners==0.17.3
 Flask==2.0.3
 parse==1.19.0
 yapf==0.32.0
+filelock==3.8.0
