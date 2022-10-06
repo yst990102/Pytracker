@@ -190,7 +190,12 @@ function analyse_usercode(){
             markup = "";
             for (var i = 0; i < parselist.length; i++) {
                 markup += '<div class="row">';
+<<<<<<< HEAD
                 for (var j = 0; j < 20/*res['d']*/; j++) {
+=======
+                // TODO: CHANGE BACK
+                for (var j = 0; j < 12/*res['d']*/; j++) {
+>>>>>>> a8d83589ab33eb22e187c2d8c64bb634b1ba9c1b
                     id = "r" + i + "c" + j;
                     markup += '<div id ="' + id + '" class="col"></div>';
                 }
@@ -860,7 +865,10 @@ function get_next() {
                 depth = prev_while_depth;
                 inner_while = null;
             }
+<<<<<<< HEAD
             console.log("DEPTH_STACK", depth_stack)
+=======
+>>>>>>> a8d83589ab33eb22e187c2d8c64bb634b1ba9c1b
             get_next();
         }
 

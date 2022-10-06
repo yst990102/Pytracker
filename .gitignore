@@ -1,10 +1,6 @@
 __pycache__/*
 *.pyc
 *.log
-<<<<<<< HEAD
-UserCode.py
-test.py
-=======
 references/*
 
 test.py
@@ -14,4 +10,3 @@ listoflist_integrated
 TupleOfIntAndTuple
 step_json.json
 UserCode.py
->>>>>>> SHI-TONG-YUAN
