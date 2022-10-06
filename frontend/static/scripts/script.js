@@ -280,7 +280,6 @@ function get_prev() {
 
             count -= 1;
             prev_end = res["list"][count]["end"];
-
             if (res["list"][count]["type"] == "circle") {
                 count -= 1;
                 local_variables_list.pop()
@@ -422,18 +421,15 @@ function get_prev() {
 
             console.log(instructions[instructions.length - 2])
             if (instructions.length - 2 >= 0 && instructions[instructions.length - 2]["type"] != "while_start") {
-                // Remove step
-                recent[recent.length - 1].remove();
-                recent.pop();
-                instructions.pop();
-                local_variables_list.pop()
-                program_output_list.pop()
-
                 if (instructions.length - 2 >= 0 && instructions[instructions.length - 2]["type"] == "while_end") {
                     prev_end = instructions[instructions.length - 1]["start"];
                     recent[recent.length - 1].remove();
                     recent.pop();
+                    recent[recent.length - 1].remove();
+                    recent.pop();
                     instructions.pop();
+                    local_variables_list.pop()
+                    program_output_list.pop()
 
                     if (instructions[instructions.length - 1]['type'] == "while_end") {
                         inner_while = null;
@@ -445,6 +441,13 @@ function get_prev() {
                     console.log(depth_stack)
                     instructions.pop();
                     count -= 1;
+                } else {
+                    // Remove step
+                    recent[recent.length - 1].remove();
+                    recent.pop();
+                    instructions.pop();
+                    local_variables_list.pop()
+                    program_output_list.pop()
                 }
 
                 count -= 3;
