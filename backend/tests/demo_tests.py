@@ -1,19 +1,17 @@
-# Assignment
+# ADDED: Assignment => Test_Assignment.test_simple_assignment
 a = 10
 b = 20
 c = 30
 c = b
 a = c
 
-# If statement
+# ADDED: If statement => Test_IF_Statement.test_simplest
 a = 10
 b = 20
 if a == 10:
 	print(a)
-else:
-	print(b)
 
-# Else statement
+# ADDED: Else statement => Test_IF_Else_Statement.test_simplest
 a = 10
 b = 20
 if a == b:
@@ -21,7 +19,7 @@ if a == b:
 else:
 	print(b)
 
-# elif statement
+# ADDED: elif statement => Test_IF_Elif_Statement.test_simplest
 a = 10
 b = 20
 if a == 20:
@@ -31,7 +29,7 @@ elif a + b == 30:
 else:
 	print(b)
 
-# Nested if statement
+# ADDED: Nested if statement => Test_IF_Statement.test_nested
 a = 10
 b = 20
 if a < b:
@@ -41,13 +39,13 @@ if a < b:
 				print(a)
 				print(b)
 
-# Simple while loop
+# ADDED: Simple while loop => Test_While_Statement.test_simplest
 i = 0
 while i < 100:
 	print(i)
 	i += 1
 
-# A more complex while loop
+# ADDED: A more complex while loop => Test_While_Statement.test_1layer_with_ifelse
 i = 100
 j = 1
 odd_sum = 0
@@ -64,7 +62,7 @@ if odd_sum > even_sum:
 else:
 	print(even_sum)
 
-#Unused while loop
+# ADDED: Unused while loop => Test_While_Statement.test_unused_inner_while_loop
 even_sum = 0
 odd_sum = 0
 i = 2
@@ -87,7 +85,7 @@ i += 1
 print(even_sum)
 print(odd_sum)
 
-# Nested while loop (simple)
+# ADDED: Nested while loop (simple) => Test_While_Statement.test_simplest_nested
 i = 0
 j = 0
 while i < 6:
@@ -95,7 +93,7 @@ while i < 6:
 		j += 1
 	i += 1
 
-# Nested while loop with conditional
+# ADDED: Nested while loop with conditional => Test_While_Statement.test_2layer_with_ifelse
 even_sum = 0
 odd_sum = 0
 i = 0
@@ -112,7 +110,7 @@ while i < 4:
 print(even_sum)
 print(odd_sum)
 
-# While edge case
+# ADDED: While edge case => Test_While_Statement.test_not_increament_at_edge
 even_sum = 0
 odd_sum = 0
 i = 0
@@ -129,7 +127,7 @@ while i < 4:
 print(even_sum)
 print(odd_sum)
 
-# Nested while loop that is unused
+# ADDED: Nested while loop that is unused => Test_While_Statement.test_unused_inner_while_loop
 even_sum = 0
 odd_sum = 0
 i = 0
@@ -153,7 +151,7 @@ while i < 2:
 print(even_sum)
 print(odd_sum)
 
-# Nested while loop that is same depth
+# ADDED: Nested while loop that is same depth => Test_While_Statement.test_nested_while_at_same_depth
 even_sum = 0
 odd_sum = 0
 i = 0
@@ -178,7 +176,7 @@ while i < 2:
 print(even_sum)
 print(odd_sum)
 
-# Quadruple nested while loop
+# ADDED: Quadruple nested while loop => Test_While_Statement.test_quadruple_nested_while
 i = 0
 j = 0
 k = 0
@@ -196,7 +194,7 @@ while i < 3:
 	print(i)
 	i += 1
 
-# 3 unique execution paths
+# ADDED: 3 unique execution paths => Test_While_Statement.test_3_unique_execpaths
 sum = 0
 i = 0
 while i < 2:
@@ -213,7 +211,7 @@ while i < 2:
 
 print(sum)
 
-# Arbitrary number of nested
+# ADDED: Arbitrary number of nested => Test_While_Statement.test_arbitrary_nested_level
 a = 0
 if a == 0:
 	sum = 0
