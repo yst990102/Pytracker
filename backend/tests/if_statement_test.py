@@ -21,7 +21,37 @@ if a < b:
 		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [1, 2, 4])
-		assert (step_json == {"d": 1, "list": [{"type": "step", "start": 0, "end": 1}, {"type": "step", "start": 1, "end": 2}, {"type": "step", "start": 2, "end": 4}]})
+		assert (step_json == {
+		    'd':
+		        1,
+		    'list': [{
+		        'end': 1,
+		        'local_variables': {
+		            'a': 10
+		        },
+		        'start': 0,
+		        'stdout': '',
+		        'type': 'step'
+		    }, {
+		        'end': 2,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 1,
+		        'stdout': '',
+		        'type': 'step'
+		    }, {
+		        'end': 4,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 2,
+		        'stdout': 'HELLO\n',
+		        'type': 'step'
+		    }]
+		})
 
 	def test_nested(self):
 		usercode = """a = 10
@@ -43,23 +73,43 @@ if a < b:
 
 		assert (listoflist == [1, 2, 7, 8])
 		assert (step_json == {
-		    "d": 1,
-		    "list": [{
-		        "type": "step",
-		        "start": 0,
-		        "end": 1
+		    'd':
+		        1,
+		    'list': [{
+		        'end': 1,
+		        'local_variables': {
+		            'a': 10
+		        },
+		        'start': 0,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 1,
-		        "end": 2
+		        'end': 2,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 1,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 2,
-		        "end": 7
+		        'end': 7,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 2,
+		        'stdout': '10\n',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 7,
-		        "end": 8
+		        'end': 8,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 7,
+		        'stdout': '10\n20\n',
+		        'type': 'step'
 		    }]
 		})
 
@@ -93,102 +143,236 @@ if a < b:
 
 		assert (listoflist == [1, 2, [4, 6, 7], [4, 6, 7], [8, 9, 10, [15, 17, 18], [15, 17, 18], [15, 17, 18], [15, 17, 18]]])
 		assert (step_json == {
-		    "d":
+		    'd':
 		        4,
-		    "list": [{
-		        "type": "step",
-		        "start": 0,
-		        "end": 1
+		    'list': [{
+		        'end': 1,
+		        'local_variables': {
+		            'a': 10
+		        },
+		        'start': 0,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 1,
-		        "end": 2
+		        'end': 2,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 1,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 2,
-		        "end": 4
+		        'end': 4,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 2,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 4,
-		        "iteration": 1
+		        'iteration': 1,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 4,
+		        'stdout': '',
+		        'type': 'circle'
 		    }, {
-		        "type": "while_start",
-		        "depth": -1
+		        'depth': -1,
+		        'type': 'while_start'
 		    }, {
-		        "type": "step",
-		        "start": 4,
-		        "end": 6
+		        'end': 6,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 4,
+		        'stdout': 'HELLO\n',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 6,
-		        "end": 7
+		        'end': 7,
+		        'local_variables': {
+		            'a': 11,
+		            'b': 20
+		        },
+		        'start': 6,
+		        'stdout': 'HELLO\n',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 4,
-		        "iteration": 2
+		        'iteration': 2,
+		        'local_variables': {
+		            'a': 11,
+		            'b': 20
+		        },
+		        'start': 4,
+		        'stdout': 'HELLO\n',
+		        'type': 'circle'
 		    }, {
-		        "type": "step",
-		        "start": 4,
-		        "end": 6
+		        'end': 6,
+		        'local_variables': {
+		            'a': 11,
+		            'b': 20
+		        },
+		        'start': 4,
+		        'stdout': 'HELLO\n'
+		                  'HELLO\n',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 6,
-		        "end": 7
+		        'end': 7,
+		        'local_variables': {
+		            'a': 12,
+		            'b': 20
+		        },
+		        'start': 6,
+		        'stdout': 'HELLO\n'
+		                  'HELLO\n',
+		        'type': 'step'
 		    }, {
-		        "type": "while_end",
-		        "start": 4,
-		        "end": 7
+		        'end': 7,
+		        'start': 4,
+		        'type': 'while_end'
 		    }, {
-		        "type": "step",
-		        "start": 7,
-		        "end": 8
+		        'end': 8,
+		        'local_variables': {
+		            'a': 12,
+		            'b': 20
+		        },
+		        'start': 7,
+		        'stdout': 'HELLO\n'
+		                  'HELLO\n',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 8,
-		        "iteration": 1
+		        'iteration': 1,
+		        'local_variables': {
+		            'a': 12,
+		            'b': 20
+		        },
+		        'start': 8,
+		        'stdout': 'HELLO\n'
+		                  'HELLO\n',
+		        'type': 'circle'
 		    }, {
-		        "type": "while_start",
-		        "depth": -1
+		        'depth': -1,
+		        'type': 'while_start'
 		    }, {
-		        "type": "step",
-		        "start": 8,
-		        "end": 9
+		        'end': 9,
+		        'local_variables': {
+		            'a': 12,
+		            'b': 20
+		        },
+		        'start': 8,
+		        'stdout': 'HELLO\n'
+		                  'HELLO\n'
+		                  'WORLD\n',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 9,
-		        "end": 10
+		        'end': 10,
+		        'local_variables': {
+		            'a': 12,
+		            'b': 21
+		        },
+		        'start': 9,
+		        'stdout': 'HELLO\n'
+		                  'HELLO\n'
+		                  'WORLD\n',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 10,
-		        "end": 15
+		        'end': 15,
+		        'local_variables': {
+		            'a': 12,
+		            'b': 21
+		        },
+		        'start': 10,
+		        'stdout': 'HELLO\n'
+		                  'HELLO\n'
+		                  'WORLD\n',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 15,
-		        "iteration": 1
+		        'iteration': 1,
+		        'local_variables': {
+		            'a': 12,
+		            'b': 21
+		        },
+		        'start': 15,
+		        'stdout': 'HELLO\n'
+		                  'HELLO\n'
+		                  'WORLD\n',
+		        'type': 'circle'
 		    }, {
-		        "type": "while_start",
-		        "depth": -1
+		        'depth': -1,
+		        'type': 'while_start'
 		    }, {
-		        "type": "step",
-		        "start": 15,
-		        "end": 17
+		        'end': 17,
+		        'local_variables': {
+		            'a': 12,
+		            'b': 21
+		        },
+		        'start': 15,
+		        'stdout': 'HELLO\n'
+		                  'HELLO\n'
+		                  'WORLD\n'
+		                  'this is not b\n',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 17,
-		        "end": 18
+		        'end': 18,
+		        'local_variables': {
+		            'a': 12,
+		            'b': 22
+		        },
+		        'start': 17,
+		        'stdout': 'HELLO\n'
+		                  'HELLO\n'
+		                  'WORLD\n'
+		                  'this is not b\n',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 15,
-		        "iteration": 4
+		        'iteration': 4,
+		        'local_variables': {
+		            'a': 12,
+		            'b': 24
+		        },
+		        'start': 15,
+		        'stdout': 'HELLO\n'
+		                  'HELLO\n'
+		                  'WORLD\n'
+		                  'this is not b\n'
+		                  'this is not b\n'
+		                  'this is not b\n',
+		        'type': 'circle'
 		    }, {
-		        "type": "step",
-		        "start": 15,
-		        "end": 17
+		        'end': 17,
+		        'local_variables': {
+		            'a': 12,
+		            'b': 24
+		        },
+		        'start': 15,
+		        'stdout': 'HELLO\n'
+		                  'HELLO\n'
+		                  'WORLD\n'
+		                  'this is not b\n'
+		                  'this is not b\n'
+		                  'this is not b\n'
+		                  'this is not b\n',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 17,
-		        "end": 18
-		    }]
+		        'end': 18,
+		        'local_variables': {
+		            'a': 12,
+		            'b': 25
+		        },
+		        'start': 17,
+		        'stdout': 'HELLO\n'
+		                  'HELLO\n'
+		                  'WORLD\n'
+		                  'this is not b\n'
+		                  'this is not b\n'
+		                  'this is not b\n'
+		                  'this is not b\n',
+		        'type': 'step'
+		    }],
 		})
 
 	def test_true_or_false(self):
@@ -212,24 +396,45 @@ print("HELLO WORLD")"""
 
 		assert (listoflist == [1, 2, 4, 9])
 		assert (step_json == {
-		    "d": 1,
-		    "list": [{
-		        "type": "step",
-		        "start": 0,
-		        "end": 1
+		    'd':
+		        1,
+		    'list': [{
+		        'end': 1,
+		        'local_variables': {
+		            'a': 10
+		        },
+		        'start': 0,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 1,
-		        "end": 2
+		        'end': 2,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 1,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 2,
-		        "end": 4
+		        'end': 4,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 2,
+		        'stdout': 'HELLO\n',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 4,
-		        "end": 9
-		    }]
+		        'end': 9,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 4,
+		        'stdout': 'HELLO\n'
+		                  'HELLO WORLD\n',
+		        'type': 'step'
+		    }],
 		})
 
 
@@ -252,7 +457,37 @@ else:
 		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [1, 2, 6])
-		assert (step_json == {"d": 1, "list": [{"type": "step", "start": 0, "end": 1}, {'type': 'step', 'start': 1, 'end': 2}, {'type': 'step', 'start': 2, 'end': 6}]})
+		assert (step_json == {
+		    'd':
+		        1,
+		    'list': [{
+		        'end': 1,
+		        'local_variables': {
+		            'a': 10
+		        },
+		        'start': 0,
+		        'stdout': '',
+		        'type': 'step'
+		    }, {
+		        'end': 2,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 1,
+		        'stdout': '',
+		        'type': 'step'
+		    }, {
+		        'end': 6,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 2,
+		        'stdout': 'BYE\n',
+		        'type': 'step'
+		    }],
+		})
 
 	def test_nested(self):
 		usercode = """a = 10
@@ -280,7 +515,37 @@ else:
 		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [1, 2, 13])
-		assert (step_json == {"d": 1, "list": [{"type": "step", "start": 0, "end": 1}, {"type": "step", "start": 1, "end": 2}, {"type": "step", "start": 2, "end": 13}]})
+		assert (step_json == {
+		    'd':
+		        1,
+		    'list': [{
+		        'end': 1,
+		        'local_variables': {
+		            'a': 10
+		        },
+		        'start': 0,
+		        'stdout': '',
+		        'type': 'step'
+		    }, {
+		        'end': 2,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 1,
+		        'stdout': '',
+		        'type': 'step'
+		    }, {
+		        'end': 13,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 2,
+		        'stdout': '20\n',
+		        'type': 'step'
+		    }],
+		})
 
 	def test_with_while(self):
 		usercode = """a = 10
@@ -321,71 +586,156 @@ else:
 
 		assert (listoflist == [1, 2, [11, 12, [21, 23, 26], [21, 23, 26], [21, 23, 26], [21, 23, 26], [21, 23, 26], 27]])
 		assert (step_json == {
-		    "d":
+		    'd':
 		        4,
-		    "list": [{
-		        "type": "step",
-		        "start": 0,
-		        "end": 1
+		    'list': [{
+		        'end': 1,
+		        'local_variables': {
+		            'a': 10
+		        },
+		        'start': 0,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 1,
-		        "end": 2
+		        'end': 2,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 1,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 2,
-		        "end": 11
+		        'end': 11,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 2,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 11,
-		        "iteration": 1
+		        'iteration': 1,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 11,
+		        'stdout': '',
+		        'type': 'circle'
 		    }, {
-		        "type": "while_start",
-		        "depth": -1
+		        'depth': -1,
+		        'type': 'while_start'
 		    }, {
-		        "type": "step",
-		        "start": 11,
-		        "end": 12
+		        'end': 12,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 11,
+		        'stdout': 'WORLD\n',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 12,
-		        "end": 21
+		        'end': 21,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 12,
+		        'stdout': 'WORLD\n',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 21,
-		        "iteration": 1
+		        'iteration': 1,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 21,
+		        'stdout': 'WORLD\n',
+		        'type': 'circle'
 		    }, {
-		        "type": "while_start",
-		        "depth": -1
+		        'depth': -1,
+		        'type': 'while_start'
 		    }, {
-		        "type": "step",
-		        "start": 21,
-		        "end": 23
+		        'end': 23,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 21,
+		        'stdout': 'WORLD\n'
+		                  'this is not b\n',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 23,
-		        "end": 26
+		        'end': 26,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 21
+		        },
+		        'start': 23,
+		        'stdout': 'WORLD\n'
+		                  'this is not b\n',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 21,
-		        "iteration": 5
+		        'iteration': 5,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 24
+		        },
+		        'start': 21,
+		        'stdout': 'WORLD\n'
+		                  'this is not b\n'
+		                  'this is not b\n'
+		                  'this is not b\n'
+		                  'this is not b\n',
+		        'type': 'circle'
 		    }, {
-		        "type": "step",
-		        "start": 21,
-		        "end": 23
+		        'end': 23,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 24
+		        },
+		        'start': 21,
+		        'stdout': 'WORLD\n'
+		                  'this is not b\n'
+		                  'this is not b\n'
+		                  'this is not b\n'
+		                  'this is not b\n'
+		                  'this is not b\n',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 23,
-		        "end": 26
+		        'end': 26,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 25
+		        },
+		        'start': 23,
+		        'stdout': 'WORLD\n'
+		                  'this is not b\n'
+		                  'this is not b\n'
+		                  'this is not b\n'
+		                  'this is not b\n'
+		                  'this is not b\n',
+		        'type': 'step'
 		    }, {
-		        "type": "while_end",
-		        "start": 21,
-		        "end": 26
+		        'end': 26,
+		        'start': 21,
+		        'type': 'while_end'
 		    }, {
-		        "type": "step",
-		        "start": 26,
-		        "end": 27
-		    }]
+		        'end': 27,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 26
+		        },
+		        'start': 26,
+		        'stdout': 'WORLD\n'
+		                  'this is not b\n'
+		                  'this is not b\n'
+		                  'this is not b\n'
+		                  'this is not b\n'
+		                  'this is not b\n',
+		        'type': 'step'
+		    }],
 		})
 
 	def test_true_or_false(self):
@@ -414,24 +764,45 @@ print("HELLO WORLD finall")"""
 
 		assert (listoflist == [1, 2, 4, 14])
 		assert (step_json == {
-		    "d": 1,
-		    "list": [{
-		        "type": "step",
-		        "start": 0,
-		        "end": 1
+		    'd':
+		        1,
+		    'list': [{
+		        'end': 1,
+		        'local_variables': {
+		            'a': 10
+		        },
+		        'start': 0,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 1,
-		        "end": 2
+		        'end': 2,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 1,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 2,
-		        "end": 4
+		        'end': 4,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 2,
+		        'stdout': 'HELLO\n',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 4,
-		        "end": 14
-		    }]
+		        'end': 14,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 4,
+		        'stdout': 'HELLO\n'
+		                  'HELLO WORLD finall\n',
+		        'type': 'step'
+		    }],
 		})
 
 
@@ -454,7 +825,37 @@ elif b == 20:
 		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [1, 2, 6])
-		assert (step_json == {"d": 1, "list": [{"type": "step", "start": 0, "end": 1}, {'type': 'step', 'start': 1, 'end': 2}, {'type': 'step', 'start': 2, 'end': 6}]})
+		assert (step_json == {
+		    'd':
+		        1,
+		    'list': [{
+		        'end': 1,
+		        'local_variables': {
+		            'a': 10
+		        },
+		        'start': 0,
+		        'stdout': '',
+		        'type': 'step'
+		    }, {
+		        'end': 2,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 1,
+		        'stdout': '',
+		        'type': 'step'
+		    }, {
+		        'end': 6,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 2,
+		        'stdout': 'BYE\n',
+		        'type': 'step'
+		    }],
+		})
 
 	def test_nested(self):
 		usercode = """a = 10
@@ -482,29 +883,56 @@ elif a <= b:
 
 		assert (listoflist == [1, 2, 6, 10, 14])
 		assert (step_json == {
-		    "d":
+		    'd':
 		        1,
-		    "list": [{
-		        "type": "step",
-		        "start": 0,
-		        "end": 1
+		    'list': [{
+		        'end': 1,
+		        'local_variables': {
+		            'a': 10
+		        },
+		        'start': 0,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 1,
-		        "end": 2
+		        'end': 2,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 1,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 2,
-		        "end": 6
+		        'end': 6,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 2,
+		        'stdout': '20\n',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 6,
-		        "end": 10
+		        'end': 10,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 6,
+		        'stdout': '20\n'
+		                  '20\n',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 10,
-		        "end": 14
-		    }]
+		        'end': 14,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 10,
+		        'stdout': '20\n'
+		                  '20\n'
+		                  '20\n',
+		        'type': 'step'
+		    }],
 		})
 
 	def test_with_while(self):
@@ -539,27 +967,54 @@ print("HELLO WORLD finall")"""
 
 		assert (listoflist == [1, 2, 4, 6, 17])
 		assert (step_json == {
-		    "d":
+		    'd':
 		        1,
-		    "list": [{
-		        "type": "step",
-		        "start": 0,
-		        "end": 1
+		    'list': [{
+		        'end': 1,
+		        'local_variables': {
+		            'a': 10
+		        },
+		        'start': 0,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 1,
-		        "end": 2
+		        'end': 2,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 1,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 2,
-		        "end": 4
+		        'end': 4,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 2,
+		        'stdout': 'HELLO\n',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 4,
-		        "end": 6
+		        'end': 6,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 4,
+		        'stdout': 'HELLO\n'
+		                  'HELLO 02\n',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 6,
-		        "end": 17
-		    }]
+		        'end': 17,
+		        'local_variables': {
+		            'a': 10,
+		            'b': 20
+		        },
+		        'start': 6,
+		        'stdout': 'HELLO\n'
+		                  'HELLO 02\n'
+		                  'HELLO WORLD finall\n',
+		        'type': 'step'
+		    }],
 		})

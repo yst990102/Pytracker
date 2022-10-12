@@ -23,43 +23,86 @@ while i < 5:
 
 		assert (listoflist == [1, [2, 3, 4], [2, 3, 4], [2, 3, 4], [2, 3, 4], [2, 3, 4]])
 		assert (step_json == {
-		    "d":
+		    'd':
 		        3,
-		    "list": [{
-		        "type": "step",
-		        "start": 0,
-		        "end": 1
+		    'list': [{
+		        'end': 1,
+		        'local_variables': {
+		            'i': 0
+		        },
+		        'start': 0,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 1,
-		        "end": 2
+		        'end': 2,
+		        'local_variables': {
+		            'i': 0
+		        },
+		        'start': 1,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 2,
-		        "iteration": 1
+		        'iteration': 1,
+		        'local_variables': {
+		            'i': 0
+		        },
+		        'start': 2,
+		        'stdout': '',
+		        'type': 'circle'
 		    }, {
-		        "type": "while_start",
-		        "depth": -1
+		        'depth': -1,
+		        'type': 'while_start'
 		    }, {
-		        "type": "step",
-		        "start": 2,
-		        "end": 3
+		        'end': 3,
+		        'local_variables': {
+		            'i': 0
+		        },
+		        'start': 2,
+		        'stdout': 'Here\n',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 3,
-		        "end": 4
+		        'end': 4,
+		        'local_variables': {
+		            'i': 1
+		        },
+		        'start': 3,
+		        'stdout': 'Here\n',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 2,
-		        "iteration": 5
+		        'iteration': 5,
+		        'local_variables': {
+		            'i': 4
+		        },
+		        'start': 2,
+		        'stdout': 'Here\n'
+		                  'Here\n'
+		                  'Here\n'
+		                  'Here\n',
+		        'type': 'circle'
 		    }, {
-		        "type": "step",
-		        "start": 2,
-		        "end": 3
+		        'end': 3,
+		        'local_variables': {
+		            'i': 4
+		        },
+		        'start': 2,
+		        'stdout': 'Here\n'
+		                  'Here\n'
+		                  'Here\n'
+		                  'Here\n'
+		                  'Here\n',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 3,
-		        "end": 4
+		        'end': 4,
+		        'local_variables': {
+		            'i': 5
+		        },
+		        'start': 3,
+		        'stdout': 'Here\n'
+		                  'Here\n'
+		                  'Here\n'
+		                  'Here\n'
+		                  'Here\n',
+		        'type': 'step'
 		    }]
 		})
 
@@ -82,66 +125,125 @@ while i < 6:
 
 		assert (listoflist == [1, 2, [3, [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], 6], [3, 6], [3, 6], [3, 6], [3, 6], [3, 6]])
 		assert (step_json == {
-		    "d":
+		    'd':
 		        5,
-		    "list": [{
-		        "type": "step",
-		        "start": 0,
-		        "end": 1
+		    'list': [{
+		        'end': 1,
+		        'local_variables': {
+		            'i': 0
+		        },
+		        'start': 0,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 1,
-		        "end": 2
+		        'end': 2,
+		        'local_variables': {
+		            'i': 0,
+		            'j': 0
+		        },
+		        'start': 1,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 2,
-		        "end": 3
+		        'end': 3,
+		        'local_variables': {
+		            'i': 0,
+		            'j': 0
+		        },
+		        'start': 2,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 3,
-		        "iteration": 1
+		        'iteration': 1,
+		        'local_variables': {
+		            'i': 0,
+		            'j': 0
+		        },
+		        'start': 3,
+		        'stdout': '',
+		        'type': 'circle'
 		    }, {
-		        "type": "while_start",
-		        "depth": -1
+		        'depth': -1,
+		        'type': 'while_start'
 		    }, {
-		        "type": "step",
-		        "start": 3,
-		        "end": 4
+		        'end': 4,
+		        'local_variables': {
+		            'i': 0,
+		            'j': 0
+		        },
+		        'start': 3,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 4,
-		        "iteration": 1
+		        'iteration': 1,
+		        'local_variables': {
+		            'i': 0,
+		            'j': 0
+		        },
+		        'start': 4,
+		        'stdout': '',
+		        'type': 'circle'
 		    }, {
-		        "type": "while_start",
-		        "depth": -1
+		        'depth': -1,
+		        'type': 'while_start'
 		    }, {
-		        "type": "step",
-		        "start": 4,
-		        "end": 5
+		        'end': 5,
+		        'local_variables': {
+		            'i': 0,
+		            'j': 1
+		        },
+		        'start': 4,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 4,
-		        "iteration": 6
+		        'iteration': 6,
+		        'local_variables': {
+		            'i': 0,
+		            'j': 5
+		        },
+		        'start': 4,
+		        'stdout': '',
+		        'type': 'circle'
 		    }, {
-		        "type": "step",
-		        "start": 4,
-		        "end": 5
+		        'end': 5,
+		        'local_variables': {
+		            'i': 0,
+		            'j': 6
+		        },
+		        'start': 4,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "while_end",
-		        "start": 4,
-		        "end": 5
+		        'end': 5,
+		        'start': 4,
+		        'type': 'while_end'
 		    }, {
-		        "type": "step",
-		        "start": 5,
-		        "end": 6
+		        'end': 6,
+		        'local_variables': {
+		            'i': 1,
+		            'j': 6
+		        },
+		        'start': 5,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 3,
-		        "iteration": 6
+		        'iteration': 6,
+		        'local_variables': {
+		            'i': 5,
+		            'j': 6
+		        },
+		        'start': 3,
+		        'stdout': '',
+		        'type': 'circle'
 		    }, {
-		        "type": "step",
-		        "start": 3,
-		        "end": 6
+		        'end': 6,
+		        'local_variables': {
+		            'i': 6,
+		            'j': 6
+		        },
+		        'start': 3,
+		        'stdout': '',
+		        'type': 'step'
 		    }]
 		})
 
@@ -165,43 +267,83 @@ while a > 0:
 
 		assert (listoflist == [1, [2, 4, 7], [2, 6, 7], [2, 4, 7], [2, 6, 7]])
 		assert (step_json == {
-		    "d":
+		    'd':
 		        3,
-		    "list": [{
-		        "type": "step",
-		        "start": 0,
-		        "end": 1
+		    'list': [{
+		        'end': 1,
+		        'local_variables': {
+		            'a': 4
+		        },
+		        'start': 0,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 1,
-		        "end": 2
+		        'end': 2,
+		        'local_variables': {
+		            'a': 4
+		        },
+		        'start': 1,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 2,
-		        "iteration": 1
+		        'iteration': 1,
+		        'local_variables': {
+		            'a': 4
+		        },
+		        'start': 2,
+		        'stdout': '',
+		        'type': 'circle'
 		    }, {
-		        "type": "while_start",
-		        "depth": -1
+		        'depth': -1,
+		        'type': 'while_start'
 		    }, {
-		        "type": "step",
-		        "start": 2,
-		        "end": 4
+		        'end': 4,
+		        'local_variables': {
+		            'a': 4
+		        },
+		        'start': 2,
+		        'stdout': 'EVEN\n',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 4,
-		        "end": 7
+		        'end': 7,
+		        'local_variables': {
+		            'a': 3
+		        },
+		        'start': 4,
+		        'stdout': 'EVEN\n',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 2,
-		        "iteration": 4
+		        'iteration': 4,
+		        'local_variables': {
+		            'a': 1
+		        },
+		        'start': 2,
+		        'stdout': 'EVEN\n'
+		                  'ODD\n'
+		                  'EVEN\n',
+		        'type': 'circle'
 		    }, {
-		        "type": "step",
-		        "start": 2,
-		        "end": 6
+		        'end': 6,
+		        'local_variables': {
+		            'a': 1
+		        },
+		        'start': 2,
+		        'stdout': 'EVEN\n'
+		                  'ODD\n'
+		                  'EVEN\n'
+		                  'ODD\n',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 6,
-		        "end": 7
+		        'end': 7,
+		        'local_variables': {
+		            'a': 0
+		        },
+		        'start': 6,
+		        'stdout': 'EVEN\n'
+		                  'ODD\n'
+		                  'EVEN\n'
+		                  'ODD\n',
+		        'type': 'step'
 		    }]
 		})
 
@@ -233,133 +375,308 @@ print(odd_sum)
 
 		assert (listoflist == [1, 2, 3, [4, 5, [6, 8, 11], [6, 10, 11], 12], [4, 5, [6, 10, 11], [6, 8, 11], 12], [4, 5, [6, 8, 11], [6, 10, 11], 12], [4, 5, [6, 10, 11], [6, 8, 11], 12], 14, 15])
 		assert (step_json == {
-		    "d":
+		    'd':
 		        7,
-		    "list": [{
-		        "type": "step",
-		        "start": 0,
-		        "end": 1
+		    'list': [{
+		        'end': 1,
+		        'local_variables': {
+		            'even_sum': 0
+		        },
+		        'start': 0,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 1,
-		        "end": 2
+		        'end': 2,
+		        'local_variables': {
+		            'even_sum': 0,
+		            'odd_sum': 0
+		        },
+		        'start': 1,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 2,
-		        "end": 3
+		        'end': 3,
+		        'local_variables': {
+		            'even_sum': 0,
+		            'i': 0,
+		            'odd_sum': 0
+		        },
+		        'start': 2,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 3,
-		        "end": 4
+		        'end': 4,
+		        'local_variables': {
+		            'even_sum': 0,
+		            'i': 0,
+		            'odd_sum': 0
+		        },
+		        'start': 3,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 4,
-		        "iteration": 1
+		        'iteration': 1,
+		        'local_variables': {
+		            'even_sum': 0,
+		            'i': 0,
+		            'odd_sum': 0
+		        },
+		        'start': 4,
+		        'stdout': '',
+		        'type': 'circle'
 		    }, {
-		        "type": "while_start",
-		        "depth": -1
+		        'depth': -1,
+		        'type': 'while_start'
 		    }, {
-		        "type": "step",
-		        "start": 4,
-		        "end": 5
+		        'end': 5,
+		        'local_variables': {
+		            'even_sum': 0,
+		            'i': 0,
+		            'j': 4,
+		            'odd_sum': 0
+		        },
+		        'start': 4,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 5,
-		        "end": 6
+		        'end': 6,
+		        'local_variables': {
+		            'even_sum': 0,
+		            'i': 0,
+		            'j': 4,
+		            'odd_sum': 0
+		        },
+		        'start': 5,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 6,
-		        "iteration": 1
+		        'iteration': 1,
+		        'local_variables': {
+		            'even_sum': 0,
+		            'i': 0,
+		            'j': 4,
+		            'odd_sum': 0
+		        },
+		        'start': 6,
+		        'stdout': '',
+		        'type': 'circle'
 		    }, {
-		        "type": "while_start",
-		        "depth": -1
+		        'depth': -1,
+		        'type': 'while_start'
 		    }, {
-		        "type": "step",
-		        "start": 6,
-		        "end": 8
+		        'end': 8,
+		        'local_variables': {
+		            'even_sum': 4,
+		            'i': 0,
+		            'j': 4,
+		            'odd_sum': 0
+		        },
+		        'start': 6,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 8,
-		        "end": 11
+		        'end': 11,
+		        'local_variables': {
+		            'even_sum': 4,
+		            'i': 0,
+		            'j': 5,
+		            'odd_sum': 0
+		        },
+		        'start': 8,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 6,
-		        "iteration": 2
+		        'iteration': 2,
+		        'local_variables': {
+		            'even_sum': 4,
+		            'i': 0,
+		            'j': 5,
+		            'odd_sum': 0
+		        },
+		        'start': 6,
+		        'stdout': '',
+		        'type': 'circle'
 		    }, {
-		        "type": "step",
-		        "start": 6,
-		        "end": 10
+		        'end': 10,
+		        'local_variables': {
+		            'even_sum': 4,
+		            'i': 0,
+		            'j': 5,
+		            'odd_sum': 5
+		        },
+		        'start': 6,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 10,
-		        "end": 11
+		        'end': 11,
+		        'local_variables': {
+		            'even_sum': 4,
+		            'i': 0,
+		            'j': 6,
+		            'odd_sum': 5
+		        },
+		        'start': 10,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "while_end",
-		        "start": 6,
-		        "end": 11
+		        'end': 11,
+		        'start': 6,
+		        'type': 'while_end'
 		    }, {
-		        "type": "step",
-		        "start": 11,
-		        "end": 12
+		        'end': 12,
+		        'local_variables': {
+		            'even_sum': 4,
+		            'i': 1,
+		            'j': 6,
+		            'odd_sum': 5
+		        },
+		        'start': 11,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 4,
-		        "iteration": 4
+		        'iteration': 4,
+		        'local_variables': {
+		            'even_sum': 16,
+		            'i': 3,
+		            'j': 6,
+		            'odd_sum': 17
+		        },
+		        'start': 4,
+		        'stdout': '',
+		        'type': 'circle'
 		    }, {
-		        "type": "step",
-		        "start": 4,
-		        "end": 5
+		        'end': 5,
+		        'local_variables': {
+		            'even_sum': 16,
+		            'i': 3,
+		            'j': 4,
+		            'odd_sum': 17
+		        },
+		        'start': 4,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 5,
-		        "end": 6
+		        'end': 6,
+		        'local_variables': {
+		            'even_sum': 16,
+		            'i': 3,
+		            'j': 4,
+		            'odd_sum': 17
+		        },
+		        'start': 5,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 6,
-		        "iteration": 1
+		        'iteration': 1,
+		        'local_variables': {
+		            'even_sum': 16,
+		            'i': 3,
+		            'j': 4,
+		            'odd_sum': 17
+		        },
+		        'start': 6,
+		        'stdout': '',
+		        'type': 'circle'
 		    }, {
-		        "type": "while_start",
-		        "depth": -1
+		        'depth': -1,
+		        'type': 'while_start'
 		    }, {
-		        "type": "step",
-		        "start": 6,
-		        "end": 10
+		        'end': 10,
+		        'local_variables': {
+		            'even_sum': 16,
+		            'i': 3,
+		            'j': 4,
+		            'odd_sum': 24
+		        },
+		        'start': 6,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 10,
-		        "end": 11
+		        'end': 11,
+		        'local_variables': {
+		            'even_sum': 16,
+		            'i': 3,
+		            'j': 5,
+		            'odd_sum': 24
+		        },
+		        'start': 10,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 6,
-		        "iteration": 2
+		        'iteration': 2,
+		        'local_variables': {
+		            'even_sum': 16,
+		            'i': 3,
+		            'j': 5,
+		            'odd_sum': 24
+		        },
+		        'start': 6,
+		        'stdout': '',
+		        'type': 'circle'
 		    }, {
-		        "type": "step",
-		        "start": 6,
-		        "end": 8
+		        'end': 8,
+		        'local_variables': {
+		            'even_sum': 24,
+		            'i': 3,
+		            'j': 5,
+		            'odd_sum': 24
+		        },
+		        'start': 6,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 8,
-		        "end": 11
+		        'end': 11,
+		        'local_variables': {
+		            'even_sum': 24,
+		            'i': 3,
+		            'j': 6,
+		            'odd_sum': 24
+		        },
+		        'start': 8,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "while_end",
-		        "start": 6,
-		        "end": 11
+		        'end': 11,
+		        'start': 6,
+		        'type': 'while_end'
 		    }, {
-		        "type": "step",
-		        "start": 11,
-		        "end": 12
+		        'end': 12,
+		        'local_variables': {
+		            'even_sum': 24,
+		            'i': 4,
+		            'j': 6,
+		            'odd_sum': 24
+		        },
+		        'start': 11,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "while_end",
-		        "start": 4,
-		        "end": 12
+		        'end': 12,
+		        'start': 4,
+		        'type': 'while_end'
 		    }, {
-		        "type": "step",
-		        "start": 12,
-		        "end": 14
+		        'end': 14,
+		        'local_variables': {
+		            'even_sum': 24,
+		            'i': 4,
+		            'j': 6,
+		            'odd_sum': 24
+		        },
+		        'start': 12,
+		        'stdout': '24\n',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 14,
-		        "end": 15
+		        'end': 15,
+		        'local_variables': {
+		            'even_sum': 24,
+		            'i': 4,
+		            'j': 6,
+		            'odd_sum': 24
+		        },
+		        'start': 14,
+		        'stdout': '24\n'
+		                  '24\n',
+		        'type': 'step'
 		    }]
 		})
 
@@ -388,121 +705,322 @@ while i < 3:
 
 		assert (listoflist == [1, 2, 3, [4, [5, [6, 7, 8], [6, 7, 8], [6, 7, 8], 9, 10], [5, 9, 10], [5, 9, 10], 11, 12], [4, 11, 12], [4, 11, 12]])
 		assert (step_json == {
-		    "d":
+		    'd':
 		        7,
-		    "list": [{
-		        "type": "step",
-		        "start": 0,
-		        "end": 1
+		    'list': [{
+		        'end': 1,
+		        'local_variables': {
+		            'i': 0
+		        },
+		        'start': 0,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 1,
-		        "end": 2
+		        'end': 2,
+		        'local_variables': {
+		            'i': 0,
+		            'j': 0
+		        },
+		        'start': 1,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 2,
-		        "end": 3
+		        'end': 3,
+		        'local_variables': {
+		            'i': 0,
+		            'j': 0,
+		            'k': 0
+		        },
+		        'start': 2,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 3,
-		        "end": 4
+		        'end': 4,
+		        'local_variables': {
+		            'i': 0,
+		            'j': 0,
+		            'k': 0
+		        },
+		        'start': 3,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 4,
-		        "iteration": 1
+		        'iteration': 1,
+		        'local_variables': {
+		            'i': 0,
+		            'j': 0,
+		            'k': 0
+		        },
+		        'start': 4,
+		        'stdout': '',
+		        'type': 'circle'
 		    }, {
-		        "type": "while_start",
-		        "depth": -1
+		        'depth': -1,
+		        'type': 'while_start'
 		    }, {
-		        "type": "step",
-		        "start": 4,
-		        "end": 5
+		        'end': 5,
+		        'local_variables': {
+		            'i': 0,
+		            'j': 0,
+		            'k': 0
+		        },
+		        'start': 4,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 5,
-		        "iteration": 1
+		        'iteration': 1,
+		        'local_variables': {
+		            'i': 0,
+		            'j': 0,
+		            'k': 0
+		        },
+		        'start': 5,
+		        'stdout': '',
+		        'type': 'circle'
 		    }, {
-		        "type": "while_start",
-		        "depth": -1
+		        'depth': -1,
+		        'type': 'while_start'
 		    }, {
-		        "type": "step",
-		        "start": 5,
-		        "end": 6
+		        'end': 6,
+		        'local_variables': {
+		            'i': 0,
+		            'j': 0,
+		            'k': 0
+		        },
+		        'start': 5,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 6,
-		        "iteration": 1
+		        'iteration': 1,
+		        'local_variables': {
+		            'i': 0,
+		            'j': 0,
+		            'k': 0
+		        },
+		        'start': 6,
+		        'stdout': '',
+		        'type': 'circle'
 		    }, {
-		        "type": "while_start",
-		        "depth": -1
+		        'depth': -1,
+		        'type': 'while_start'
 		    }, {
-		        "type": "step",
-		        "start": 6,
-		        "end": 7
+		        'end': 7,
+		        'local_variables': {
+		            'i': 0,
+		            'j': 0,
+		            'k': 0
+		        },
+		        'start': 6,
+		        'stdout': '0\n',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 7,
-		        "end": 8
+		        'end': 8,
+		        'local_variables': {
+		            'i': 0,
+		            'j': 0,
+		            'k': 1
+		        },
+		        'start': 7,
+		        'stdout': '0\n',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 6,
-		        "iteration": 3
+		        'iteration': 3,
+		        'local_variables': {
+		            'i': 0,
+		            'j': 0,
+		            'k': 2
+		        },
+		        'start': 6,
+		        'stdout': '0\n'
+		                  '1\n',
+		        'type': 'circle'
 		    }, {
-		        "type": "step",
-		        "start": 6,
-		        "end": 7
+		        'end': 7,
+		        'local_variables': {
+		            'i': 0,
+		            'j': 0,
+		            'k': 2
+		        },
+		        'start': 6,
+		        'stdout': '0\n'
+		                  '1\n'
+		                  '2\n',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 7,
-		        "end": 8
+		        'end': 8,
+		        'local_variables': {
+		            'i': 0,
+		            'j': 0,
+		            'k': 3
+		        },
+		        'start': 7,
+		        'stdout': '0\n'
+		                  '1\n'
+		                  '2\n',
+		        'type': 'step'
 		    }, {
-		        "type": "while_end",
-		        "start": 6,
-		        "end": 8
+		        'end': 8,
+		        'start': 6,
+		        'type': 'while_end'
 		    }, {
-		        "type": "step",
-		        "start": 8,
-		        "end": 9
+		        'end': 9,
+		        'local_variables': {
+		            'i': 0,
+		            'j': 0,
+		            'k': 3
+		        },
+		        'start': 8,
+		        'stdout': '0\n'
+		                  '1\n'
+		                  '2\n'
+		                  '0\n',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 9,
-		        "end": 10
+		        'end': 10,
+		        'local_variables': {
+		            'i': 0,
+		            'j': 1,
+		            'k': 3
+		        },
+		        'start': 9,
+		        'stdout': '0\n'
+		                  '1\n'
+		                  '2\n'
+		                  '0\n',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 5,
-		        "iteration": 3
+		        'iteration': 3,
+		        'local_variables': {
+		            'i': 0,
+		            'j': 2,
+		            'k': 3
+		        },
+		        'start': 5,
+		        'stdout': '0\n'
+		                  '1\n'
+		                  '2\n'
+		                  '0\n'
+		                  '1\n',
+		        'type': 'circle'
 		    }, {
-		        "type": "step",
-		        "start": 5,
-		        "end": 9
+		        'end': 9,
+		        'local_variables': {
+		            'i': 0,
+		            'j': 2,
+		            'k': 3
+		        },
+		        'start': 5,
+		        'stdout': '0\n'
+		                  '1\n'
+		                  '2\n'
+		                  '0\n'
+		                  '1\n'
+		                  '2\n',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 9,
-		        "end": 10
+		        'end': 10,
+		        'local_variables': {
+		            'i': 0,
+		            'j': 3,
+		            'k': 3
+		        },
+		        'start': 9,
+		        'stdout': '0\n'
+		                  '1\n'
+		                  '2\n'
+		                  '0\n'
+		                  '1\n'
+		                  '2\n',
+		        'type': 'step'
 		    }, {
-		        "type": "while_end",
-		        "start": 5,
-		        "end": 10
+		        'end': 10,
+		        'start': 5,
+		        'type': 'while_end'
 		    }, {
-		        "type": "step",
-		        "start": 10,
-		        "end": 11
+		        'end': 11,
+		        'local_variables': {
+		            'i': 0,
+		            'j': 3,
+		            'k': 3
+		        },
+		        'start': 10,
+		        'stdout': '0\n'
+		                  '1\n'
+		                  '2\n'
+		                  '0\n'
+		                  '1\n'
+		                  '2\n'
+		                  '0\n',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 11,
-		        "end": 12
+		        'end': 12,
+		        'local_variables': {
+		            'i': 1,
+		            'j': 3,
+		            'k': 3
+		        },
+		        'start': 11,
+		        'stdout': '0\n'
+		                  '1\n'
+		                  '2\n'
+		                  '0\n'
+		                  '1\n'
+		                  '2\n'
+		                  '0\n',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 4,
-		        "iteration": 3
+		        'iteration': 3,
+		        'local_variables': {
+		            'i': 2,
+		            'j': 3,
+		            'k': 3
+		        },
+		        'start': 4,
+		        'stdout': '0\n'
+		                  '1\n'
+		                  '2\n'
+		                  '0\n'
+		                  '1\n'
+		                  '2\n'
+		                  '0\n'
+		                  '1\n',
+		        'type': 'circle'
 		    }, {
-		        "type": "step",
-		        "start": 4,
-		        "end": 11
+		        'end': 11,
+		        'local_variables': {
+		            'i': 2,
+		            'j': 3,
+		            'k': 3
+		        },
+		        'start': 4,
+		        'stdout': '0\n'
+		                  '1\n'
+		                  '2\n'
+		                  '0\n'
+		                  '1\n'
+		                  '2\n'
+		                  '0\n'
+		                  '1\n'
+		                  '2\n',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 11,
-		        "end": 12
+		        'end': 12,
+		        'local_variables': {
+		            'i': 3,
+		            'j': 3,
+		            'k': 3
+		        },
+		        'start': 11,
+		        'stdout': '0\n'
+		                  '1\n'
+		                  '2\n'
+		                  '0\n'
+		                  '1\n'
+		                  '2\n'
+		                  '0\n'
+		                  '1\n'
+		                  '2\n',
+		        'type': 'step'
 		    }]
 		})
 
@@ -540,133 +1058,308 @@ print(odd_sum)
 
 		assert (listoflist == [1, 2, 3, [4, 5, [6, 8, 11], [6, 10, 11], [6, 8, 11], [6, 10, 11], 18], [4, 5, [6, 10, 11], [6, 8, 11], [6, 10, 11], [6, 8, 11], 18], 20, 21])
 		assert (step_json == {
-		    "d":
+		    'd':
 		        7,
-		    "list": [{
-		        "type": "step",
-		        "start": 0,
-		        "end": 1
+		    'list': [{
+		        'end': 1,
+		        'local_variables': {
+		            'even_sum': 0
+		        },
+		        'start': 0,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 1,
-		        "end": 2
+		        'end': 2,
+		        'local_variables': {
+		            'even_sum': 0,
+		            'odd_sum': 0
+		        },
+		        'start': 1,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 2,
-		        "end": 3
+		        'end': 3,
+		        'local_variables': {
+		            'even_sum': 0,
+		            'i': 0,
+		            'odd_sum': 0
+		        },
+		        'start': 2,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 3,
-		        "end": 4
+		        'end': 4,
+		        'local_variables': {
+		            'even_sum': 0,
+		            'i': 0,
+		            'odd_sum': 0
+		        },
+		        'start': 3,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 4,
-		        "iteration": 1
+		        'iteration': 1,
+		        'local_variables': {
+		            'even_sum': 0,
+		            'i': 0,
+		            'odd_sum': 0
+		        },
+		        'start': 4,
+		        'stdout': '',
+		        'type': 'circle'
 		    }, {
-		        "type": "while_start",
-		        "depth": -1
+		        'depth': -1,
+		        'type': 'while_start'
 		    }, {
-		        "type": "step",
-		        "start": 4,
-		        "end": 5
+		        'end': 5,
+		        'local_variables': {
+		            'even_sum': 0,
+		            'i': 0,
+		            'j': 0,
+		            'odd_sum': 0
+		        },
+		        'start': 4,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 5,
-		        "end": 6
+		        'end': 6,
+		        'local_variables': {
+		            'even_sum': 0,
+		            'i': 0,
+		            'j': 0,
+		            'odd_sum': 0
+		        },
+		        'start': 5,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 6,
-		        "iteration": 1
+		        'iteration': 1,
+		        'local_variables': {
+		            'even_sum': 0,
+		            'i': 0,
+		            'j': 0,
+		            'odd_sum': 0
+		        },
+		        'start': 6,
+		        'stdout': '',
+		        'type': 'circle'
 		    }, {
-		        "type": "while_start",
-		        "depth": -1
+		        'depth': -1,
+		        'type': 'while_start'
 		    }, {
-		        "type": "step",
-		        "start": 6,
-		        "end": 8
+		        'end': 8,
+		        'local_variables': {
+		            'even_sum': 0,
+		            'i': 0,
+		            'j': 0,
+		            'odd_sum': 0
+		        },
+		        'start': 6,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 8,
-		        "end": 11
+		        'end': 11,
+		        'local_variables': {
+		            'even_sum': 0,
+		            'i': 0,
+		            'j': 1,
+		            'odd_sum': 0
+		        },
+		        'start': 8,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 6,
-		        "iteration": 4
+		        'iteration': 4,
+		        'local_variables': {
+		            'even_sum': 2,
+		            'i': 0,
+		            'j': 3,
+		            'odd_sum': 1
+		        },
+		        'start': 6,
+		        'stdout': '',
+		        'type': 'circle'
 		    }, {
-		        "type": "step",
-		        "start": 6,
-		        "end": 10
+		        'end': 10,
+		        'local_variables': {
+		            'even_sum': 2,
+		            'i': 0,
+		            'j': 3,
+		            'odd_sum': 4
+		        },
+		        'start': 6,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 10,
-		        "end": 11
+		        'end': 11,
+		        'local_variables': {
+		            'even_sum': 2,
+		            'i': 0,
+		            'j': 4,
+		            'odd_sum': 4
+		        },
+		        'start': 10,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "while_end",
-		        "start": 6,
-		        "end": 11
+		        'end': 11,
+		        'start': 6,
+		        'type': 'while_end'
 		    }, {
-		        "type": "step",
-		        "start": 11,
-		        "end": 18
+		        'end': 18,
+		        'local_variables': {
+		            'even_sum': 2,
+		            'i': 1,
+		            'j': 4,
+		            'odd_sum': 4
+		        },
+		        'start': 11,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 4,
-		        "iteration": 2
+		        'iteration': 2,
+		        'local_variables': {
+		            'even_sum': 2,
+		            'i': 1,
+		            'j': 4,
+		            'odd_sum': 4
+		        },
+		        'start': 4,
+		        'stdout': '',
+		        'type': 'circle'
 		    }, {
-		        "type": "step",
-		        "start": 4,
-		        "end": 5
+		        'end': 5,
+		        'local_variables': {
+		            'even_sum': 2,
+		            'i': 1,
+		            'j': 0,
+		            'odd_sum': 4
+		        },
+		        'start': 4,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 5,
-		        "end": 6
+		        'end': 6,
+		        'local_variables': {
+		            'even_sum': 2,
+		            'i': 1,
+		            'j': 0,
+		            'odd_sum': 4
+		        },
+		        'start': 5,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 6,
-		        "iteration": 1
+		        'iteration': 1,
+		        'local_variables': {
+		            'even_sum': 2,
+		            'i': 1,
+		            'j': 0,
+		            'odd_sum': 4
+		        },
+		        'start': 6,
+		        'stdout': '',
+		        'type': 'circle'
 		    }, {
-		        "type": "while_start",
-		        "depth": -1
+		        'depth': -1,
+		        'type': 'while_start'
 		    }, {
-		        "type": "step",
-		        "start": 6,
-		        "end": 10
+		        'end': 10,
+		        'local_variables': {
+		            'even_sum': 2,
+		            'i': 1,
+		            'j': 0,
+		            'odd_sum': 5
+		        },
+		        'start': 6,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 10,
-		        "end": 11
+		        'end': 11,
+		        'local_variables': {
+		            'even_sum': 2,
+		            'i': 1,
+		            'j': 1,
+		            'odd_sum': 5
+		        },
+		        'start': 10,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 6,
-		        "iteration": 4
+		        'iteration': 4,
+		        'local_variables': {
+		            'even_sum': 4,
+		            'i': 1,
+		            'j': 3,
+		            'odd_sum': 8
+		        },
+		        'start': 6,
+		        'stdout': '',
+		        'type': 'circle'
 		    }, {
-		        "type": "step",
-		        "start": 6,
-		        "end": 8
+		        'end': 8,
+		        'local_variables': {
+		            'even_sum': 8,
+		            'i': 1,
+		            'j': 3,
+		            'odd_sum': 8
+		        },
+		        'start': 6,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 8,
-		        "end": 11
+		        'end': 11,
+		        'local_variables': {
+		            'even_sum': 8,
+		            'i': 1,
+		            'j': 4,
+		            'odd_sum': 8
+		        },
+		        'start': 8,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "while_end",
-		        "start": 6,
-		        "end": 11
+		        'end': 11,
+		        'start': 6,
+		        'type': 'while_end'
 		    }, {
-		        "type": "step",
-		        "start": 11,
-		        "end": 18
+		        'end': 18,
+		        'local_variables': {
+		            'even_sum': 8,
+		            'i': 2,
+		            'j': 4,
+		            'odd_sum': 8
+		        },
+		        'start': 11,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "while_end",
-		        "start": 4,
-		        "end": 18
+		        'end': 18,
+		        'start': 4,
+		        'type': 'while_end'
 		    }, {
-		        "type": "step",
-		        "start": 18,
-		        "end": 20
+		        'end': 20,
+		        'local_variables': {
+		            'even_sum': 8,
+		            'i': 2,
+		            'j': 4,
+		            'odd_sum': 8
+		        },
+		        'start': 18,
+		        'stdout': '8\n',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 20,
-		        "end": 21
+		        'end': 21,
+		        'local_variables': {
+		            'even_sum': 8,
+		            'i': 2,
+		            'j': 4,
+		            'odd_sum': 8
+		        },
+		        'start': 20,
+		        'stdout': '8\n'
+		                  '8\n',
+		        'type': 'step'
 		    }]
 		})
 
@@ -692,42 +1385,76 @@ else:
 
 		assert (listoflist == [1, [3, 4, 5], [3, 4, 5]])
 		assert (step_json == {
-		    "d":
+		    'd':
 		        3,
-		    "list": [{
-		        "type": "step",
-		        "start": 0,
-		        "end": 1
+		    'list': [{
+		        'end': 1,
+		        'local_variables': {
+		            'a': 0
+		        },
+		        'start': 0,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 1,
-		        "end": 3
+		        'end': 3,
+		        'local_variables': {
+		            'a': 0
+		        },
+		        'start': 1,
+		        'stdout': '',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 3,
-		        "iteration": 1
+		        'iteration': 1,
+		        'local_variables': {
+		            'a': 0
+		        },
+		        'start': 3,
+		        'stdout': '',
+		        'type': 'circle'
 		    }, {
-		        "type": "while_start",
-		        "depth": -1
+		        'depth': -1,
+		        'type': 'while_start'
 		    }, {
-		        "type": "step",
-		        "start": 3,
-		        "end": 4
+		        'end': 4,
+		        'local_variables': {
+		            'a': 0
+		        },
+		        'start': 3,
+		        'stdout': '1\n',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 4,
-		        "end": 5
+		        'end': 5,
+		        'local_variables': {
+		            'a': 1
+		        },
+		        'start': 4,
+		        'stdout': '1\n',
+		        'type': 'step'
 		    }, {
-		        "type": "circle",
-		        "start": 3,
-		        "iteration": 2
+		        'iteration': 2,
+		        'local_variables': {
+		            'a': 1
+		        },
+		        'start': 3,
+		        'stdout': '1\n',
+		        'type': 'circle'
 		    }, {
-		        "type": "step",
-		        "start": 3,
-		        "end": 4
+		        'end': 4,
+		        'local_variables': {
+		            'a': 1
+		        },
+		        'start': 3,
+		        'stdout': '1\n'
+		                  '1\n',
+		        'type': 'step'
 		    }, {
-		        "type": "step",
-		        "start": 4,
-		        "end": 5
+		        'end': 5,
+		        'local_variables': {
+		            'a': 2
+		        },
+		        'start': 4,
+		        'stdout': '1\n'
+		                  '1\n',
+		        'type': 'step'
 		    }]
 		})
