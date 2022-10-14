@@ -6,6 +6,27 @@ backend_absolute_path = str(pathlib.Path(__file__).parent.parent.resolve())
 
 class Test_Function_Calling():
 	# TODO: NameError: name 'myprint' is not defined
+	# 2022-10-14 已查明原因，global variables为能更新，thesisB-demo是能正常工作的。
+	# Correct output should be like below: 
+# (1): def myprint(something):
+# local_variables == {}
+# (5): def main():
+# local_variables == {'myprint': <function myprint at 0x7ff8397e0670>}
+# (12): main()
+# local_variables == {'myprint': <function myprint at 0x7ff8397e0670>, 'main': <function main at 0x7ff8397e0790>}
+# (6): 	a = 123
+# local_variables == {}
+# (7): 	myprint(a)
+# local_variables == {'a': 123}
+# (2): 	print(something)
+# local_variables == {'something': 123}
+# (8): 	b = 321
+# local_variables == {'a': 123}
+# (9): 	myprint(b)
+# local_variables == {'a': 123, 'b': 321}
+# (2): 	print(something)
+# local_variables == {'something': 321}
+
 	def test_one_function_calling(self):
 		usercode = """def myprint(something):
 	print(something)

@@ -279,10 +279,10 @@ class Trace:
 			local_variables_set_diff = list(frame_locals.keys() - self.initial_locals_keys)
 			for key in local_variables_set_diff:
 				local_variables[key] = frame_locals[key]
-			# global_variables = {}
-			# global_variables_set_diff = list(frame_globals.keys() - self.initial_globals_keys)
-			# for key in global_variables_set_diff:
-			# 	global_variables[key] = frame_globals[key]
+			global_variables = {}
+			global_variables_set_diff = list(frame_globals.keys() - self.initial_globals_keys)
+			for key in global_variables_set_diff:
+				global_variables[key] = frame_globals[key]
 
 			if self.start_time:
 				print('%.2f' % (_time() - self.start_time), end=' ')
@@ -291,6 +291,12 @@ class Trace:
 				line_no_list.append(lineno)
 				line_content_list.append(self.usercode.splitlines()[lineno - 1])
 				local_variable_list.append(local_variables)
+				
+				print(f"local_variables = {local_variables}", file=old_stdout)
+				print(f"global_variables = {local_variables}", file=old_stdout)
+				print(f"local_variable_list = {local_variable_list}", file=old_stdout)
+				print(f"================================================================", file=old_stdout)
+				
 				stdout_list.append(Pytracker_outIO.getvalue())
 			except OSError as err:
 				print("Can't save localtrace_trace_and_count output because %s" % err, file=sys.stderr)
