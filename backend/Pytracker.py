@@ -199,4 +199,4 @@ def backend_main(*test_signals, usercode=None, userinput_iter=iter(list())):
 
 
 if __name__ == "__main__":
-	backend_main(SIG_FILE_IO_OFF)
+	backend_main()
