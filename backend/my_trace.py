@@ -138,7 +138,7 @@ class Trace:
 		global execution_processes
 		execution_processes = []
 		
-		self.runctx(cmd, dict.copy(), dict.copy())
+		self.runctx(cmd, dict, dict)
 
 	def runctx(self, cmd, globals=None, locals=None):
 		if globals is None:
@@ -166,7 +166,13 @@ class Trace:
 			local_variables = {}
 			local_variables_set_diff = list(locals.keys() - self.initial_locals_keys)
 			for key in local_variables_set_diff:
-				local_variables[key] = locals[key]
+				if hasattr(locals[key], '__call__'):
+					# local_variables[key] = hex(id(locals[key]))
+					# local_variables[key] = str(locals[key])
+					local_variables[key] = f"function {key} at {hex(id(locals[key]))}"
+				else:
+					local_variables[key] = locals[key]
+			
 			# append the final local_variables and stdout_value
 			local_variable_list.append(local_variables)
 			del local_variable_list[0]
@@ -278,7 +284,13 @@ class Trace:
 			local_variables = {}
 			local_variables_set_diff = list(frame_locals.keys() - self.initial_locals_keys)
 			for key in local_variables_set_diff:
-				local_variables[key] = frame_locals[key]
+				if hasattr(frame_locals[key], '__call__'):
+					# local_variables[key] = hex(id(frame_locals[key]))
+					# local_variables[key] = str(frame_locals[key])
+					local_variables[key] = f"function {key} at {hex(id(frame_locals[key]))}"
+					continue
+				else:
+					local_variables[key] = frame_locals[key]
 			global_variables = {}
 			global_variables_set_diff = list(frame_globals.keys() - self.initial_globals_keys)
 			for key in global_variables_set_diff:
