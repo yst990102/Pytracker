@@ -1,0 +1,92 @@
+// Assignments
+
+1. 
+    Step
+2.
+    Step
+    Step
+    Step
+
+// If statements
+
+1.
+    Step
+
+2.
+    Step
+    Step
+    
+2.
+
+    Step
+    Step 
+    Step
+
+// While loops
+
+1.
+    Step
+    While_start
+    Circle
+    Step
+    While_end
+    Step
+
+2.
+    Step
+    While_start
+    Circle
+    Step
+    Step
+    Circle
+    Step
+    Step
+    While_end
+    Step
+
+3.
+    Step
+    While_start
+    Circle
+    Step
+    Step
+    Circle
+    Step
+    Circle
+    Step
+    While_end
+    Step
+
+4.
+    Step
+    While_start
+    Circle
+    While_start
+    Circle
+    While_start
+    Circle
+    Step
+    Step
+    While_end
+    While_end
+    While_end
+    Step
+
+5.
+    Step
+    While_start
+    Circle
+    While_start
+    Circle
+    While_start
+    Circle
+    Step
+    Step
+    Circle
+    Step
+    Step
+    Circle
+    While_end
+    While_end
+    While_end
+    Step
