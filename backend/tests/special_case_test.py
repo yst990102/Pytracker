@@ -5,7 +5,6 @@ backend_absolute_path = str(pathlib.Path(__file__).parent.parent.resolve())
 
 
 class Test_Different_Main():
-	# TODO: TypeError: Object of type function is not JSON serializable
 	def test_call_by_main_method(self):
 		usercode = """def main():
 	a = 123
@@ -25,9 +24,7 @@ main()"""
 		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [1, 8, 2, 3, 4, 5])
-		assert (step_json == {})
 
-	# TODO: TypeError: Object of type function is not JSON serializable
 	def test_call_by_ifname(self):
 		usercode = """def main():
 	a = 123
@@ -48,7 +45,6 @@ if __name__ == "__main__":
 		step_json = eval(open(backend_absolute_path + "/" + "step_json.json", 'r').read())
 
 		assert (listoflist == [1, 9, 2, 3, 4, 5])
-		assert (step_json == {})
 
 	def test_no_main_or_ifname(self):
 		usercode = """a = 123
