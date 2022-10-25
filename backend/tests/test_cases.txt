@@ -23,19 +23,20 @@
     Step
 
 // While loops
+// Structures -> Step, (Circle, While_start), Circle, While_end
 
 1.
     Step
-    While_start
     Circle
+    While_start
     Step
     While_end
     Step
 
 2.
     Step
-    While_start
     Circle
+    While_start
     Step
     Step
     Circle
@@ -46,8 +47,8 @@
 
 3.
     Step
-    While_start
     Circle
+    While_start
     Step
     Step
     Circle
@@ -59,12 +60,12 @@
 
 4.
     Step
-    While_start
     Circle
     While_start
     Circle
     While_start
     Circle
+    While_start
     Step
     Step
     While_end
@@ -74,12 +75,12 @@
 
 5.
     Step
-    While_start
     Circle
     While_start
     Circle
     While_start
     Circle
+    While_start
     Step
     Step
     Circle
@@ -88,5 +89,77 @@
     Circle
     While_end
     While_end
+    While_end
+    Step
+
+5.
+    Step
+    Circle
+    While_start
+    Circle
+    While_start
+    Circle
+    Step
+    While_end
+    Circle
+    Step
+    While_end
+    Step
+
+6.
+    Step
+    Circle
+    While_start
+    Circle
+    While_start
+    Circle
+    Step
+    While_end
+    Circle
+    Step
+    Circle
+    Step
+    While_end
+    Step
+
+7.
+    Step
+    Circle
+    While_start
+    Circle
+    While_start
+    Circle
+    Step
+    While_start
+    Circle
+    Step
+    While_end
+    While_end
+    Circle
+    Step
+    Circle
+    Step
+    While_end
+    Step
+    
+8.
+    Step
+    Circle
+    While_start
+    Step
+    Circle
+    While_start
+    Step
+    Circle
+    While_start
+    Step
+    Circle
+    Step
+    While_end
+    Circle
+    Step
+    While_end
+    Circle
+    Step
     While_end
     Step
