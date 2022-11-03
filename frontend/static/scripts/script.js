@@ -343,6 +343,7 @@ function get_prev() {
             instructions.length - 2 >= 0 &&
             instructions[instructions.length - 2]["type"] == "while_start"
         ) {
+            console.log("HERERERERE")
             const circle_depth = depth;
             // Remove step
             depth--;
@@ -441,6 +442,34 @@ function get_prev() {
                     console.log(depth_stack)
                     instructions.pop();
                     count -= 1;
+                } else if (instructions.length - 2 >= 0 && instructions[instructions.length - 2]["type"] == "circle") { 
+                    console.log("AKSHDASHJDI")
+                    const circle_depth = depth;
+                    // Remove step
+                    recent[recent.length - 1].remove();
+                    recent.pop();
+                    instructions.pop();
+                    program_output_list.pop()
+
+                    // Remove circle
+                    depth--;
+                    recent[recent.length - 1].remove();
+                    recent.pop();
+                    const it_row = instructions[instructions.length - 1]["start"] - 1;
+                    const it_cell_id = "r" + it_row + "c" + circle_depth + "t";
+                    console.log(it_cell_id)
+                    console.log(depth)
+                    $("#" + it_cell_id).remove();
+                    instructions.pop();
+
+                    // Remove dashed
+                    prev_end = instructions[instructions.length - 1]["start"];
+                    recent[recent.length - 1].remove();
+                    recent.pop();
+                    instructions.pop();
+                    count -= 1
+                    local_variables_list.pop()
+                    local_variables_list.pop()
                 } else {
                     // Remove step
                     recent[recent.length - 1].remove();
@@ -454,6 +483,7 @@ function get_prev() {
             } else {
                 count -= 2;
             }
+            console.log(res['list'][count])
             console.log(count)
 
         } else {
@@ -571,10 +601,6 @@ function get_next() {
                     destination: `#${CSS.escape(e)}`,
                     sourcePosition: "topCenter",
                     destinationPosition: "middleLeft",
-                    // pivots: [
-                    //     { x: 5, y: 0 },
-                    //     { x: 20, y: 5 },
-                    // ],
                     curvature: 0.5,
                     forceDirection: "horizontal",
                 })
@@ -801,6 +827,9 @@ function get_next() {
             });
             get_next();
         } else if (res["list"][count]["type"] == "while_end") {
+            console.log("curr = ", res['list'][count])
+            console.log("count = ", count)
+            console.log(inner_while)
             const pdepth = depth;
             console.log(same_depth_while)
             if (inner_while === null && same_depth_while === false) {
@@ -857,8 +886,9 @@ function get_next() {
             */
 
             if (res['list'][count + 1]['type'] == "circle" && count + 1 < res["list"].length - 1) {
+                console.log("ASJDBHAJSBDJASDK =", prev_while_depth)
                 depth = prev_while_depth;
-                inner_while = null;
+                //inner_while = null;
             }
             console.log("DEPTH_STACK", depth_stack)
             get_next();
