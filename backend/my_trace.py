@@ -304,10 +304,10 @@ class Trace:
 				line_content_list.append(self.usercode.splitlines()[lineno - 1])
 				local_variable_list.append(local_variables)
 				
-				print(f"local_variables = {local_variables}", file=old_stdout)
-				print(f"global_variables = {local_variables}", file=old_stdout)
-				print(f"local_variable_list = {local_variable_list}", file=old_stdout)
-				print(f"================================================================", file=old_stdout)
+				# print(f"local_variables = {local_variables}", file=old_stdout)
+				# print(f"global_variables = {local_variables}", file=old_stdout)
+				# print(f"local_variable_list = {local_variable_list}", file=old_stdout)
+				# print(f"================================================================", file=old_stdout)
 				
 				stdout_list.append(Pytracker_outIO.getvalue())
 			except OSError as err:

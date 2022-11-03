@@ -279,3 +279,119 @@ print("Hello World Again")
 
 # input
 # see input pytest file
+
+# for-loop
+# 1. simple for-loop
+for i in range(3):
+    print("Hello World")
+
+# 2. multi-path, simple for-loop
+for i in range(5):
+    print("case -1")
+    if i == 0:
+        print("case 0")
+    elif i == 1:
+        print("case 1")
+    else:
+        print("case 2")
+    print("case 3")
+
+# nested for-loop, single path
+for i in range(2):
+    for j in range(2):
+        for k in range(2):
+            print("Hello World")
+
+# nested for-loop, multi-path-in-1-layer
+for i in range(2):
+    for j in range(2):
+        for k in range(2):
+            print("case -1")
+            if i == 0:
+                print("case 0")
+            elif i == 1:
+                print("case 1")
+            else:
+                print("case 2")
+            print("case 3")
+
+# nested for-loop, multi-path-in-multi-layer
+for i in range(2):
+    print("layer 1")
+    for j in range(2):
+        print("layer 2")
+        for k in range(2):
+            print("layer 3")
+            if k == 1:
+                print(k)
+        if j == 1:
+            print(j)
+    if i == 1:
+        print(i)
+
+# parallel outer-for-loop
+for i in range(2):
+    print("loop 1")
+for j in range(2):
+    print("loop 2")
+
+# parallel inner-for-loop, no other ass
+for k in range(2):
+    for i in range(2):
+        print("loop 1")
+    for j in range(2):
+        print("loop 2")
+
+# parallel inner-for-loop, with other ass
+for k in range(2):
+    a = 1
+    for i in range(2):
+        print("loop 1")
+    print("interval")
+    for j in range(2):
+        print("loop 2")
+    b = 1
+
+# multi-path switch between for-loop and asses
+for i in range(3):
+    if i // 2 == 0:
+        print("i == 0")
+    else:
+        for j in range(3):
+            print(f"i == {i}")
+
+
+
+
+# mix for-loop and while-loop and see if it confuses
+for i in range(5):
+    print("i <= 1")
+    if i == 1:
+        print("we have i == 1")
+    else:
+        j = 5
+        while j >= 1:
+            j -= 1
+            print("j >= 1")
+            for k in range(3):
+                if k // 2 == 0:
+                    print("i == 0")
+                else:
+                    for l in range(3):
+                        print(f"l == {l}")
+            j -= 0  # useless assignment
+            for m in range(0):
+                print("1-iteration paralleled for-loop")
+            a = 0
+            j -= 0  # useless assignment
+            while a > 1:
+                print("this loop should be skipped")
+    
+
+# filter test, see if the fileter select the iteration info that we want
+for i in range(10):
+    print(f"i == {i}")
+    if i // 2 == 0:
+        print("mod 2 == 0")
+    else:
+        print("mode 2 == 1")
