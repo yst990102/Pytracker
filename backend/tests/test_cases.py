@@ -380,7 +380,7 @@ for i in range(5):
                     for l in range(3):
                         print(f"l == {l}")
             j -= 0  # useless assignment
-            for m in range(0):
+            for m in range(1):
                 print("1-iteration paralleled for-loop")
             a = 0
             j -= 0  # useless assignment
@@ -389,9 +389,38 @@ for i in range(5):
     
 
 # filter test, see if the fileter select the iteration info that we want
+# 1. two-paths with 10 iterations， same first and last, 1 in between
 for i in range(10):
     print(f"i == {i}")
-    if i // 2 == 0:
+    if i == 0 or i == 9:
         print("mod 2 == 0")
     else:
         print("mode 2 == 1")
+
+# 1. two-paths with 10 iterations, different first and last, no in between
+for i in range(10):
+    print(f"i == {i}")
+    if i == 0:
+        print("mod 2 == 0")
+    else:
+        print("mode 2 == 1")
+
+# 2. 5 individual paths
+for i in range(5):
+    if i == 0:
+        print(f"i == {i}")
+    elif i == 1:
+        print(f"i == {i}")
+    elif i == 2:
+        print(f"i == {i}")
+    elif i == 3:
+        print(f"i == {i}")
+    else:
+        print(f"i == {i}")
+
+
+
+# path
+# nested(parallel)
+# assignment mixed
+# 
