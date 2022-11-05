@@ -177,7 +177,7 @@ class Trace:
 			local_variable_list.append(local_variables)
 			del local_variable_list[0]
 			stdout_list.append(Pytracker_outIO.getvalue())
-			del stdout_list[0]			
+			del stdout_list[0]
 			
 			assert(len(line_no_list) == len(line_content_list) == len(local_variable_list) == len(stdout_list))
 			for i in range(len(line_no_list)):
@@ -253,8 +253,28 @@ class Trace:
 		else returns self.localtrace.
 		"""
 		if why == 'call':
+			lineno = frame.f_lineno
 			code = frame.f_code
 			filename = frame.f_globals.get('__file__', None)
+			
+			frame_locals = frame.f_locals
+			frame_globals = frame.f_globals
+
+			local_variables = {}
+			local_variables_set_diff = list(frame_locals.keys() - self.initial_locals_keys)
+			for key in local_variables_set_diff:
+				if hasattr(frame_locals[key], '__call__'):
+					# local_variables[key] = hex(id(frame_locals[key]))
+					# local_variables[key] = str(frame_locals[key])
+					local_variables[key] = f"function {key} at {hex(id(frame_locals[key]))}"
+					continue
+				else:
+					local_variables[key] = frame_locals[key]
+			global_variables = {}
+			global_variables_set_diff = list(frame_globals.keys() - self.initial_globals_keys)
+			for key in global_variables_set_diff:
+				global_variables[key] = frame_globals[key]
+			
 			if filename:
 				# XXX _modname() doesn't work right for packages, so
 				# the ignore support won't work right for packages
@@ -264,6 +284,14 @@ class Trace:
 					if not ignore_it:
 						if self.trace:
 							# print((" --- modulename: %s, funcname: %s" % (modulename, code.co_name)))
+							try:
+								line_no_list.append(lineno)
+								line_content_list.append(self.usercode.splitlines()[lineno - 1])
+								local_variable_list.append(local_variables)
+								
+								stdout_list.append(Pytracker_outIO.getvalue())
+							except Exception as err:
+								print("Can't save localtrace_trace_and_count output because %s" % err, file=sys.stderr)
 							pass
 						return self.localtrace
 			else:
@@ -304,13 +332,8 @@ class Trace:
 				line_content_list.append(self.usercode.splitlines()[lineno - 1])
 				local_variable_list.append(local_variables)
 				
-				# print(f"local_variables = {local_variables}", file=old_stdout)
-				# print(f"global_variables = {local_variables}", file=old_stdout)
-				# print(f"local_variable_list = {local_variable_list}", file=old_stdout)
-				# print(f"================================================================", file=old_stdout)
-				
 				stdout_list.append(Pytracker_outIO.getvalue())
-			except OSError as err:
+			except Exception as err:
 				print("Can't save localtrace_trace_and_count output because %s" % err, file=sys.stderr)
 
 		return self.localtrace

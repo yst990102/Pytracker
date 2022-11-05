@@ -176,28 +176,26 @@ def get_step_json(program:parse_classes.Program):
 	assert(isinstance(start_statement, parse_classes.Assignment))
 	assert(isinstance(end_statement, parse_classes.Assignment) or end_statement is None)
 
-	cur_max = 1
-	max_max = 1
-	cur_or_max = False
-	stack = []
-
+	# first step: from program start line to first line
 	step_list = [{"type": "step", "start": 0, "end": start_statement.line_no, "local_variables": start_statement.local_variables, "stdout": start_statement.stdout}]
+	if any([isinstance(i, parse_classes.Iteration) for i in start_statement.path]):
+		step_list.append({"type": "circle", "start": start_statement.line_no, "iteration": start_statement.path[-1].iteration_num, "local_variables": start_statement.local_variables, "stdout": start_statement.stdout})
+		step_list.append({"type": "while_start", "depth": -1})
+	
 	while end_statement:
-		start_location = start_statement.line_no
-		end_location = end_statement.line_no
 		# use path to judge
-		# CASE 01: start a new while-loop
 		if len(end_statement.path) > len(start_statement.path):
-			if stack != []:
-				cur_or_max = True
+			# CASE 01: start a new while-loop
+			# print(f"Case 1 hit\nstart:{start_statement.line_no}, end:{end_statement.line_no}")
+			
 			entered_iteration = end_statement.path[-1]
-			step_list.append({"type": "step", "start": start_location, "end": end_location, "local_variables": end_statement.local_variables, "stdout": end_statement.stdout})
-			step_list.append({"type": "circle", "start": end_location, "iteration": entered_iteration.iteration_num, "local_variables": end_statement.local_variables, "stdout": end_statement.stdout})
+			step_list.append({"type": "step", "start": start_statement.line_no, "end": end_statement.line_no, "local_variables": end_statement.local_variables, "stdout": end_statement.stdout})
+			step_list.append({"type": "circle", "start": end_statement.line_no, "iteration": entered_iteration.iteration_num, "local_variables": end_statement.local_variables, "stdout": end_statement.stdout})
 			step_list.append({"type": "while_start", "depth": -1})
-			stack.append(cur_max)
-			cur_max += 1
-		# CASE 02: end a while-loop and indent backward
-		elif len(end_statement.path) < len(start_statement.path):			
+		elif len(end_statement.path) < len(start_statement.path):
+			# CASE 02: end a while-loop and indent backward
+			# print(f"Case 2 hit\nstart:{start_statement.line_no}, end:{end_statement.line_no}")
+			
 			# HERE: test printing of Assignments' self.while_ends property
 			# exit_str = ""
 			# for while_end_iteration in start_statement.while_ends:
@@ -209,42 +207,40 @@ def get_step_json(program:parse_classes.Program):
 				step_list.append({"type": "while_end", "start": while_end_iteration.get_first_inner_step().line_no, "end": while_end_iteration.get_last_inner_step().line_no})
 				# print(f"append start:{while_end_iteration.get_first_inner_step().line_no}, end:{while_end_iteration.get_last_inner_step().line_no}")
 			
-			if end_location in program.while_lines_set:
+			if end_statement.line_no in program.while_lines_set:
 				entered_iteration = end_statement.path[-1]
-				step_list.append({"type": "circle", "start": end_location, "iteration": entered_iteration.iteration_num, "local_variables": end_statement.local_variables, "stdout": end_statement.stdout})
+				step_list.append({"type": "circle", "start": end_statement.line_no, "iteration": entered_iteration.iteration_num, "local_variables": end_statement.local_variables, "stdout": end_statement.stdout})
 			else:
-				step_list.append({"type": "step", "start": start_location, "end": end_location, "local_variables": end_statement.local_variables, "stdout": end_statement.stdout})
-			if stack != []:
-				cur_max = stack.pop()
-			cur_or_max = False
+				step_list.append({"type": "step", "start": start_statement.line_no, "end": end_statement.line_no, "local_variables": end_statement.local_variables, "stdout": end_statement.stdout})
 		else:
 			if start_statement.path != end_statement.path:
 				start_while_line_no = start_statement.path[-1].while_line_no
 				end_while_line_no = end_statement.path[-1].while_line_no
 				if start_while_line_no == end_while_line_no:
 					# CASE 03: enter a new iteration which from same while-loop
+					# print(f"Case 3 hit\nstart:{start_statement.line_no}, end:{end_statement.line_no}")
+					
 					entered_iteration = end_statement.path[-1]
-					step_list.append({"type": "circle", "start": end_location, "iteration": entered_iteration.iteration_num, "local_variables": end_statement.local_variables, "stdout": end_statement.stdout})
-					cur_max = (cur_max + 1) if cur_or_max == True else (max_max + 1)
+					step_list.append({"type": "circle", "start": end_statement.line_no, "iteration": entered_iteration.iteration_num, "local_variables": end_statement.local_variables, "stdout": end_statement.stdout})
 				else:
-					# CASE 04: end current while-loop, then start and enter a parallel while-loop,
+					# CASE 04: end current while-loop, then start and enter a parallel while-loop
+					# print(f"Case 4 hit\nstart:{start_statement.line_no}, end:{end_statement.line_no}")
+					
 					ended_iteration = start_statement.path[-1]
 					step_list.append({"type": "while_end", "start": ended_iteration.get_first_inner_step().line_no, "end": ended_iteration.get_last_inner_step().line_no})
-					step_list.append({"type": "step", "start": start_location, "end": end_location, "local_variables": end_statement.local_variables, "stdout": end_statement.stdout})
+					step_list.append({"type": "step", "start": start_statement.line_no, "end": end_statement.line_no, "local_variables": end_statement.local_variables, "stdout": end_statement.stdout})
 					entered_iteration = end_statement.path[-1]
-					step_list.append({"type": "circle", "start": end_location, "iteration": entered_iteration.iteration_num, "local_variables": end_statement.local_variables, "stdout": end_statement.stdout})
+					step_list.append({"type": "circle", "start": end_statement.line_no, "iteration": entered_iteration.iteration_num, "local_variables": end_statement.local_variables, "stdout": end_statement.stdout})
 					step_list.append({"type": "while_start", "depth": -1})
-					cur_max = stack.pop()
-					cur_or_max = False
-			# CASE 05: normal step
 			else:
-				step_list.append({"type": "step", "start": start_location, "end": end_location, "local_variables": end_statement.local_variables, "stdout": end_statement.stdout})
-		max_max = max(cur_max, max_max)
+				# CASE 05: normal step
+				# print(f"Case 5 hit\nstart:{start_statement.line_no}, end:{end_statement.line_no}")
+			
+				step_list.append({"type": "step", "start": start_statement.line_no, "end": end_statement.line_no, "local_variables": end_statement.local_variables, "stdout": end_statement.stdout})
 		start_statement = start_statement.get_next()
 		end_statement = end_statement.get_next()
 
-	max_depth = max_max
-	return {"d": max_depth, "list": step_list}
+	return {"d": 15, "list": step_list}
 
 
 # remove single_list == remove the last loop statement check
