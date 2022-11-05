@@ -35,10 +35,10 @@ $("#codeSubmit").click(() => {
     frontend_main();
 });
 
-function frontend_main(){
+async function frontend_main(){
     var userinput_list = [];
     userinput_list = get_prompt_inputs();
-    $.ajax({
+    await $.ajax({
         type: "POST",
         url: "/userinput",
         data: JSON.stringify(userinput_list),
