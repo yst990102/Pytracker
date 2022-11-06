@@ -57,7 +57,12 @@ async function doAjaxUserInput() {
 async function frontend_main(){
     var userinput_list = [];
     userinput_list = get_prompt_inputs();
-    const res = await doAjaxUserInput();
+    try {
+        const res = await doAjaxUserInput();
+    } catch (err) {
+        console.log(err)
+    }
+
     
     if (!traceback_check()){
         analyse_usercode();
