@@ -35,10 +35,8 @@ $("#codeSubmit").click(() => {
     frontend_main();
 });
 
-async function frontend_main(){
-    var userinput_list = [];
-    userinput_list = get_prompt_inputs();
-    await $.ajax({
+async function doAjaxUserInput() {
+    return $.ajax({
         type: "POST",
         url: "/userinput",
         data: JSON.stringify(userinput_list),
@@ -54,6 +52,12 @@ async function frontend_main(){
             console.log(err);
         },
     });
+}
+
+async function frontend_main(){
+    var userinput_list = [];
+    userinput_list = get_prompt_inputs();
+    const res = await doAjaxUserInput();
     
     if (!traceback_check()){
         analyse_usercode();
