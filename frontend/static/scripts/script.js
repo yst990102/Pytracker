@@ -199,7 +199,7 @@ function analyse_usercode(){
             markup = "";
             for (var i = 0; i < parselist.length; i++) {
                 markup += '<div class="row">';
-                for (var j = 0; j < 20/*res['d']*/; j++) {
+                for (var j = 0; j < res['d']; j++) {/*res['d']*/
                     id = "r" + i + "c" + j;
                     markup += '<div id ="' + id + '" class="col"></div>';
                 }
