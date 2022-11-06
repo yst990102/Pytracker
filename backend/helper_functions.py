@@ -194,18 +194,18 @@ def get_step_json(program:parse_classes.Program):
 		# use path to judge
 		if len(end_statement.path) > len(start_statement.path):
 			# CASE 01: start a new while-loop
-			# print(f"Case 1 hit\nstart:{start_statement.line_no}, end:{end_statement.line_no}")
+			print(f"Case 1 hit\nstart:{start_statement.line_no}, end:{end_statement.line_no}")
 			
 			entered_iteration = end_statement.path[-1]
 			step_list.append({"type": "step", "start": start_statement.line_no, "end": end_statement.line_no, "local_variables": end_statement.local_variables, "stdout": end_statement.stdout})
 			step_list.append({"type": "circle", "start": end_statement.line_no, "iteration": entered_iteration.iteration_num, "local_variables": end_statement.local_variables, "stdout": end_statement.stdout})
-			cur_depth += 1
 			step_list.append({"type": "while_start", "depth": -1})
 			depth_stack.append(cur_depth)
+			cur_depth += 1
 			max_depth = max(max_depth, cur_depth)
 		elif len(end_statement.path) < len(start_statement.path):
 			# CASE 02: end a while-loop and indent backward
-			# print(f"Case 2 hit\nstart:{start_statement.line_no}, end:{end_statement.line_no}")
+			print(f"Case 2 hit\nstart:{start_statement.line_no}, end:{end_statement.line_no}")
 			
 			# HERE: test printing of Assignments' self.while_ends property
 			# exit_str = ""
@@ -216,7 +216,6 @@ def get_step_json(program:parse_classes.Program):
 
 			for while_end_iteration in start_statement.while_ends:
 				step_list.append({"type": "while_end", "start": while_end_iteration.get_first_inner_step().line_no, "end": while_end_iteration.get_last_inner_step().line_no})
-				cur_depth = depth_stack.pop()
 			
 			if end_statement.line_no in program.while_lines_set:
 				entered_iteration = end_statement.path[-1]
@@ -231,7 +230,7 @@ def get_step_json(program:parse_classes.Program):
 				end_while_line_no = end_statement.path[-1].while_line_no
 				if start_while_line_no == end_while_line_no:
 					# CASE 03: enter a new iteration which from same while-loop
-					# print(f"Case 3 hit\nstart:{start_statement.line_no}, end:{end_statement.line_no}")
+					print(f"Case 3 hit\nstart:{start_statement.line_no}, end:{end_statement.line_no}")
 					
 					entered_iteration = end_statement.path[-1]
 					step_list.append({"type": "circle", "start": end_statement.line_no, "iteration": entered_iteration.iteration_num, "local_variables": end_statement.local_variables, "stdout": end_statement.stdout})
@@ -239,7 +238,7 @@ def get_step_json(program:parse_classes.Program):
 					max_depth = max(max_depth, cur_depth)
 				else:
 					# CASE 04: end current while-loop, then start and enter a parallel while-loop
-					# print(f"Case 4 hit\nstart:{start_statement.line_no}, end:{end_statement.line_no}")
+					print(f"Case 4 hit\nstart:{start_statement.line_no}, end:{end_statement.line_no}")
 					
 					ended_iteration = start_statement.path[-1]
 					step_list.append({"type": "while_end", "start": ended_iteration.get_first_inner_step().line_no, "end": ended_iteration.get_last_inner_step().line_no})
@@ -247,15 +246,16 @@ def get_step_json(program:parse_classes.Program):
 					step_list.append({"type": "step", "start": start_statement.line_no, "end": end_statement.line_no, "local_variables": end_statement.local_variables, "stdout": end_statement.stdout})
 					entered_iteration = end_statement.path[-1]
 					step_list.append({"type": "circle", "start": end_statement.line_no, "iteration": entered_iteration.iteration_num, "local_variables": end_statement.local_variables, "stdout": end_statement.stdout})
-					cur_depth += 1
 					step_list.append({"type": "while_start", "depth": -1})
 					depth_stack.append(cur_depth)
+					cur_depth += 1
 					max_depth = max(max_depth, cur_depth)
 			else:
 				# CASE 05: normal step
-				# print(f"Case 5 hit\nstart:{start_statement.line_no}, end:{end_statement.line_no}")
+				print(f"Case 5 hit\nstart:{start_statement.line_no}, end:{end_statement.line_no}")
 			
 				step_list.append({"type": "step", "start": start_statement.line_no, "end": end_statement.line_no, "local_variables": end_statement.local_variables, "stdout": end_statement.stdout})
+		print(f"cur_depth:{cur_depth}\n============")
 		start_statement = start_statement.get_next()
 		end_statement = end_statement.get_next()
 

@@ -62,8 +62,11 @@ a = 1
 b = 2
 c = 3
 while a == 1:
+    a += 1
     while b == 2:
+        b += 1
         while c == 3:
+            c += 1
             print("Hello World")
 print("Hello World Again")
 
@@ -72,7 +75,9 @@ a = 1
 b = 2
 c = 3
 while a == 1:
+    a += 1
     while b == 2:
+        b += 1
         while c < 5:
             c += 1
             print("Hello World")
@@ -83,9 +88,11 @@ a = 1
 b = 2
 c = 3
 while a == 1:
+    a += 1
     while b < 4:
         b += 1
         while c == 3:
+            c += 1
             print("Hello World")
 print("Hello World Again")
 
@@ -94,6 +101,7 @@ a = 1
 b = 2
 c = 3
 while a == 1:
+    a += 1
     while b < 4:
         b += 1
         while c < 5:
@@ -108,7 +116,9 @@ c = 3
 while a < 3:
     a += 1
     while b == 2:
+        b += 1
         while c == 3:
+            c += 1
             print("Hello World")
 print("Hello World Again")
 
@@ -119,6 +129,7 @@ c = 3
 while a < 3:
     a += 1
     while b == 2:
+        b += 1
         while c < 5:
             c += 1
             print("Hello World")
@@ -133,6 +144,7 @@ while a < 3:
     while b < 4:
         b += 1
         while c == 3:
+            c += 1
             print("Hello World")
 print("Hello World Again")
 
@@ -245,6 +257,7 @@ while a < 3:
                 b += 1
             else:
                 print("Case 3")
+                b += 1
                 while c < 5:
                     c += 1
 print("Hello World Again")
@@ -263,6 +276,7 @@ while a < 3:
                 b += 1
             else:
                 while c < 5:
+                    b += 1
                     c += 1
                     if c == 4:
                         print("Case 3")
