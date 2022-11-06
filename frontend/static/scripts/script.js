@@ -35,7 +35,7 @@ $("#codeSubmit").click(() => {
     frontend_main();
 });
 
-async function doAjaxUserInput() {
+async function doAjaxUserInput(userinput_list) {
     return $.ajax({
         type: "POST",
         url: "/userinput",
@@ -58,7 +58,7 @@ async function frontend_main(){
     var userinput_list = [];
     userinput_list = get_prompt_inputs();
     try {
-        const res = await doAjaxUserInput();
+        const res = await doAjaxUserInput(userinput_list);
     } catch (err) {
         console.log(err)
     }
@@ -199,7 +199,7 @@ function analyse_usercode(){
             markup = "";
             for (var i = 0; i < parselist.length; i++) {
                 markup += '<div class="row">';
-                for (var j = 0; j < res['d']; j++) {/*res['d']*/
+                for (var j = 0; j < 50; j++) {/*res['d']*/
                     id = "r" + i + "c" + j;
                     markup += '<div id ="' + id + '" class="col"></div>';
                 }
