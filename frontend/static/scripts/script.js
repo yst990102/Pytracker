@@ -49,7 +49,7 @@ async function doAjaxUserInput(userinput_list) {
             }
         },
         error: function(err) {
-            console.log(err);
+            console.log("ERROR RESPONSE", err);
         },
     });
 }
@@ -452,7 +452,7 @@ function get_prev() {
                     instructions.pop();
                     count -= 1;
                 } else if (instructions.length - 2 >= 0 && instructions[instructions.length - 2]["type"] == "circle") { 
-                    console.log("AKSHDASHJDI")
+                    console.log("AKSHDASHJDI HERHEHHRHERE")
                     const circle_depth = depth;
                     // Remove step
                     recent[recent.length - 1].remove();
@@ -479,6 +479,19 @@ function get_prev() {
                     count -= 1
                     local_variables_list.pop()
                     local_variables_list.pop()
+
+                    while (instructions.length - 1 >= 0 && instructions[instructions.length - 1]["type"] == "while_end") {
+                        if (instructions[instructions.length - 1]['type'] == "while_end") {
+                            inner_while = null;
+                        }
+                        const pdepth = instructions[instructions.length - 1]["depth"];
+                        console.log(pdepth)
+                        depth = pdepth;
+                        depth_stack.push(instructions[instructions.length - 1]["wdepth"]);
+                        console.log(depth_stack)
+                        instructions.pop();
+                        count -= 1;
+                    }
                 } else {
                     // Remove step
                     recent[recent.length - 1].remove();
@@ -488,6 +501,13 @@ function get_prev() {
                     program_output_list.pop()
                 }
 
+                count -= 3;
+            } else if (instructions.length - 1 >= 0 && instructions[instructions.length - 1]["type"] == "step") {
+                recent[recent.length - 1].remove();
+                recent.pop();
+                instructions.pop();
+                local_variables_list.pop()
+                program_output_list.pop()
                 count -= 3;
             } else {
                 count -= 2;
