@@ -44,6 +44,7 @@ print("Over")
 a = 1
 while a < 5:
     print("Case 1")
+    a += 1
 print("Over")
 
 # 3. 1-layer-loop with multi-iteration, multi-paths
@@ -52,6 +53,7 @@ while a < 5:
     print("Case 1")
     if a == 3:
         print("Case 2")
+    a += 1
 print("Over")
 
 # 4. 

@@ -29,15 +29,6 @@ elif a + b == 30:
 else:
 	print(b)
 
-# ADDED: Nested if statement => Test_IF_Statement.test_nested
-a = 10
-b = 20
-if a < b:
-	if b > a:
-		if a == 10:
-			if b == 20:
-				print(a)
-				print(b)
 
 # ADDED: Simple while loop => Test_While_Statement.test_simplest
 i = 0
@@ -62,28 +53,7 @@ if odd_sum > even_sum:
 else:
 	print(even_sum)
 
-# ADDED: Unused while loop => Test_While_Statement.test_unused_inner_while_loop
-even_sum = 0
-odd_sum = 0
-i = 2
-j = 0
-while j < 4:
-	if (i + j) % 2 == 0:
-		even_sum += (i + j)
-	else:
-		odd_sum += (i + j)
-	j += 1
 
-while j < 4:
-	if (i + j) % 2 == 0:
-		even_sum += (i + j)
-	else:
-		odd_sum += (i + j)
-	j += 1
-i += 1
-
-print(even_sum)
-print(odd_sum)
 
 # ADDED: Nested while loop (simple) => Test_While_Statement.test_simplest_nested
 i = 0
@@ -127,54 +97,7 @@ while i < 4:
 print(even_sum)
 print(odd_sum)
 
-# ADDED: Nested while loop that is unused => Test_While_Statement.test_unused_inner_while_loop
-even_sum = 0
-odd_sum = 0
-i = 0
-while i < 2:
-	j = 0
-	while j < 4:
-		if (i + j) % 2 == 0:
-			even_sum += (i + j)
-		else:
-			odd_sum += (i + j)
-		j += 1
 
-	while j < 4:
-		if (i + j) % 2 == 0:
-			even_sum += (i + j)
-		else:
-			odd_sum += (i + j)
-		j += 1
-	i += 1
-
-print(even_sum)
-print(odd_sum)
-
-# ADDED: Nested while loop that is same depth => Test_While_Statement.test_nested_while_at_same_depth
-even_sum = 0
-odd_sum = 0
-i = 0
-while i < 2:
-	j = 0
-	while j < 4:
-		if (i + j) % 2 == 0:
-			even_sum += (i + j)
-		else:
-			odd_sum += (i + j)
-		j += 1
-
-	j = 0
-	while j < 4:
-		if (i + j) % 2 == 0:
-			even_sum += (i + j)
-		else:
-			odd_sum += (i + j)
-		j += 1
-	i += 1
-
-print(even_sum)
-print(odd_sum)
 
 # ADDED: Quadruple nested while loop => Test_While_Statement.test_quadruple_nested_while
 i = 0
@@ -250,18 +173,6 @@ for i in range(5):
     else:
         print("case 2")
     print("case 3")
-
-for i in range(5):
-    if i == 0:
-        print(f"i == {i}")
-    elif i == 1:
-        print(f"i == {i}")
-    elif i == 2:
-        print(f"i == {i}")
-    elif i == 3:
-        print(f"i == {i}")
-    else:
-        print(f"i == {i}")
 
 # nested for-loop, single path
 for i in range(2):
