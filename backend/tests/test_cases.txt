@@ -145,3 +145,45 @@
     Step
     While_end
     Step
+
+8.
+    Step
+    Circle
+    While_start
+    Step
+    Circle
+    Step
+    While_end
+    Step
+    Step
+    Circle
+    While_start
+    Step
+    Circle
+    Step
+    While_end
+    Step
+
+8.
+    Step
+    Circle
+    While_start
+    Step
+    Circle
+    Step
+    While_end
+    (Step)
+    Circle
+    While_start
+    Step
+    Circle
+    Step
+    While_end
+    (Step)
+    Circle
+    While_start
+    Step
+    Circle
+    Step
+    While_end
+    Step
