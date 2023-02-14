@@ -25,10 +25,10 @@ from filelock import Timeout, FileLock
 frontend_usercode_file_lock = FileLock("frontend_usercode_file.lock")
 
 
-
 def input(__prompt: object = ...) -> str:
-	userinput = next(userinput_iter)
-	return userinput['userinput']
+    userinput = next(userinput_iter)
+    return userinput['userinput']
+
 
 @app.route('/userinput', methods=["POST"])
 def get_userinput_list():
@@ -36,16 +36,19 @@ def get_userinput_list():
         global userinput_iter, userinput_list
         userinput_list = request.json
         userinput_iter = iter(request.json)
-        
+
         return {"receive_status": True}
     return render_template('index.html')
+
 
 @app.route('/traceback', methods=["POST"])
 def traceback_checking():
     if request.method == "POST":
         usercode = request.json
-        reformatted_code, changed = FormatCode(unformatted_source=usercode, style_config=f"{backend_absolute_path}/.style.yapf")
-        
+        reformatted_code, changed = FormatCode(
+            unformatted_source=usercode,
+            style_config=f"{backend_absolute_path}/.style.yapf")
+
         with frontend_usercode_file_lock:
             with open(backend_absolute_path + '/UserCode.py', 'w') as f_write:
                 f_write.write(reformatted_code)
@@ -54,11 +57,17 @@ def traceback_checking():
             input_cmd = []
             for userinput in userinput_list:
                 input_cmd.append(userinput['userinput'])
-            
+
             # tracebacke v1.1
-            traceback_subprocess = subprocess.Popen(['python '+ backend_absolute_path + '/UserCode.py'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-            
-            output, err = traceback_subprocess.communicate(input='\n'.join(input_cmd).encode())
+            traceback_subprocess = subprocess.Popen(
+                ['python ' + backend_absolute_path + '/UserCode.py'],
+                stdin=subprocess.PIPE,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                shell=True)
+
+            output, err = traceback_subprocess.communicate(
+                input='\n'.join(input_cmd).encode())
             output_msg = output.decode('utf-8')
             err_msg = err.decode('utf-8')
             if err_msg:
@@ -74,7 +83,9 @@ def home_page():
     if request.method == "POST":
 
         # run backend_main
-        Pytracker.backend_main(Pytracker.SIG_FILE_IO_OFF,usercode=request.json, userinput_iter=userinput_iter)
+        Pytracker.backend_main(Pytracker.SIG_FILE_IO_OFF,
+                               usercode=request.json,
+                               userinput_iter=userinput_iter)
 
         # grab the result of listoflist and step_json from global variables
         listoflist = Pytracker.listoflist
@@ -100,6 +111,16 @@ def user_input():
         user_input_content = request.json
         print(f"frontend userinput = {user_input_content}")
     return render_template('index.html')
+
+
+@app.route('/hello-world')
+def home():
+    return 'Hello, World!'
+
+
+@app.route('/about')
+def about():
+    return 'About'
 
 
 if __name__ == "__main__":
