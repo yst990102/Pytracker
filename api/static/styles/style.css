@@ -1,0 +1,259 @@
+html,
+body {
+    height: 100%;
+    overflow: visible;
+    min-width: 120px;
+    font-family: Verdana, sans-serif;
+    margin: 0;
+}
+
+.pytracker {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.editor {
+    width: 100%;
+    height: 75%;
+    display: flex;
+    padding: 5px 0 5px 10px;
+    margin-bottom: 10px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.editor_wrapper {
+    width: 40%;
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    background: #eee;
+    padding: 2em;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+}
+
+.editor_body {
+    flex: 1;
+}
+
+.editor_footer {
+    margin-top: 12px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+.editor_code {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border: 1px solid #333;
+}
+
+.editor_btn {
+    display: flex;
+    padding: 6px 16px;
+    margin-left: 5px;
+    margin-right: 5px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.visualisation_div {
+    display: flex;
+    width: auto;
+}
+
+.left {
+    height: 100%;
+    width: 50%;
+}
+
+.code_table {
+    float: right;
+}
+
+.editor_btn_prev {
+    float: right;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 6px 16px;
+    margin-top: 16px;
+    margin-left: 5px;
+    margin-right: 5px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.editor_btn_next {
+    float: right;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 6px 16px;
+    margin-top: 16px;
+    margin-left: 5px;
+    margin-right: 5px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.line_num {
+    padding-right: 8px;
+    border-right: 2px solid black;
+    text-align: right;
+}
+
+.line_content {
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.line_arrow {
+    padding-left: 24px;
+    padding-right: 8px;
+}
+
+.right {
+    flex: 1;
+    min-width: 10px;
+    width: auto;
+    //overflow-x: auto;
+    white-space: nowrap;
+}
+
+tr {
+    height: 27px;
+
+}
+
+.grid {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.row {
+    height: 27px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.col {
+    width: 20px;
+    height: 27px;
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 30px;
+}
+
+.iteration_number {
+    display: flex;
+    justify-content: right;
+    margin-top: 8px;
+    font-size: 12px;
+}
+
+.user_display {
+    display: flex;
+    height: 50%;
+    padding-bottom: 150px;
+}
+
+.info {
+    width: 50%;
+    display: flex;
+    height: 100%;
+}
+
+.program_output {
+    width: 25%;
+    height: 100%;
+    flex: 1;
+}
+
+.program_output_scroll {
+    height: 100%;
+    overflow: auto;
+}
+
+.prog_out_text {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 16px;
+    text-decoration: underline;
+}
+
+.prev_var_text {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 16px;
+    text-decoration: underline;
+}
+
+.curr_var_text {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 16px;
+    text-decoration: underline;
+}
+
+.variables {
+    width: 75%;
+    display: flex;
+}
+
+.previous_var {
+    width: 50%;
+    height: 100%;
+}
+
+.prev_var_table_scroll {
+    height: 100%;
+    overflow: auto;
+}
+
+.current_var {
+    width: 50%;
+    height: 100%;
+}
+
+.curr_var_table_scroll {
+    height: 100%;
+    overflow: auto;
+}
+
+.variable_table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.key_var {
+    vertical-align: middle;
+    padding-right: 12px;
+    border-right: 2px solid black;
+    text-align: right;
+}
+
+.value_var {
+    padding-left: 12px;
+}
+
+.prog_table {
+    margin-left: auto;
+    margin-right: auto;
+}

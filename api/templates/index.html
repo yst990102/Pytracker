@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+	integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous">
+	</script>
+<script src="https://cdn.tiny.cloud/1/mmcgy080g0q9wr33tjp2th052p011p6uvcwapqfi523oy264/tinymce/6/tinymce.min.js"
+	referrerpolicy="origin"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tinymce/tinymce-jquery@1/dist/tinymce-jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/arrow-line/dist/arrow-line.min.js"></script>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="../static/styles/feedback.css">
+	<link rel="stylesheet" href="{{ url_for('static',filename='styles/style.css') }}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	
+	<title>Pytracker</title>
+
+</head>
+
+<body>
+    <h1 class="pytracker" onclick="window.location.reload()">Pytracker</h1>
+    <div id="inputeditor" class="editor">
+        <div class="editor_wrapper">
+            <div class="editor_body">
+                <div id="editor" class="editor_code"></div>
+            </div>
+            <div class="editor_footer">
+                <button id="codeSubmit" type="submit" class="editor_btn">Analyse</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="output" class="visualisation_div">
+        <div class="left">
+            <table id="code_output" class="code_table"></table>
+        </div>
+        <div id="diagram" class="right">
+            <div id="graph" class="grid"></div>
+        </div>
+
+    </div>
+
+    <div class="user_display">
+        <div class="left">
+            <div id="stepbtns" class="buttons">
+            </div>
+        </div>
+        <div class="info">
+            <div id="prog_out" class="program_output"></div>
+            <div class="variables">
+                <div id="prev_var" class="previous_var"></div>
+                <div id="curr_var" class="current_var"></div>
+            </div>
+        </div>
+    </div>
+
+	<!-- a button for "Contact the author" -->
+	<button class="open-button" onclick="openForm()">Contact the author</button>
+	<!-- Info about the popup feedback form -->
+	<div class="form-popup" id="myForm">
+		<form action="/action_page.php" class="form-container" method="post" accept-charset="utf-8" name="FeedbackForm"
+		enctype="multipart/form-data">
+			<label for="fname">First Name</label>
+			<input type="text" id="fname" name="firstname" placeholder="Your first name.." />
+
+			<label for="lname">Last Name</label>
+			<input type="text" id="lname" name="lastname" placeholder="Your last name.." />
+
+			<label for="issue-type">Type of issue</label>
+			<select id="issue-type" name="issue-type">
+				<option value="bug">Report a bug</option>
+				<option value="extra-feature">Need extra features</option>
+				<option value="other">Other...</option>
+			</select>
+
+			<label for="feedback">Feedback</label>
+			<textarea id="feedback" name="feedback" placeholder="Write something.."
+				style="resize:none;height: 200px"></textarea>
+
+			<button id="feedbackSubmit" type="button" class="btn">
+				Submit
+			</button>
+			<button type="button" class="btn cancel" onclick="closeForm()">
+				Close
+			</button>
+		</form>
+	</div>
+
+	<script src="{{ url_for('static',filename='scripts/src-min/ace.js') }}"></script>
+	<script src="{{ url_for('static',filename='scripts/src-min/mode-python.js') }}"></script>
+	<script src="{{ url_for('static',filename='scripts/src-min/ext-language_tools.js') }}"></script>
+	<script src="{{ url_for('static',filename='scripts/script.js') }}"></script>
+	<script src="{{ url_for('static',filename='scripts/feedback.js') }}"></script>
+	<script src="{{ url_for('static',filename='scripts/input_prompt.js') }}"></script>
+</body>
+
+</html>
